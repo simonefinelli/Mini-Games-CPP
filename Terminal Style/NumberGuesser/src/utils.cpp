@@ -20,7 +20,7 @@ bool check_response(const std::string &input) {
     std::transform(lowercase.begin(), lowercase.end(),
                    lowercase.begin(), ::tolower);
 
-    return lowercase == "y" || lowercase == "yes" || lowercase == "Yes";
+    return lowercase == "y" || lowercase == "yes";
 }
 
 /**
