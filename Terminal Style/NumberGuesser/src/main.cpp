@@ -2,7 +2,7 @@
  * @file main.cpp
  * @brief Number guesser Game.
  *
- * This file include the core of the Game.\n
+ * This file includes the core of the Game.\n
  * It will take in input the player's choices and will handle all kind of
  * exceptions.
  *

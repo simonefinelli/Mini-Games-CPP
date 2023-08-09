@@ -1,6 +1,14 @@
-//
-// Created by SimoX on 04/08/23.
-//
+/**
+ * @file utils.cpp
+ * @brief Utilities functions.
+ *
+ * This file includes all the functions used to accomplish
+ * general-specific tasks.
+ *
+ * @author SimoX
+ * @date 2023-08-04
+ */
+
 
 #include <algorithm>
 #include <cmath>

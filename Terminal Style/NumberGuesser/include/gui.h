@@ -1,7 +1,3 @@
-//
-// Created by SimoX on 04/08/23.
-//
-
 #include "config.h"
 
 #ifndef NUMBER_GUESSER_GUI_H

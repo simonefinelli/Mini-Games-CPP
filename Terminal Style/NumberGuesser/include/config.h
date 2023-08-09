@@ -1,7 +1,3 @@
-//
-// Created by SimoX on 04/08/23.
-//
-
 #ifndef NUMBER_GUESSER_CONFIG_H
 #define NUMBER_GUESSER_CONFIG_H
 

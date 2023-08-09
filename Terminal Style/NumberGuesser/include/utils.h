@@ -1,7 +1,3 @@
-//
-// Created by SimoX on 04/08/23.
-//
-
 #include <string>
 
 #ifndef NUMBER_GUESSER_UTILS_H

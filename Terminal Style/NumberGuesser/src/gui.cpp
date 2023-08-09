@@ -1,3 +1,15 @@
+/**
+ * @file utils.cpp
+ * @brief Graphical info.
+ *
+ * This file includes all the sentences used to show to the player
+ * the game status.
+ *
+ * @author SimoX
+ * @date 2023-08-04
+ */
+
+
 #include <iostream>
 #include "config.h"
 #include "gui.h"
