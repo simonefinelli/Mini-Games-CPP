@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 add_executable(HangmanGame
         src/main.cpp
         src/core.cpp
+        src/board.cpp
 )
 
 # set the include directories
