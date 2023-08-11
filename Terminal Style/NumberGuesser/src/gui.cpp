@@ -73,10 +73,10 @@ void gui::draw_blank_line() {
     std::cout << std::endl;
 }
 
+/**
+ * Clear the terminal screen based on the operating system.
+ */
 void gui::clear_board() {
-    /**
-     * Clear the terminal screen based on the operating system.
-     */
     #ifdef _WIN32 // Windows
         system("cls");
     #else // Unix-like systems (Linux, macOS, etc.)
