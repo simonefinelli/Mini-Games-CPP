@@ -5,7 +5,7 @@ Mini-games written in C++.
 <table style="border: none; border-collapse: collapse;">
   <tr>
     <td>
-      <img src="./Terminal\ Style/HangmanGame/assets/assets/hangman_demo.gif" alt="Hangman Demo">
+      <img src="./Terminal Style/HangmanGame/assets/hangman_demo.gif" alt="Hangman Demo">
     </td>
     <td>
       
