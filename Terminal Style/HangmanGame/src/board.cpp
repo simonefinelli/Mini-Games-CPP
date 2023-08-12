@@ -1,3 +1,13 @@
+/**
+ * @file board.cpp
+ * @brief Includes board game graphic behaviour.
+ *
+ * This file includes all the principal functions to manipulates the Game Board.
+ *
+ * @author SimoX
+ * @date 2023-08-10
+ */
+
 #include <iostream>
 #include <string>
 #include <iterator>
