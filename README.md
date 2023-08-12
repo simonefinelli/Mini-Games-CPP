@@ -8,7 +8,7 @@ Mini-games written in C++.
       <img src="./Terminal Style/HangmanGame/assets/hangman_demo.gif" alt="Hangman Demo">
     </td>
     <td>
-      
+      <img src="./Terminal Style/NumberGuesser/assets/number_guesser_demo.gif" alt="Number Guesser Demo">
     </td>
   </tr>
 </table>
