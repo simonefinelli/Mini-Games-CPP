@@ -2,7 +2,7 @@
 Mini-games written in C++.
 
 ## Terminal Style Demos
-<table">
+<table>
   <tr>
     <td style="border-color: black;background-color: black;">
       <img src="./Terminal Style/NumberGuesser/assets/number_guesser_demo.gif" alt="Number Guesser Demo">
