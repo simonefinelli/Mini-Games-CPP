@@ -125,8 +125,6 @@ std::string retrieve_sentence() {
     // close stream
     file.close();
 
-    sentence = static_cast<std::string>("THERE'S NO PLACE LIKE LOCALHOST");
-
     return sentence;
 }
 
