@@ -14,9 +14,17 @@
 #include "config.h"
 #include "gui.h"
 
+const std::string TITLE = R"(
+    ╔═╗ ╔╗        ╔╗             ╔═══╗
+    ║║╚╗║║        ║║             ║╔═╗║
+    ║╔╗╚╝║╔╗╔╗╔╗╔╗║╚═╗╔══╗╔═╗    ║║ ╚╝╔╗╔╗╔══╗╔══╗╔══╗╔══╗╔═╗
+    ║║╚╗║║║║║║║╚╝║║╔╗║║╔╗║║╔╝    ║║╔═╗║║║║║╔╗║║══╣║══╣║╔╗║║╔╝
+    ║║ ║║║║╚╝║║║║║║╚╝║║║═╣║║     ║╚╩═║║╚╝║║║═╣╠══║╠══║║║═╣║║
+    ╚╝ ╚═╝╚══╝╚╩╩╝╚══╝╚══╝╚╝     ╚═══╝╚══╝╚══╝╚══╝╚══╝╚══╝╚╝
+)";
+
 void gui::show_title() {
-    std::cout << "========== Welcome to Number Guesser Game ==========" <<
-    std::endl;
+    std::cout << TITLE << std::endl;
 }
 
 void gui::show_subtitle(int range_min, int range_max) {
