@@ -16,13 +16,13 @@ void setup_board(const Player& p);
  * @brief Create the two Players.
  */
 GameData initialize_game() {
-    // initialize the players
+    // players and boards initialization
     // init_player("Player1"); //TODO set this string as default
     // init_player("Player2"); //TODO set this string as default
 
-    // initialize the boards
-    // setup_board(Player p); // Player1
-    // setup_board(Player p); // Player2
+    // ships positioning
+    // setup_ships(Player p); // Player1
+    // setup_ships(Player p); // Player2
 }
 
 Player init_player(const std::string &name) {
@@ -35,9 +35,30 @@ Player init_player(const std::string &name) {
     return p;
 }
 
-void setup_board(const Player &p) {
-    // clear_board();
+void setup_ships(const Player &p) {
 
+    // ShipBoard
+    // for each ship place on the wanted postion
+    for (int i=0; i < SHIPS_NUMBER; i++) {
+        do {
+            // get user coordinates
+            position = get ship coordinates
+            orientation = get ship orientation
+            if is_valid_placement(p, current_ship, position, orientation) {
+
+                break;
+            }
+        } while (true);
+
+        // place the ship on board
+        place_ship_on_board(player, current_ship, position, oerientation);
+
+        // refresh board_game
+        update_board(game_data);
+    }
+
+    // Guess board
+    // empty the board
 }
 
 /**
@@ -56,4 +77,18 @@ std::string get_player_choice(const Player &curr_p) {
     } while (!correct_input);
 
     return player_input;
+}
+
+bool game_is_over(game_data) {
+
+    return all_ships_sunk(player1) or all_ships_sunk(player2);
+}
+
+bool all_ships_sunk(const Player &p) {
+    for (const Ship &ship : p.ships) {
+        if (ship.status == ALIVE) {
+            return false;
+        }
+    }
+    return true;
 }

@@ -31,12 +31,13 @@ typedef enum ShipOrientation {
 } ship_orientation;
 
 typedef struct ShipCoordinates {
-    int x; // rows (A-J)
-    int y; // cols (1-10)
+    int x = -1;  // rows (A-J)
+    int y = -1;  // cols (1-10)
 } ship_coordinates;
 
 typedef enum ShipStatus {
-    SUNK=0,
+    No_STATUS = 0,
+    SUNK,
     ALIVE
 } ship_status;
 
@@ -44,7 +45,7 @@ struct Ship {
     ship_type type = NO_TYPE;
     int length = 0;
     ship_orientation orientation = NO_ORIENTATION;
-    ship_coordinates coordinates = {};
+    ship_coordinates coordinates;
     ship_status status=ALIVE;
 };
 

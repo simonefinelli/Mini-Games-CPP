@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <iostream>
 #include "board.h"
+#include "player.h"
 #include "ship.h"
 
 void play_game();
@@ -32,7 +33,9 @@ int main() {
  */
 void play_game() {
     // game initialization
+    std::string turn = "Player1";
     auto game_data = initialize_game();
+
     // gameplay
     do {
         draw_boards(game_data);
