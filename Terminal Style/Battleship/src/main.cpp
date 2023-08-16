@@ -31,15 +31,15 @@ int main() {
  * results and check if the game is over.
  */
 void play_game() {
-
     // game initialization
     auto game_data = initialize_game();
-    // draw_board(game_data);
     // gameplay
     do {
-        std::string player_guess = get_player_choice();
+        draw_boards(game_data);
+        player_guess = get_player_choice();
         update_board(player_guess, game_data);
-        draw_board(game_data);
+        switch_player();
+
     } while (!game_is_over(game_data));
     // game results
     display_results(game_data);
@@ -62,3 +62,5 @@ bool play_again() {
 
     return player_input == "y" || player_input == "yes";
 }
+
+
