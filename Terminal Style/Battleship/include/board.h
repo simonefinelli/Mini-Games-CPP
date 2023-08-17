@@ -7,6 +7,7 @@
 
 #include "ship.h"
 
+
 #ifndef BATTLESHIP_BOARD_H
 #define BATTLESHIP_BOARD_H
 
@@ -27,7 +28,7 @@ typedef struct ShipUnitAreaStatus {  // ShipPartType
  * Used to create the field game that contains the (hidden) ships of the other
  * Player and the ongoing game of the current Player.
  */
-typedef enum BoardUnitAreaStatus {  // GuessType
+typedef enum GuessUnitAreaStatus {  // GuessType
     /*
      * For each piece of the attacker board we can have 3 status: hit, missed
      * and unexplored.
@@ -35,6 +36,11 @@ typedef enum BoardUnitAreaStatus {  // GuessType
     UNEXPLORED = 0,
     MISSED,
     HIT
-} board_unit_area;
+} guess_unit_area;
+
+// prototypes
+std::vector<std::vector<ship_unit_area>> generate_ship_board();
+
+std::vector<std::vector<guess_unit_area>> generate_guess_board();
 
 #endif //BATTLESHIP_BOARD_H
