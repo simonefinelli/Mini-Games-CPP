@@ -5,6 +5,8 @@
  * @date 2023-08-14
  */
 
+#include <vector>
+
 #ifndef BATTLESHIP_SHIP_H
 #define BATTLESHIP_SHIP_H
 
@@ -36,7 +38,7 @@ typedef struct ShipCoordinates {
 } ship_coordinates;
 
 typedef enum ShipStatus {
-    No_STATUS = 0,
+    NO_STATUS = 0,
     SUNK,
     ALIVE
 } ship_status;
@@ -46,8 +48,11 @@ struct Ship {
     int length = 0;
     ship_orientation orientation = NO_ORIENTATION;
     ship_coordinates coordinates;
-    ship_status status=ALIVE;
+    ship_status status = NO_STATUS;
 };
+
+// prototypes
+std::vector<Ship> generate_ships();
 
 
 #endif //BATTLESHIP_SHIP_H
