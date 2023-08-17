@@ -6,6 +6,7 @@
  */
 
 #include <string>
+#include "config.h"
 
 #ifndef HANGMANGAME_CORE_H
 #define HANGMANGAME_CORE_H
