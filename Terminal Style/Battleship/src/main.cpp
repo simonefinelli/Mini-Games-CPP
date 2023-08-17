@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <iostream>
 #include "board.h"
+#include "core.h"
 #include "player.h"
 #include "ship.h"
 
@@ -21,7 +22,7 @@ bool play_again();
 int main() {
     do {
         play_game();
-    } while(play_again());
+    } while (play_again());
     return 0;
 }
 
@@ -33,19 +34,23 @@ int main() {
  */
 void play_game() {
     // game initialization
-    std::string turn = "Player1";
     auto game_data = initialize_game();
 
-    // gameplay
-    do {
-        draw_boards(game_data);
-        player_guess = get_player_choice();
-        update_board(player_guess, game_data);
-        switch_player();
+//    // ships positioning on the playing field
+//    setup_ships(game_data.player1); // Player1
+//    setup_ships(game_data.player2); // Player2
 
-    } while (!game_is_over(game_data));
-    // game results
-    display_results(game_data);
+//    std::string turn = game_data.player1.name;
+//    // gameplay
+//    do {
+//        draw_boards(game_data);
+//        player_guess = get_player_choice();
+//        update_board(player_guess, game_data);
+//        switch_player();
+//
+//    } while (!game_is_over(game_data));
+//    // game results
+//    display_results(game_data);
 }
 
 /** TODO
