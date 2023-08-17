@@ -10,6 +10,7 @@ add_executable(Battleship
         src/board.cpp
         src/player.cpp
         src/core.cpp
+        src/gui.cpp
 )
 
 # set the include directories
