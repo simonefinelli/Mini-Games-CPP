@@ -9,9 +9,12 @@
 #include <iostream>
 #include <vector>
 #include "gui.h"
+#include "player.h"
 
 using std::vector;
 
+#define DESK_LENGTH 92
+#define PLAYER_SPACE 39
 
 void draw_board_line();
 void draw_columns_title();
@@ -19,25 +22,24 @@ void draw_break_line();
 void draw_ship_board_row(const vector<vector<ship_unit_area>> &ship_board, int r);
 void draw_guess_board(const vector<vector<guess_unit_area>> &guess_board, int r);
 void draw_space();
+std::string get_column_title(int offset);
+void draw_desk_line();
+void draw_names(const std::string &p1_name, const std::string &p2_name,
+                player_turn);
 
 void draw_boards(const Player &p) {
     // draw_title();
 
-    // Ship Board
+    // draw fields' content
     draw_columns_title();
     draw_space();
-    // Guess Board
     draw_columns_title();
     draw_break_line();
-
     draw_board_line();
     draw_space();
     draw_board_line();
     draw_break_line();
-
-    // draw playing field row by row
     for (int r = 0; r < FIELD_SIZE; r++) {
-        // draw field's content
         draw_ship_board_row(p.ship_board, r);
         draw_space();
         draw_guess_board(p.guess_board, r);
@@ -47,7 +49,6 @@ void draw_boards(const Player &p) {
         draw_board_line();
         std::cout << std::endl;
     }
-
 }
 
 void draw_break_line() {
@@ -55,16 +56,17 @@ void draw_break_line() {
 }
 
 void draw_columns_title() {
-    std::cout << "  1   2   3   4   5   6   7   8   9  10  ";
+    std::cout << "     1   2   3   4   5   6   7   8   9  10  ";
 }
 
 void draw_board_line() {
-    std::cout << "+---+---+---+---+---+---+---+---+---+---+";
-//    std::cout << "| A | A | A | A                         |" << std::endl;
+    std::cout << "   +---+---+---+---+---+---+---+---+---+---+";
 }
 
 void draw_ship_board_row(const vector<vector<ship_unit_area>> &ship_board, int r) {
-    std::string render_row = "|";
+
+
+    std::string render_row = get_column_title(r) + " |";
 
     if (r >= 0 && r < FIELD_SIZE) {
         const std::vector<ship_unit_area> &row = ship_board[r];
@@ -103,7 +105,7 @@ void draw_ship_board_row(const vector<vector<ship_unit_area>> &ship_board, int r
 }
 
 void draw_guess_board(const vector<vector<guess_unit_area>> &guess_board, int r) {
-    std::string render_row = "|";
+    std::string render_row = get_column_title(r) + " |";
 
     if (r >= 0 && r < FIELD_SIZE) {
         const std::vector<guess_unit_area> &row = guess_board[r];
@@ -113,7 +115,7 @@ void draw_guess_board(const vector<vector<guess_unit_area>> &guess_board, int r)
                     render_row += "   ";
                     break;
                 case MISSED:
-                    render_row += " O ";
+                    render_row += " ~ ";
                     break;
                 case HIT:
                     render_row += " X ";
@@ -127,10 +129,63 @@ void draw_guess_board(const vector<vector<guess_unit_area>> &guess_board, int r)
     }
 }
 
-void draw_players_desk() {
-    // TODO
-}
-
 void draw_space() {
     std::cout << "     ";
+}
+
+std::string get_column_title(int offset) {
+    int name = static_cast<int>('A') + offset;
+
+    return " " + std::string{static_cast<char>(name)};
+}
+
+void draw_info_desk(const Player &p1, const Player &p2, player_turn turn) {
+    draw_break_line();
+    draw_names(p1.name, p2.name, turn);
+    // draw_ships_status(); TODO
+
+}
+
+void draw_desk_line() {
+    int repeat = DESK_LENGTH;
+    char c = '*';
+    std::string line (repeat, c);
+    std::cout << " " << line << std::endl;
+}
+
+void draw_names(const std::string &p1_name, const std::string &p2_name,
+                player_turn turn) {
+    // turn choice
+    std::string p1_turn {};
+    std::string p2_turn {};
+    if (turn == PLAYER_1) {
+        p1_turn = "(Your Turn!)";
+    } else {
+        p2_turn = "(Your Turn!)";
+    }
+
+    draw_desk_line();
+
+    std::cout << " | ";
+
+    // player 1
+    int repeat = PLAYER_SPACE - static_cast<int>(p1_name.length()) -
+            static_cast<int>(p1_turn.length()) - 1;
+    char c = ' ';
+    std::string space1 (repeat, c);
+
+    std::cout << p1_name << " " << p1_turn << space1 << " |";
+
+    // space
+    std::cout << "<<<>>>";
+
+    std::cout << "| ";
+    // player 2
+    repeat = PLAYER_SPACE - static_cast<int>(p2_name.length()) -
+            static_cast<int>(p2_turn.length()) - 1;
+    std::string space2 (repeat, c);
+
+    std::cout << p2_name << " " << p2_turn << space2 << " |" << std::endl;
+
+    draw_desk_line();
 }

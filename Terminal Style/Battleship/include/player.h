@@ -14,6 +14,11 @@
 #define BATTLESHIP_PLAYER_H
 
 
+typedef enum PlayerTurn {
+    PLAYER_1 = 0,
+    PLAYER_2
+} player_turn;
+
 struct Player {
     std::string name;
     std::vector<Ship> ships {};

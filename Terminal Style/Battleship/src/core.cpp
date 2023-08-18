@@ -33,6 +33,10 @@ GameData initialize_game() {
 
     // draw playing field
     draw_boards(p1);
+    // draw_boards(p2);
+
+    // draw Players' info
+    draw_info_desk(p1, p2, PLAYER_1);
 
     return {.player1 = p1, .player2 = p2};
 }

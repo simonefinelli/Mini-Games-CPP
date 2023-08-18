@@ -43,7 +43,6 @@ void play_game() {
 //    std::string turn = game_data.player1.name;
 //    // gameplay
 //    do {
-//        draw_boards(game_data);
 //        player_guess = get_player_choice();
 //        update_board(player_guess, game_data);
 //        switch_player();

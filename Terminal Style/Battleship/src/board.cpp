@@ -6,7 +6,6 @@
  * @date 2023-08-14
  */
 
-#include <iostream>
 #include <vector>
 #include "board.h"
 #include "player.h"

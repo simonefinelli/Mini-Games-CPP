@@ -12,4 +12,6 @@
 
 void draw_boards(const Player &p);
 
+void draw_info_desk(const Player &p1, const Player &p2, player_turn turn);
+
 #endif //BATTLESHIP_GUI_H
