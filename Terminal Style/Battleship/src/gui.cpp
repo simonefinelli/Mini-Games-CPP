@@ -10,11 +10,13 @@
 #include <vector>
 #include "gui.h"
 #include "player.h"
+#include "ship.h"
 
 using std::vector;
 
 #define DESK_LENGTH 92
 #define PLAYER_SPACE 39
+
 
 void draw_board_line();
 void draw_columns_title();
@@ -26,6 +28,9 @@ std::string get_column_title(int offset);
 void draw_desk_line();
 void draw_names(const std::string &p1_name, const std::string &p2_name,
                 player_turn);
+void draw_ships_status(const std::vector<Ship> &p1_ships,
+                       const std::vector<Ship> &p2_ships);
+
 
 void draw_boards(const Player &p) {
     // draw_title();
@@ -142,7 +147,7 @@ std::string get_column_title(int offset) {
 void draw_info_desk(const Player &p1, const Player &p2, player_turn turn) {
     draw_break_line();
     draw_names(p1.name, p2.name, turn);
-    // draw_ships_status(); TODO
+    draw_ships_status(p1.ships, p2.ships);
 
 }
 
@@ -188,4 +193,32 @@ void draw_names(const std::string &p1_name, const std::string &p2_name,
     std::cout << p2_name << " " << p2_turn << space2 << " |" << std::endl;
 
     draw_desk_line();
+}
+
+void draw_ships_status(const std::vector<Ship> &p1_ships,
+                       const std::vector<Ship> &p2_ships) {
+    std::string status_msg {};
+
+    std::cout << " | ";
+
+    // player 1
+    if (p1_ships.at(0).status == ALIVE) {
+        status_msg = "Alive";
+    } else {
+        status_msg = "Sunk";
+    }
+    int repeat = PLAYER_SPACE - static_cast<int>(status_msg.length()) -
+                 static_cast<int>(p1_ships.at(0).type) - 2; // TODO get ship length
+    char c = ' ';
+    std::string space1 (repeat, c);
+
+    std::cout << p1_ships.at(0).type << ": " << status_msg << space1 << " |"; // TODO convert type to real name
+
+    // space
+    std::cout << "<<<>>>";
+
+    std::cout << "| ";
+    // player 2
+    // TODO
+
 }
