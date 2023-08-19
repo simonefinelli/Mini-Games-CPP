@@ -20,6 +20,24 @@ std::map<ship_type , int> ship_length = {
     {SUBMARINE, SUBMARINE_LENGTH},
 };
 
+
+std::string get_ship_name(ship_type s) {
+    switch (s) {
+        case AIRCRAFT_CARRIER:
+            return "AIRCRAFT CARRIER";
+        case BATTLESHIP:
+            return "BATTLESHIP";
+        case CRUISER:
+            return "CRUISER";
+        case DESTROYER:
+            return "DESTROYER";
+        case SUBMARINE:
+            return "SUBMARINE";
+        default:
+            throw std::runtime_error("The ship type do not exist!");
+    }
+}
+
 void init_ship(Ship &s, ship_type t, int length );
 
 

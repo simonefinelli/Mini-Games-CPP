@@ -197,28 +197,41 @@ void draw_names(const std::string &p1_name, const std::string &p2_name,
 
 void draw_ships_status(const std::vector<Ship> &p1_ships,
                        const std::vector<Ship> &p2_ships) {
-    std::string status_msg {};
 
-    std::cout << " | ";
+    for (int i = 0; i < SHIPS_NUMBER; i++) {
+        std::string status_msg {};
 
-    // player 1
-    if (p1_ships.at(0).status == ALIVE) {
-        status_msg = "Alive";
-    } else {
-        status_msg = "Sunk";
+        std::cout << " | ";
+        // player 1
+        std::string p1_ship_name = get_ship_name(p1_ships.at(i).type);
+        if (p1_ships.at(i).status == ALIVE) {
+            status_msg = "Alive";
+        } else {
+            status_msg = "Sunk";
+        }
+        int repeat = PLAYER_SPACE - static_cast<int>(status_msg.length()) -
+                     static_cast<int>(p1_ship_name.length()) - 2;
+        char c = ' ';
+        std::string space1 (repeat, c);
+        std::cout << p1_ship_name << ": " << status_msg << space1 << " |";
+
+        // space
+        std::cout << "      ";
+        std::cout << "| ";
+
+        // player 2
+        std::string p2_ship_name = get_ship_name(p1_ships.at(i).type);
+        if (p2_ships.at(i).status == ALIVE) {
+            status_msg = "Alive";
+        } else {
+            status_msg = "Sunk";
+        }
+        repeat = PLAYER_SPACE - static_cast<int>(status_msg.length()) -
+                     static_cast<int>(p2_ship_name.length()) - 2;
+        c = ' ';
+        std::string space2 (repeat, c);
+        std::cout << p2_ship_name << ": " << status_msg << space2 << " |";
+
+        draw_break_line();
     }
-    int repeat = PLAYER_SPACE - static_cast<int>(status_msg.length()) -
-                 static_cast<int>(p1_ships.at(0).type) - 2; // TODO get ship length
-    char c = ' ';
-    std::string space1 (repeat, c);
-
-    std::cout << p1_ships.at(0).type << ": " << status_msg << space1 << " |"; // TODO convert type to real name
-
-    // space
-    std::cout << "<<<>>>";
-
-    std::cout << "| ";
-    // player 2
-    // TODO
-
 }

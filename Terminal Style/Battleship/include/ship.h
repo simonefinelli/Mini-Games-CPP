@@ -5,6 +5,7 @@
  * @date 2023-08-14
  */
 
+#include <string>
 #include <vector>
 
 #ifndef BATTLESHIP_SHIP_H
@@ -54,5 +55,6 @@ struct Ship {
 // prototypes
 std::vector<Ship> generate_ships();
 
+std::string get_ship_name(ship_type s);
 
 #endif //BATTLESHIP_SHIP_H
