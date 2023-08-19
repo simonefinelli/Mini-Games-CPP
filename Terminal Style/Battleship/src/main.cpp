@@ -15,6 +15,7 @@
 #include "core.h"
 #include "player.h"
 #include "ship.h"
+#include "gui.h"
 
 void play_game();
 bool play_again();
@@ -26,7 +27,7 @@ int main() {
     return 0;
 }
 
-/** TODO
+/**
  * @brief Core skeleton of the game.
  *
  * It initializes the game data, draw and update the board, display the
@@ -35,10 +36,13 @@ int main() {
 void play_game() {
     // game initialization
     auto game_data = initialize_game();
+    player_turn turn = PLAYER_1;
 
-//    // ships positioning on the playing field
-//    setup_ships(game_data.player1); // Player1
-//    setup_ships(game_data.player2); // Player2
+    // draw playing field
+    draw_playing_field(game_data, turn);
+
+    // ships positioning
+    place_ships_on_board(game_data, turn); // Player1
 
 //    std::string turn = game_data.player1.name;
 //    // gameplay
@@ -52,7 +56,7 @@ void play_game() {
 //    display_results(game_data);
 }
 
-/** TODO
+/**
  * @brief Check if the Player wants to continue.
  *
  * @return True for yes, False for no.

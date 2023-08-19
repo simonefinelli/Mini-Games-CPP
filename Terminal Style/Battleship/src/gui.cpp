@@ -18,6 +18,8 @@ using std::vector;
 #define PLAYER_SPACE 39
 
 
+void draw_boards(const Player &p);
+void draw_info_desk(const Player &p1, const Player &p2, player_turn turn);
 void draw_board_line();
 void draw_columns_title();
 void draw_break_line();
@@ -30,7 +32,20 @@ void draw_names(const std::string &p1_name, const std::string &p2_name,
                 player_turn);
 void draw_ships_status(const std::vector<Ship> &p1_ships,
                        const std::vector<Ship> &p2_ships);
+void clear_board();
 
+
+void draw_playing_field(const GameData &gd, player_turn t) {
+    // clear the terminal
+    clear_board();
+
+    // draw boards
+    draw_boards(gd.player1);
+    // draw_boards(game_data.player2);
+
+    // draw Players' info
+    draw_info_desk(gd.player1, gd.player2, t);
+}
 
 void draw_boards(const Player &p) {
     // draw_title();
@@ -234,4 +249,15 @@ void draw_ships_status(const std::vector<Ship> &p1_ships,
 
         draw_break_line();
     }
+}
+
+/**
+ * @brief Clear the terminal screen based on the operating system.
+ */
+void clear_board() {
+#ifdef _WIN32 // Windows
+    system("cls");
+#else // Unix-like systems (Linux, macOS, etc.)
+    system("clear");
+#endif
 }

@@ -28,8 +28,8 @@ typedef enum ShipType {
 } ship_type;
 
 typedef enum ShipOrientation {
-    NO_ORIENTATION,
-    HORIZONTAL = 0,
+    NO_ORIENTATION = 0,
+    HORIZONTAL,
     VERTICAL
 } ship_orientation;
 

@@ -11,7 +11,6 @@
 #include <map>
 #include "ship.h"
 
-
 std::map<ship_type , int> ship_length = {
     {AIRCRAFT_CARRIER, AIRCRAFT_CARRIER_LENGTH},
     {BATTLESHIP, BATTLESHIP_LENGTH},
@@ -21,24 +20,7 @@ std::map<ship_type , int> ship_length = {
 };
 
 
-std::string get_ship_name(ship_type s) {
-    switch (s) {
-        case AIRCRAFT_CARRIER:
-            return "AIRCRAFT CARRIER";
-        case BATTLESHIP:
-            return "BATTLESHIP";
-        case CRUISER:
-            return "CRUISER";
-        case DESTROYER:
-            return "DESTROYER";
-        case SUBMARINE:
-            return "SUBMARINE";
-        default:
-            throw std::runtime_error("The ship type do not exist!");
-    }
-}
-
-void init_ship(Ship &s, ship_type t, int length );
+void init_ship(Ship &s, ship_type t, int length);
 
 
 /**
@@ -66,4 +48,26 @@ void init_ship(Ship &s, ship_type t, int length) {
     s.type = t;
     s.length = length;
     s.status = ALIVE;
+}
+
+/**
+ *
+ * @param s
+ * @return
+ */
+std::string get_ship_name(ship_type s) {
+    switch (s) {
+        case AIRCRAFT_CARRIER:
+            return "AIRCRAFT CARRIER";
+        case BATTLESHIP:
+            return "BATTLESHIP";
+        case CRUISER:
+            return "CRUISER";
+        case DESTROYER:
+            return "DESTROYER";
+        case SUBMARINE:
+            return "SUBMARINE";
+        default:
+            throw std::runtime_error("The ship type do not exist!");
+    }
 }

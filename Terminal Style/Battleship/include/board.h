@@ -7,7 +7,6 @@
 
 #include "ship.h"
 
-
 #ifndef BATTLESHIP_BOARD_H
 #define BATTLESHIP_BOARD_H
 
