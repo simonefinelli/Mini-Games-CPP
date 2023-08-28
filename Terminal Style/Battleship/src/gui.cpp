@@ -163,7 +163,8 @@ void draw_info_desk(const Player &p1, const Player &p2, player_turn turn) {
     draw_break_line();
     draw_names(p1.name, p2.name, turn);
     draw_ships_status(p1.ships, p2.ships);
-
+    draw_desk_line();
+    draw_break_line();
 }
 
 void draw_desk_line() {
@@ -197,7 +198,7 @@ void draw_names(const std::string &p1_name, const std::string &p2_name,
     std::cout << p1_name << " " << p1_turn << space1 << " |";
 
     // space
-    std::cout << "<<<>>>";
+    std::cout << "      ";
 
     std::cout << "| ";
     // player 2
