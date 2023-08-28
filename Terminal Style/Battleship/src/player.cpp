@@ -13,53 +13,39 @@
 bool is_valid_placement();
 
 
-void place_ships_on_board(const GameData &gd, player_turn t) {
+void place_ships_on_board(GameData &gd, player_turn t) {
     // get current player
-    Player p = (t == PLAYER_1) ? gd.player1 : gd.player2;
+    Player &p = (t == PLAYER_1) ? gd.player1 : gd.player2;
     std::string coordinates {};
     std::string orientation;
 
-
     std::cout << p.name << std::endl;
-    for (Ship s : p.ships) {
-        int i = 0;
+    for (Ship &s : p.ships) {
+        // get users input
         do {
-            std::cout << "Enter the coordinates (A-z1-10) of the " <<
+            // TODO check if the user's input is correct
+            std::cout << "Enter the coordinates (A-z1-10) for the " <<
             get_ship_name(s.type) << ": ";
             std::cin >> coordinates;
-            std::cout << "Enter the orientation (o or v) of the " <<
+            std::cout << "Enter the orientation (h or v) for the " <<
                       get_ship_name(s.type) << ": ";
             std::cin >> orientation;
 
-
-            s.coordinates.x = i;
-            s.coordinates.y = 2;
-            s.orientation = HORIZONTAL;
-
-            // Ship Board
-            p.ship_board[0][0].type = s.type;
-            p.ship_board[0][0].is_hit = false;
-
-            // TODO check why the ship doesnt show on the board
-
-
+            s.coordinates.x = row_to_number(coordinates.substr(0, 2).c_str()[0]);
+            s.coordinates.y = std::stoi(coordinates.substr(1)) - 1;
+            s.orientation = (orientation == "h") ? HORIZONTAL : VERTICAL;
         } while (!is_valid_placement());
+
+        // draw ship on Ship Board
+        if (s.orientation == HORIZONTAL) {
+
+        } else {
+
+        }
 
         // update playing field
         draw_playing_field(gd, t);
     }
-
-
-
-
-
-//    // set the ship placeholder on correct position on the board acording to
-//    // coordinates.x and coordinates.y
-//    if (orientation == HORIZONTAL) {
-//
-//    } else {
-//
-//    }
 }
 
 bool is_valid_placement() {

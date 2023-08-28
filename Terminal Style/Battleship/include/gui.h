@@ -12,5 +12,7 @@
 #define BATTLESHIP_GUI_H
 
 void draw_playing_field(const GameData &gd, player_turn t);
+int row_to_number(char l);
+
 
 #endif //BATTLESHIP_GUI_H

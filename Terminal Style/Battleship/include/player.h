@@ -30,6 +30,6 @@ struct GameData {
 };
 
 // prototypes
-void place_ships_on_board(const GameData &gd, player_turn t);
+void place_ships_on_board(GameData &gd, player_turn t);
 
 #endif //BATTLESHIP_PLAYER_H
