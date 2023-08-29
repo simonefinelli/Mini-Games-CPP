@@ -9,18 +9,23 @@
 #include <algorithm>
 #include <iostream>
 #include <regex>
+#include <thread>
 #include <tuple>
-#include "player.h"
 #include "gui.h"
+#include "player.h"
+#include "utils.h"
 
 #define COORDS_CHECK_PATTERN "^[a-jA-J](?:[1-9]|10)?$"
 #define ORIENT_CHECK_PATTERN "^[HhVv]$"
 const std::regex coordinates_pattern {COORDS_CHECK_PATTERN};
 const std::regex orientation_pattern {ORIENT_CHECK_PATTERN};
 
+void player1_positioning(GameData &gd);
+void player2_positioning(GameData &gd);
 bool is_valid_placement(const std::vector<std::vector<ship_unit_area>> &ship_board,
                         const Ship &c_ship);
 std::tuple<int, int, ship_orientation> get_player_choice(const Ship &s);
+
 
 /**
  *
@@ -28,17 +33,32 @@ std::tuple<int, int, ship_orientation> get_player_choice(const Ship &s);
  * @param t
  */
 void place_ships_on_board(GameData &gd, player_turn t) {
-    // get current player
     Player &p = (t == PLAYER_1) ? gd.player1 : gd.player2;
+
+    // simulate PC thinking
+    if (t == PLAYER_2) {
+        // Sleep for 3 seconds
+        std::cout << "I'n thinking ..." << std::endl;
+        std::this_thread::sleep_for(std::chrono::seconds(3));
+    }
 
     for (Ship &s : p.ships) {
         std::cout << " -- " << p.name << " -- \n" << std::endl;
-        // get users input
+        // get users input or PC choice
         do {
-            auto [x, y, o] = get_player_choice(s);
-            s.coordinates.x = x;
-            s.coordinates.y = y;
-            s.orientation = o;
+            if (t == PLAYER_1) {
+                auto [x, y, o] = get_player_choice(s);
+                s.coordinates.x = x;
+                s.coordinates.y = y;
+                s.orientation = o;
+            } else {
+                // generate random coordinates and orientation for the
+                // Player2 (PC)
+                s.coordinates.x = generate_number(1, FIELD_SIZE);;
+                s.coordinates.y = generate_number(1, FIELD_SIZE);;
+                s.orientation = static_cast<ShipOrientation>(generate_number(1,2));
+
+            }
         } while (!is_valid_placement(p.ship_board, s));
 
         // put ship on Ship Board
@@ -52,6 +72,7 @@ void place_ships_on_board(GameData &gd, player_turn t) {
         // update playing field
         draw_playing_field(gd, t);
     }
+
 }
 
 /**
@@ -113,6 +134,7 @@ std::tuple<int, int, ship_orientation> get_player_choice(const Ship &s) {
  */
 bool is_valid_placement(const std::vector<std::vector<ship_unit_area>> &ship_board,
                         const Ship &c_ship) {
+    // TODO pass Turn and with PC player not show messages
     if (c_ship.orientation == HORIZONTAL) {
         // the ship will be off the board horizontally
         if (c_ship.coordinates.y + c_ship.length > FIELD_SIZE) {

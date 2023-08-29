@@ -36,13 +36,14 @@ int main() {
 void play_game() {
     // game initialization
     auto game_data = initialize_game();
-    player_turn turn = PLAYER_1;
-
     // draw playing field
-    draw_playing_field(game_data, turn);
-
+    draw_playing_field(game_data, PLAYER_1);
     // ships positioning
-    place_ships_on_board(game_data, turn); // Player1
+    // place_ships_on_board(game_data, PLAYER_1); // Player1
+    place_ships_on_board(game_data, PLAYER_2); // Player1
+
+    // game play
+    player_turn turn = PLAYER_1;
 
 //    std::string turn = game_data.player1.name;
 //    // gameplay

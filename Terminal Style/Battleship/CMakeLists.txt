@@ -11,6 +11,7 @@ add_executable(Battleship
         src/player.cpp
         src/core.cpp
         src/gui.cpp
+        src/utils.cpp
 )
 
 # set the include directories
