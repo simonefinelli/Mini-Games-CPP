@@ -8,7 +8,6 @@
 
 #include <algorithm>
 #include <iostream>
-#include <limits>
 #include <tuple>
 #include "player.h"
 #include "gui.h"
@@ -53,24 +52,18 @@ std::tuple<int, int, ship_orientation> get_player_choice(const Ship &s) {
     std::string orient {};
     bool is_valid;
 
-    // TODO Check why the second time the input checker doesnt work
     // get ship coordinates
     do {
         std::cout << " > Enter the coordinates for the " << get_ship_name(s.type)
                 << ": "; std::cin >> coords;
         std::transform(coords.begin(), coords.end(), coords.begin(), ::toupper);
 
-        if (coords.length() != 2 and (!(coords.at(0) >= 'A' and coords.at(0) <= 'J'))) {
+        if (coords.length() != 2 or (!(coords.at(0) >= 'A' and coords.at(0) <= 'J'))) {
             std::cout << " > Coordinates not valid!" << std::endl;
             is_valid = false;
         } else {
             is_valid = true;
         }
-
-        // clear the input buffer
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        // clear any error flags
-        std::cin.clear();
     } while (!is_valid);
 
     // get ship orientation
@@ -79,17 +72,12 @@ std::tuple<int, int, ship_orientation> get_player_choice(const Ship &s) {
                   << ": "; std::cin >> orient;
         std::transform(orient.begin(), orient.end(), orient.begin(), ::tolower);
 
-        if (orient.length() != 1 and (orient.at(0) != 'H' or orient.at(0) != 'V')) {
+        if (orient.length() != 1 or !(orient.at(0) == 'h' or orient.at(0) == 'v')) {
             std::cout << " > Orientation not valid!" << std::endl;
             is_valid = false;
         } else {
             is_valid = true;
         }
-
-        // clear the input buffer
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        // clear any error flags
-        std::cin.clear();
     } while (!is_valid);
 
     // transform strings to specific types
