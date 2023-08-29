@@ -19,7 +19,7 @@ const std::regex coordinates_pattern {COORDS_CHECK_PATTERN};
 const std::regex orientation_pattern {ORIENT_CHECK_PATTERN};
 
 bool is_valid_placement(const std::vector<std::vector<ship_unit_area>> &ship_board,
-                        const Ship &current_ship);
+                        const Ship &c_ship);
 std::tuple<int, int, ship_orientation> get_player_choice(const Ship &s);
 
 /**
@@ -103,22 +103,46 @@ std::tuple<int, int, ship_orientation> get_player_choice(const Ship &s) {
 }
 
 
+/**
+ * @brief Check if the current ship overlaps other ships or if cannot be
+ * placed because exceeds the game board.
+ *
+ * @param ship_board The Ship Board.
+ * @param c_ship The current Ship to be positioning.
+ * @return True if the ship can be places, False otherwise.
+ */
 bool is_valid_placement(const std::vector<std::vector<ship_unit_area>> &ship_board,
-                        const Ship &current_ship) {
-    if (current_ship.orientation == HORIZONTAL) {
+                        const Ship &c_ship) {
+    if (c_ship.orientation == HORIZONTAL) {
         // the ship will be off the board horizontally
-        if (current_ship.coordinates.y + current_ship.length > FIELD_SIZE) {
+        if (c_ship.coordinates.y + c_ship.length > FIELD_SIZE) {
             std::cout << " > The ship cannot be placed as it exceeds the "
                          "playing field!" << std::endl;
             return false;
         }
-
         // ship overlap other ships
-
+        for (int i = 0; i < c_ship.length; i++) {
+            if (ship_board[c_ship.coordinates.x][c_ship.coordinates.y + i].type != NO_TYPE) {
+                std::cout << " > The ship cannot be placed as it overlaps "
+                             "another ship!" << std::endl;
+                return false;
+            }
+        }
     } else {
-        // the ship will be off the board horizontally)
-
+        // the ship will be off the board horizontally
+        if (c_ship.coordinates.x + c_ship.length > FIELD_SIZE) {
+            std::cout << " > The ship cannot be placed as it exceeds the "
+                         "playing field!" << std::endl;
+            return false;
+        }
         // ship overlap other ships
+        for (int i = 0; i < c_ship.length; i++) {
+            if (ship_board[c_ship.coordinates.x + i][c_ship.coordinates.y].type != NO_TYPE) {
+                std::cout << " > The ship cannot be placed as it overlaps "
+                             "another ship!" << std::endl;
+                return false;
+            }
+        }
     }
 
     return true;
