@@ -39,17 +39,17 @@ void draw_playing_field(const GameData &gd, player_turn t) {
     // clear the terminal
     clear_board();
 
+    // draw_title();
+
     // draw boards
     draw_boards(gd.player1);
-    // draw_boards(game_data.player2);
+    draw_boards(gd.player2); // DEBUG
 
     // draw Players' info
     draw_info_desk(gd.player1, gd.player2, t);
 }
 
 void draw_boards(const Player &p) {
-    // draw_title();
-
     // draw fields' content
     draw_columns_title();
     draw_space();

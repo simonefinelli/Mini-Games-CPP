@@ -30,8 +30,6 @@ GameData initialize_game() {
     p1 = create_player();
     p2 = create_player();
 
-    //
-
     return {.player1 = p1, .player2 = p2};
 }
 

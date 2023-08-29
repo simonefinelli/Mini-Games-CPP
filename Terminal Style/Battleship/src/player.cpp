@@ -8,13 +8,25 @@
 
 #include <algorithm>
 #include <iostream>
+#include <regex>
 #include <tuple>
 #include "player.h"
 #include "gui.h"
 
-bool is_valid_placement();
+#define COORDS_CHECK_PATTERN "^[a-jA-J](?:[1-9]|10)?$"
+#define ORIENT_CHECK_PATTERN "^[HhVv]$"
+const std::regex coordinates_pattern {COORDS_CHECK_PATTERN};
+const std::regex orientation_pattern {ORIENT_CHECK_PATTERN};
+
+bool is_valid_placement(const std::vector<std::vector<ship_unit_area>> &ship_board,
+                        const Ship &current_ship);
 std::tuple<int, int, ship_orientation> get_player_choice(const Ship &s);
 
+/**
+ *
+ * @param gd
+ * @param t
+ */
 void place_ships_on_board(GameData &gd, player_turn t) {
     // get current player
     Player &p = (t == PLAYER_1) ? gd.player1 : gd.player2;
@@ -27,7 +39,7 @@ void place_ships_on_board(GameData &gd, player_turn t) {
             s.coordinates.x = x;
             s.coordinates.y = y;
             s.orientation = o;
-        } while (!is_valid_placement());
+        } while (!is_valid_placement(p.ship_board, s));
 
         // put ship on Ship Board
         for (int i = 0; i < s.length; i++) {
@@ -54,52 +66,60 @@ std::tuple<int, int, ship_orientation> get_player_choice(const Ship &s) {
 
     // get ship coordinates
     do {
-        std::cout << " > Enter the coordinates for the " << get_ship_name(s.type)
-                << ": "; std::cin >> coords;
-        std::transform(coords.begin(), coords.end(), coords.begin(), ::toupper);
+        std::cout << " > Enter the coordinates for the "
+                  << get_ship_name(s.type) << ": "; std::cin >> coords;
 
-        if (coords.length() != 2 or (!(coords.at(0) >= 'A' and coords.at(0) <= 'J'))) {
+        if (coords.length() >= 2 and std::regex_match(coords, coordinates_pattern)) {
+            std::transform(coords.begin(), coords.end(),
+                           coords.begin(), ::toupper);
+            is_valid = true;
+        } else {
             std::cout << " > Coordinates not valid!" << std::endl;
             is_valid = false;
-        } else {
-            is_valid = true;
         }
     } while (!is_valid);
 
     // get ship orientation
     do {
-        std::cout << " > Enter the orientation for the " << get_ship_name(s.type)
-                  << ": "; std::cin >> orient;
-        std::transform(orient.begin(), orient.end(), orient.begin(), ::tolower);
+        std::cout << " > Enter the orientation for the "
+                  << get_ship_name(s.type) << ": "; std::cin >> orient;
 
-        if (orient.length() != 1 or !(orient.at(0) == 'h' or orient.at(0) == 'v')) {
+        if (orient.length() == 1 and std::regex_match(orient, orientation_pattern)) {
+            std::transform(orient.begin(), orient.end(),
+                           orient.begin(), ::toupper);
+            is_valid = true;
+        } else {
             std::cout << " > Orientation not valid!" << std::endl;
             is_valid = false;
-        } else {
-            is_valid = true;
         }
     } while (!is_valid);
 
     // transform strings to specific types
     int x = row_to_number(coords.substr(0, 2).c_str()[0]);
     int y = std::stoi(coords.substr(1)) - 1;
-    ship_orientation o = (orient == "h") ? HORIZONTAL : VERTICAL;
+    ship_orientation o = (orient == "H") ? HORIZONTAL : VERTICAL;
 
     return std::make_tuple(x, y, o);
 }
 
 
-bool is_valid_placement() {
-//    if (orientation == HORIZONTAL) {
-//        for (each clolumns) {
-//            if (ship overlap other ships or the ship will be off the board horizontally)
-//                return false
-//        }
-//    } else {
-//        for (each rows) {
-//            if (ship overlap other ships or the ship will be off the board vertically)
-//                return false
-//        }
-//    }
+bool is_valid_placement(const std::vector<std::vector<ship_unit_area>> &ship_board,
+                        const Ship &current_ship) {
+    if (current_ship.orientation == HORIZONTAL) {
+        // the ship will be off the board horizontally
+        if (current_ship.coordinates.y + current_ship.length > FIELD_SIZE) {
+            std::cout << " > The ship cannot be placed as it exceeds the "
+                         "playing field!" << std::endl;
+            return false;
+        }
+
+        // ship overlap other ships
+
+    } else {
+        // the ship will be off the board horizontally)
+
+        // ship overlap other ships
+    }
+
     return true;
 }
