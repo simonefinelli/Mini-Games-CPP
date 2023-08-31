@@ -20,8 +20,7 @@
 const std::regex coordinates_pattern {COORDS_CHECK_PATTERN};
 const std::regex orientation_pattern {ORIENT_CHECK_PATTERN};
 
-void player1_positioning(GameData &gd);
-void player2_positioning(GameData &gd);
+
 bool is_valid_placement(const std::vector<std::vector<ship_unit_area>> &ship_board,
                         const Ship &c_ship);
 std::tuple<int, int, ship_orientation> get_player_choice(const Ship &s);
@@ -35,10 +34,9 @@ std::tuple<int, int, ship_orientation> get_player_choice(const Ship &s);
 void place_ships_on_board(GameData &gd, player_turn t) {
     Player &p = (t == PLAYER_1) ? gd.player1 : gd.player2;
 
-    // simulate PC thinking
     if (t == PLAYER_2) {
-        // Sleep for 3 seconds
-        std::cout << "I'n thinking ..." << std::endl;
+        // simulate PC thinking sleeping for 3 seconds
+        std::cout << "I'm thinking ..." << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(3));
     }
 
@@ -52,12 +50,10 @@ void place_ships_on_board(GameData &gd, player_turn t) {
                 s.coordinates.y = y;
                 s.orientation = o;
             } else {
-                // generate random coordinates and orientation for the
-                // Player2 (PC)
-                s.coordinates.x = generate_number(1, FIELD_SIZE);;
-                s.coordinates.y = generate_number(1, FIELD_SIZE);;
+                // generate random coordinates and orientation for the Player2
+                s.coordinates.x = generate_number(0, FIELD_SIZE - 1);
+                s.coordinates.y = generate_number(0, FIELD_SIZE - 1);
                 s.orientation = static_cast<ShipOrientation>(generate_number(1,2));
-
             }
         } while (!is_valid_placement(p.ship_board, s));
 
@@ -72,7 +68,6 @@ void place_ships_on_board(GameData &gd, player_turn t) {
         // update playing field
         draw_playing_field(gd, t);
     }
-
 }
 
 /**

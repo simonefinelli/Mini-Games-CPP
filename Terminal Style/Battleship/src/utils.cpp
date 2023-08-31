@@ -6,7 +6,7 @@
 #include "utils.h"
 
 /**
- * @brief Generate a random integer in a specific range.
+ * @brief Generate a random integer in a specific range (extremes included).
  *
  * @param min The minimum in the range.
  * @param max The maximum in the range.

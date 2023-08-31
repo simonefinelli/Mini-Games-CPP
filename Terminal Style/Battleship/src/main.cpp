@@ -39,7 +39,7 @@ void play_game() {
     // draw playing field
     draw_playing_field(game_data, PLAYER_1);
     // ships positioning
-    // place_ships_on_board(game_data, PLAYER_1); // Player1
+    place_ships_on_board(game_data, PLAYER_1); // Player1
     place_ships_on_board(game_data, PLAYER_2); // Player1
 
     // game play
