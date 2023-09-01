@@ -56,7 +56,7 @@ void draw_playing_field(const GameData &gd, player_turn t) {
 
     // draw boards
     draw_boards(gd.player1);
-    // draw_boards(gd.player2); // DEBUG
+    draw_boards(gd.player2); // DEBUG
 
     // draw Players' info
     draw_info_desk(gd.player1, gd.player2, t);

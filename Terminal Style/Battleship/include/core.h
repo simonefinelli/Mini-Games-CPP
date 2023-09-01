@@ -12,5 +12,6 @@
 #define HANGMANGAME_CORE_H
 
 GameData initialize_game();
+bool game_is_over(const GameData &gd);
 
 #endif //HANGMANGAME_CORE_H

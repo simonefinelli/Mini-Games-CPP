@@ -17,8 +17,8 @@
 
 #define COORDS_CHECK_PATTERN "^[a-jA-J](?:[1-9]|10)?$"
 #define ORIENT_CHECK_PATTERN "^[HhVv]$"
-const std::regex coordinates_pattern {COORDS_CHECK_PATTERN};
-const std::regex orientation_pattern {ORIENT_CHECK_PATTERN};
+const std::regex COORDINATES_PATTERN {COORDS_CHECK_PATTERN};
+const std::regex ORIENTATION_PATTERN {ORIENT_CHECK_PATTERN};
 
 
 bool is_valid_placement(const std::vector<std::vector<ship_unit_area>> &ship_board,
@@ -84,7 +84,7 @@ std::tuple<int, int, ship_orientation> ship_position_choice(const Ship &s) {
         std::cout << " > Enter the coordinates for the "
                   << get_ship_name(s.type) << ": "; std::cin >> coords;
 
-        if (coords.length() >= 2 and std::regex_match(coords, coordinates_pattern)) {
+        if (coords.length() >= 2 and std::regex_match(coords, COORDINATES_PATTERN)) {
             std::transform(coords.begin(), coords.end(),
                            coords.begin(), ::toupper);
             is_valid = true;
@@ -99,7 +99,7 @@ std::tuple<int, int, ship_orientation> ship_position_choice(const Ship &s) {
         std::cout << " > Enter the orientation for the "
                   << get_ship_name(s.type) << ": "; std::cin >> orient;
 
-        if (orient.length() == 1 and std::regex_match(orient, orientation_pattern)) {
+        if (orient.length() == 1 and std::regex_match(orient, ORIENTATION_PATTERN)) {
             std::transform(orient.begin(), orient.end(),
                            orient.begin(), ::toupper);
             is_valid = true;
@@ -166,3 +166,98 @@ bool is_valid_placement(const std::vector<std::vector<ship_unit_area>> &ship_boa
 
     return true;
 }
+
+
+void player_move(GameData &gd, player_turn t) {
+    // TODO reformat code (remove if)
+    if (t == PLAYER_1) {
+        std::string coords {};
+        bool is_valid;
+
+        // get coordinates of the location to hit
+        do {
+            std::cout << " > Where do you want to hit? "; std::cin >> coords;
+
+            // TODO remove duplicated code
+            if (coords.length() >= 2 and std::regex_match(coords, COORDINATES_PATTERN)) {
+                std::transform(coords.begin(), coords.end(),
+                               coords.begin(), ::toupper);
+                is_valid = true;
+            } else {
+                std::cout << " > Coordinates not valid!" << std::endl;
+                is_valid = false;
+            }
+        } while (!is_valid);
+
+        // get coordinates
+        int x = row_to_number(coords.substr(0, 2).c_str()[0]);
+        int y = std::stoi(coords.substr(1)) - 1;
+
+        // check if an opponent ship is hit and update the Guess Board
+        if (gd.player2.ship_board[x][y].type != NO_TYPE) {
+            gd.player2.ship_board[x][y].is_hit = true;
+            gd.player1.guess_board[x][y] = HIT;
+        } else {
+            gd.player1.guess_board[x][y] = MISSED;
+        }
+    } else {
+        // TODO duplicate code
+        std::cout << " > I'm thinking ..." << std::endl;
+        std::this_thread::sleep_for(std::chrono::seconds(3));
+
+        // get coordinates of the location to hit
+        int x = generate_number(0, FIELD_SIZE - 1);
+        int y = generate_number(0, FIELD_SIZE - 1);
+
+        // check if an opponent ship is hit and update the Guess Board
+        if (gd.player1.ship_board[x][y].type != NO_TYPE) {
+            gd.player1.ship_board[x][y].is_hit = true;
+            gd.player2.guess_board[x][y] = HIT;
+        } else {
+            gd.player2.guess_board[x][y] = MISSED;
+        }
+    }
+
+}
+
+
+//bool is_valid_placement(const std::vector<std::vector<guess_unit_area>> &guess_board,
+//                        const Ship &c_ship, player_turn t) {
+//    std::string info {};
+//
+//    if (c_ship.orientation == HORIZONTAL) {
+//        // the ship will be off the board horizontally
+//        if (c_ship.coordinates.y + c_ship.length > FIELD_SIZE) {
+//            info = " > The ship cannot be placed as it exceeds the playing field "
+//                   "horizontally!";
+//            if (t == PLAYER_1) std::cout << info<< std::endl;
+//            return false;
+//        }
+//        // ship overlap other ships
+//        for (int i = 0; i < c_ship.length; i++) {
+//            if (ship_board[c_ship.coordinates.x][c_ship.coordinates.y + i].type != NO_TYPE) {
+//                info = " > The ship cannot be placed as it overlaps another ship!";
+//                if (t == PLAYER_1) std::cout << info<< std::endl;
+//                return false;
+//            }
+//        }
+//    } else {
+//        // the ship will be off the board horizontally
+//        if (c_ship.coordinates.x + c_ship.length > FIELD_SIZE) {
+//            info = " > The ship cannot be placed as it exceeds the playing field "
+//                   "vertically!";
+//            if (t == PLAYER_1) std::cout << info<< std::endl;
+//            return false;
+//        }
+//        // ship overlap other ships
+//        for (int i = 0; i < c_ship.length; i++) {
+//            if (ship_board[c_ship.coordinates.x + i][c_ship.coordinates.y].type != NO_TYPE) {
+//                info = " > The ship cannot be placed as it overlaps another ship!";
+//                if (t == PLAYER_1) std::cout << info<< std::endl;
+//                return false;
+//            }
+//        }
+//    }
+//
+//    return true;
+//}

@@ -19,6 +19,7 @@
 
 void play_game();
 bool play_again();
+void switch_player(player_turn &t);
 
 int main() {
     do {
@@ -39,19 +40,22 @@ void play_game() {
     // draw playing field
     draw_playing_field(game_data, PLAYER_1);
     // ships positioning
-    place_ships_on_board(game_data, PLAYER_1); // Player1
-    place_ships_on_board(game_data, PLAYER_2); // Player1
+    place_ships_on_board(game_data, PLAYER_1);
+    place_ships_on_board(game_data, PLAYER_2);
+    // update player turn on screen
+    draw_playing_field(game_data, PLAYER_1);
 
     // game play
     player_turn turn = PLAYER_1;
     do {
-        player_guess = get_player_choice();
-        update_board(player_guess, game_data);
-        switch_player();
+        player_move(game_data, turn); // TODO
+        draw_playing_field(game_data, turn);
+        switch_player(turn);
 
     } while (!game_is_over(game_data));
+
     // game results
-    display_results(game_data);
+    // display_results(game_data);
 }
 
 /**
@@ -70,6 +74,10 @@ bool play_again() {
                    player_input.begin(), ::tolower);
 
     return player_input == "y" || player_input == "yes";
+}
+
+void switch_player(player_turn &t) {
+    (t == PLAYER_1) ? t = PLAYER_2 : t = PLAYER_1;
 }
 
 

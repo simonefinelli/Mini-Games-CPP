@@ -6,6 +6,7 @@
  * @date 2023-08-14
  */
 
+#include <algorithm>
 #include <string>
 #include "board.h"
 #include "core.h"
@@ -14,8 +15,7 @@
 
 
 Player create_player(const std::string &name = "Player");
-void setup_board(const Player& p);
-
+bool all_ships_sunk(const Player &p);
 
 /**
  * @brief Create the two Players.
@@ -48,36 +48,23 @@ Player create_player(const std::string &name) {
     return p;
 }
 
-//}
-//
-///**
-// * @brief Get the Player's Guess.
-// *
-// * Get the choice of attack of the current Player.
-// *
-// * @return letter The letter to check.
-// */
-//std::string get_player_choice(const Player &curr_p) {
-//
-//    bool correct_input = false;
-//    do {
-//
-//
-//    } while (!correct_input);
-//
-//    return player_input;
-//}
-//
-//bool game_is_over(game_data) {
-//
-//    return all_ships_sunk(player1) or all_ships_sunk(player2);
-//}
-//
-//bool all_ships_sunk(const Player &p) {
+bool game_is_over(const GameData &gd) {
+
+    return all_ships_sunk(gd.player1) or all_ships_sunk(gd.player2);
+}
+
+bool all_ships_sunk(const Player &p) {
 //    for (const Ship &ship : p.ships) {
 //        if (ship.status == ALIVE) {
 //            return false;
 //        }
 //    }
+
+
+
+    return std::all_of(p.ships.begin(), p.ships.end(), [](Ship s) {
+        return s.status != ALIVE;
+    });
+
 //    return true;
-//}
+}
