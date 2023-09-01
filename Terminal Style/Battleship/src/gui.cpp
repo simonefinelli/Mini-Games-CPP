@@ -18,6 +18,7 @@ using std::vector;
 #define PLAYER_SPACE 39
 
 
+void draw_title();
 void draw_boards(const Player &p);
 void draw_info_desk(const Player &p1, const Player &p2, player_turn turn);
 void draw_board_line();
@@ -35,11 +36,23 @@ void draw_ships_status(const std::vector<Ship> &p1_ships,
 void clear_board();
 
 
+const std::string TITLE = R"(
+                            ╔══╗       ╔╗  ╔╗ ╔╗         ╔╗
+                            ║╔╗║      ╔╝╚╗╔╝╚╗║║         ║║
+                            ║╚╝╚╗╔══╗ ╚╗╔╝╚╗╔╝║║ ╔══╗╔══╗║╚═╗╔╗╔══╗
+                            ║╔═╗║╚ ╗║  ║║  ║║ ║║ ║╔╗║║══╣║╔╗║╠╣║╔╗║
+                            ║╚═╝║║╚╝╚╗ ║╚╗ ║╚╗║╚╗║║═╣╠══║║║║║║║║╚╝║
+                            ╚═══╝╚═══╝ ╚═╝ ╚═╝╚═╝╚══╝╚══╝╚╝╚╝╚╝║╔═╝
+                                                               ║║
+                                                               ╚╝
+)";
+
+
 void draw_playing_field(const GameData &gd, player_turn t) {
     // clear the terminal
     clear_board();
 
-    // draw_title();
+    draw_title();
 
     // draw boards
     draw_boards(gd.player1);
@@ -47,6 +60,10 @@ void draw_playing_field(const GameData &gd, player_turn t) {
 
     // draw Players' info
     draw_info_desk(gd.player1, gd.player2, t);
+}
+
+void draw_title() {
+    std::cout << TITLE << std::endl;
 }
 
 void draw_boards(const Player &p) {
