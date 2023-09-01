@@ -43,7 +43,7 @@ void draw_playing_field(const GameData &gd, player_turn t) {
 
     // draw boards
     draw_boards(gd.player1);
-    draw_boards(gd.player2); // DEBUG
+    // draw_boards(gd.player2); // DEBUG
 
     // draw Players' info
     draw_info_desk(gd.player1, gd.player2, t);
@@ -165,6 +165,8 @@ void draw_info_desk(const Player &p1, const Player &p2, player_turn turn) {
     draw_ships_status(p1.ships, p2.ships);
     draw_desk_line();
     draw_break_line();
+    std::cout << " -- " << ((turn == PLAYER_1) ? p1.name : p2.name) << " -- \n"
+              << std::endl;
 }
 
 void draw_desk_line() {

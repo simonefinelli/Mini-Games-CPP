@@ -34,14 +34,7 @@ std::tuple<int, int, ship_orientation> get_player_choice(const Ship &s);
 void place_ships_on_board(GameData &gd, player_turn t) {
     Player &p = (t == PLAYER_1) ? gd.player1 : gd.player2;
 
-    if (t == PLAYER_2) {
-        // simulate PC thinking sleeping for 3 seconds
-        std::cout << "I'm thinking ..." << std::endl;
-        std::this_thread::sleep_for(std::chrono::seconds(3));
-    }
-
     for (Ship &s : p.ships) {
-        std::cout << " -- " << p.name << " -- \n" << std::endl;
         // get users input or PC choice
         do {
             if (t == PLAYER_1) {
@@ -67,6 +60,12 @@ void place_ships_on_board(GameData &gd, player_turn t) {
 
         // update playing field
         draw_playing_field(gd, t);
+    }
+
+    // simulate PC thinking sleeping for 3 seconds
+    if (t == PLAYER_2) {
+        std::cout << " > I'm thinking ..." << std::endl;
+        std::this_thread::sleep_for(std::chrono::seconds(3));
     }
 }
 
@@ -129,7 +128,6 @@ std::tuple<int, int, ship_orientation> get_player_choice(const Ship &s) {
  */
 bool is_valid_placement(const std::vector<std::vector<ship_unit_area>> &ship_board,
                         const Ship &c_ship, player_turn t) {
-    // TODO pass Turn and with PC player not show messages
     std::string info {};
 
     if (c_ship.orientation == HORIZONTAL) {

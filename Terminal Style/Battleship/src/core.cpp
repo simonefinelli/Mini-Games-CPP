@@ -48,31 +48,6 @@ Player create_player(const std::string &name) {
     return p;
 }
 
-//
-//void setup_ships(const Player &p) {
-//
-//    // ShipBoard
-//    // for each ship place on the wanted postion
-//    for (int i=0; i < SHIPS_NUMBER; i++) {
-//        do {
-//            // get user coordinates
-//            position = get ship coordinates
-//            orientation = get ship orientation
-//            if is_valid_placement(p, current_ship, position, orientation) {
-//
-//                break;
-//            }
-//        } while (true);
-//
-//        // place the ship on board
-//        place_ship_on_board(player, current_ship, position, oerientation);
-//
-//        // refresh board_game
-//        update_board(game_data);
-//    }
-//
-//    // Guess board
-//    // empty the board
 //}
 //
 ///**
