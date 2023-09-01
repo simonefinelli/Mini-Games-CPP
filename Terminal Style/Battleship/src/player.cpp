@@ -23,7 +23,7 @@ const std::regex orientation_pattern {ORIENT_CHECK_PATTERN};
 
 bool is_valid_placement(const std::vector<std::vector<ship_unit_area>> &ship_board,
                         const Ship &c_ship, player_turn t);
-std::tuple<int, int, ship_orientation> get_player_choice(const Ship &s);
+std::tuple<int, int, ship_orientation> ship_position_choice(const Ship &s);
 
 
 /**
@@ -38,7 +38,7 @@ void place_ships_on_board(GameData &gd, player_turn t) {
         // get users input or PC choice
         do {
             if (t == PLAYER_1) {
-                auto [x, y, o] = get_player_choice(s);
+                auto [x, y, o] = ship_position_choice(s);
                 s.coordinates.x = x;
                 s.coordinates.y = y;
                 s.orientation = o;
@@ -74,7 +74,7 @@ void place_ships_on_board(GameData &gd, player_turn t) {
  * @param s The current ship.
  * @return The coordinates and orientation to put the Ship on the board.
  */
-std::tuple<int, int, ship_orientation> get_player_choice(const Ship &s) {
+std::tuple<int, int, ship_orientation> ship_position_choice(const Ship &s) {
     std::string coords {};
     std::string orient {};
     bool is_valid;

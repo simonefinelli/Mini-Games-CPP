@@ -44,17 +44,14 @@ void play_game() {
 
     // game play
     player_turn turn = PLAYER_1;
+    do {
+        player_guess = get_player_choice();
+        update_board(player_guess, game_data);
+        switch_player();
 
-//    std::string turn = game_data.player1.name;
-//    // gameplay
-//    do {
-//        player_guess = get_player_choice();
-//        update_board(player_guess, game_data);
-//        switch_player();
-//
-//    } while (!game_is_over(game_data));
-//    // game results
-//    display_results(game_data);
+    } while (!game_is_over(game_data));
+    // game results
+    display_results(game_data);
 }
 
 /**
