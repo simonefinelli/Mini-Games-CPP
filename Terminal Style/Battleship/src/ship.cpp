@@ -84,7 +84,7 @@ std::string get_ship_name_length(ship_type s) {
         case BATTLESHIP:
             return "BATTLESHIP       [4]";
         case CRUISER:
-            return "CRUISER          [4]";
+            return "CRUISER          [3]";
         case DESTROYER:
             return "DESTROYER        [2]";
         case SUBMARINE:
