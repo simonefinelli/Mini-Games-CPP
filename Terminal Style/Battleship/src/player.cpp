@@ -83,10 +83,7 @@ std::tuple<int, int, ship_orientation> ship_position_choice(const Ship &s) {
     do {
         std::cout << " > Enter the coordinates for the "
                   << get_ship_name(s.type) << ": "; std::cin >> coords;
-
-        if (coords.length() >= 2 and std::regex_match(coords, COORDINATES_PATTERN)) {
-            std::transform(coords.begin(), coords.end(),
-                           coords.begin(), ::toupper);
+        if (coordinates_validation(coords)){
             is_valid = true;
         } else {
             std::cout << " > Coordinates not valid!" << std::endl;
@@ -178,15 +175,11 @@ void player_move(GameData &gd, player_turn t) {
         do {
             std::cout << " > Where do you want to hit? "; std::cin >> coords;
 
-            // TODO remove duplicated code
-            if (coords.length() >= 2 and std::regex_match(coords, COORDINATES_PATTERN)) {
-                std::transform(coords.begin(), coords.end(),
-                               coords.begin(), ::toupper);
+            if (coordinates_validation(coords)){
                 is_valid = true;
             } else {
                 std::cout << " > Coordinates not valid!" << std::endl;
-                is_valid = false;
-                continue;
+                is_valid = false; continue;
             }
 
             // get coordinates
