@@ -182,8 +182,8 @@ void draw_info_desk(const Player &p1, const Player &p2, player_turn turn) {
     draw_ships_status(p1.ships, p2.ships);
     draw_desk_line();
     draw_break_line();
-    std::cout << " -- " << ((turn == PLAYER_1) ? p1.name : p2.name) << " -- \n"
-              << std::endl;
+    std::cout << " -- " << ((turn == PLAYER_1) ? p1.name : p2.name)
+              << " Turn -- \n\n";
 }
 
 void draw_desk_line() {
@@ -199,9 +199,11 @@ void draw_names(const std::string &p1_name, const std::string &p2_name,
     std::string p1_turn {};
     std::string p2_turn {};
     if (turn == PLAYER_1) {
-        p1_turn = "(Your Turn!)";
+        p1_turn = "[ * ]";
+        p2_turn = "[   ]";
     } else {
-        p2_turn = "(Your Turn!)";
+        p1_turn = "[   ]";
+        p2_turn = "[ * ]";
     }
 
     draw_desk_line();
@@ -213,7 +215,6 @@ void draw_names(const std::string &p1_name, const std::string &p2_name,
             static_cast<int>(p1_turn.length()) - 1;
     char c = ' ';
     std::string space1 (repeat, c);
-
     std::cout << p1_name << " " << p1_turn << space1 << " |";
 
     // space
@@ -224,7 +225,6 @@ void draw_names(const std::string &p1_name, const std::string &p2_name,
     repeat = PLAYER_SPACE - static_cast<int>(p2_name.length()) -
             static_cast<int>(p2_turn.length()) - 1;
     std::string space2 (repeat, c);
-
     std::cout << p2_name << " " << p2_turn << space2 << " |" << std::endl;
 
     draw_desk_line();

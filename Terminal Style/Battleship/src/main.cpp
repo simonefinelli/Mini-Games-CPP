@@ -35,23 +35,23 @@ int main() {
  * results and check if the game is over.
  */
 void play_game() {
+    player_turn turn = PLAYER_1;
+
     // game initialization
     auto game_data = initialize_game();
-    // draw playing field
-    draw_playing_field(game_data, PLAYER_1);
-    // ships positioning
-    place_ships_on_board(game_data, PLAYER_1);
-    place_ships_on_board(game_data, PLAYER_2);
-    // update player turn on screen
-    draw_playing_field(game_data, PLAYER_1);
+
+    // ship positioning
+    draw_playing_field(game_data, turn);
+    place_ships_on_board(game_data, turn);
+    switch_player(turn);
+    draw_playing_field(game_data, turn);
+    place_ships_on_board(game_data, turn);
 
     // game play
-    player_turn turn = PLAYER_1;
     do {
-        player_move(game_data, turn); // TODO
-        draw_playing_field(game_data, turn);
         switch_player(turn);
-
+        draw_playing_field(game_data, turn); // update player turn on screen
+        player_move(game_data, turn);
     } while (!game_is_over(game_data));
 
     // game results

@@ -64,7 +64,7 @@ void place_ships_on_board(GameData &gd, player_turn t) {
 
     // simulate PC thinking sleeping for 3 seconds
     if (t == PLAYER_2) {
-        std::cout << " > I'm thinking ..." << std::endl;
+        std::cout << " > I'm thinking ... " << std::flush;
         std::this_thread::sleep_for(std::chrono::seconds(3));
     }
 }
@@ -169,9 +169,9 @@ bool is_valid_placement(const std::vector<std::vector<ship_unit_area>> &ship_boa
 
 
 void player_move(GameData &gd, player_turn t) {
-    // TODO reformat code (remove if)
     if (t == PLAYER_1) {
         std::string coords {};
+        int x, y;
         bool is_valid;
 
         // get coordinates of the location to hit
@@ -186,12 +186,19 @@ void player_move(GameData &gd, player_turn t) {
             } else {
                 std::cout << " > Coordinates not valid!" << std::endl;
                 is_valid = false;
+                continue;
+            }
+
+            // get coordinates
+            x = row_to_number(coords.substr(0, 2).c_str()[0]);
+            y = std::stoi(coords.substr(1)) - 1;
+
+            // check if the cell has already been viewed
+            if (gd.player1.guess_board[x][y] != UNEXPLORED) {
+                std::cout << " > Coordinates already checked!" << std::endl;
+                is_valid = false;
             }
         } while (!is_valid);
-
-        // get coordinates
-        int x = row_to_number(coords.substr(0, 2).c_str()[0]);
-        int y = std::stoi(coords.substr(1)) - 1;
 
         // check if an opponent ship is hit and update the Guess Board
         if (gd.player2.ship_board[x][y].type != NO_TYPE) {
@@ -217,12 +224,23 @@ void player_move(GameData &gd, player_turn t) {
         }
     } else {
         // TODO duplicate code
-        std::cout << " > I'm thinking ..." << std::endl;
+        std::cout << " > I'm thinking ... " << std::flush;
         std::this_thread::sleep_for(std::chrono::seconds(3));
 
-        // get coordinates of the location to hit
-        int x = generate_number(0, FIELD_SIZE - 1);
-        int y = generate_number(0, FIELD_SIZE - 1);
+        int x, y;
+        bool is_valid = true;
+
+        do {
+            // get coordinates of the location to hit
+            x = generate_number(0, FIELD_SIZE - 1);
+            y = generate_number(0, FIELD_SIZE - 1);
+
+            // check if the cell has already been viewed
+            if (gd.player2.guess_board[x][y] == HIT) {
+                std::cout << " > Coordinates already checked!" << std::endl;
+                is_valid = false;
+            }
+        } while (!is_valid);
 
         // check if an opponent ship is hit and update the Guess Board
         if (gd.player1.ship_board[x][y].type != NO_TYPE) {
@@ -247,5 +265,4 @@ void player_move(GameData &gd, player_turn t) {
             gd.player2.guess_board[x][y] = MISSED;
         }
     }
-
 }
