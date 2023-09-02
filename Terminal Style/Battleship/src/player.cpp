@@ -197,6 +197,21 @@ void player_move(GameData &gd, player_turn t) {
         if (gd.player2.ship_board[x][y].type != NO_TYPE) {
             gd.player2.ship_board[x][y].is_hit = true;
             gd.player1.guess_board[x][y] = HIT;
+
+            // update hit ship status
+            ship_type curr_ship_type = gd.player2.ship_board[x][y].type;
+            auto s = std::find_if(
+                gd.player2.ships.begin(),
+                gd.player2.ships.end(),
+                [curr_ship_type](const Ship& s) {
+                    return s.type == curr_ship_type;
+                }
+            );
+            if (s != gd.player2.ships.end()) {
+                // Found the struct
+                s->sunken_parts++;
+                if (s->sunken_parts == s->length) s->status = SUNK;
+            }
         } else {
             gd.player1.guess_board[x][y] = MISSED;
         }
@@ -213,51 +228,24 @@ void player_move(GameData &gd, player_turn t) {
         if (gd.player1.ship_board[x][y].type != NO_TYPE) {
             gd.player1.ship_board[x][y].is_hit = true;
             gd.player2.guess_board[x][y] = HIT;
+
+            // update hit ship status
+            ship_type curr_ship_type = gd.player1.ship_board[x][y].type;
+            auto s = std::find_if(
+                    gd.player1.ships.begin(),
+                    gd.player1.ships.end(),
+                    [curr_ship_type](const Ship& s) {
+                        return s.type == curr_ship_type;
+                    }
+            );
+            if (s != gd.player1.ships.end()) {
+                // found the ship
+                s->sunken_parts++;
+                if (s->sunken_parts == s->length) s->status = SUNK;
+            }
         } else {
             gd.player2.guess_board[x][y] = MISSED;
         }
     }
 
 }
-
-
-//bool is_valid_placement(const std::vector<std::vector<guess_unit_area>> &guess_board,
-//                        const Ship &c_ship, player_turn t) {
-//    std::string info {};
-//
-//    if (c_ship.orientation == HORIZONTAL) {
-//        // the ship will be off the board horizontally
-//        if (c_ship.coordinates.y + c_ship.length > FIELD_SIZE) {
-//            info = " > The ship cannot be placed as it exceeds the playing field "
-//                   "horizontally!";
-//            if (t == PLAYER_1) std::cout << info<< std::endl;
-//            return false;
-//        }
-//        // ship overlap other ships
-//        for (int i = 0; i < c_ship.length; i++) {
-//            if (ship_board[c_ship.coordinates.x][c_ship.coordinates.y + i].type != NO_TYPE) {
-//                info = " > The ship cannot be placed as it overlaps another ship!";
-//                if (t == PLAYER_1) std::cout << info<< std::endl;
-//                return false;
-//            }
-//        }
-//    } else {
-//        // the ship will be off the board horizontally
-//        if (c_ship.coordinates.x + c_ship.length > FIELD_SIZE) {
-//            info = " > The ship cannot be placed as it exceeds the playing field "
-//                   "vertically!";
-//            if (t == PLAYER_1) std::cout << info<< std::endl;
-//            return false;
-//        }
-//        // ship overlap other ships
-//        for (int i = 0; i < c_ship.length; i++) {
-//            if (ship_board[c_ship.coordinates.x + i][c_ship.coordinates.y].type != NO_TYPE) {
-//                info = " > The ship cannot be placed as it overlaps another ship!";
-//                if (t == PLAYER_1) std::cout << info<< std::endl;
-//                return false;
-//            }
-//        }
-//    }
-//
-//    return true;
-//}

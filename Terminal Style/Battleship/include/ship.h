@@ -50,6 +50,7 @@ struct Ship {
     ship_orientation orientation = NO_ORIENTATION;
     ship_coordinates coordinates;
     ship_status status = NO_STATUS;
+    int sunken_parts = 0;
 };
 
 // prototypes
