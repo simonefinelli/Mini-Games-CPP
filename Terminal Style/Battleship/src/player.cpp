@@ -218,10 +218,10 @@ void player_move(GameData &gd, player_turn t) {
     } else {
         // TODO duplicate code
         std::cout << " > I'm thinking ... " << std::flush;
-        std::this_thread::sleep_for(std::chrono::seconds(3));
+        std::this_thread::sleep_for(std::chrono::milliseconds (500));
 
         int x, y;
-        bool is_valid = true;
+        bool is_valid;
 
         do {
             // get coordinates of the location to hit
@@ -229,10 +229,7 @@ void player_move(GameData &gd, player_turn t) {
             y = generate_number(0, FIELD_SIZE - 1);
 
             // check if the cell has already been viewed
-            if (gd.player2.guess_board[x][y] == HIT) {
-                std::cout << " > Coordinates already checked!" << std::endl;
-                is_valid = false;
-            }
+            is_valid = gd.player2.guess_board[x][y] == UNEXPLORED;
         } while (!is_valid);
 
         // check if an opponent ship is hit and update the Guess Board

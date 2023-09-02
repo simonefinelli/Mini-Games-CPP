@@ -50,11 +50,12 @@ void play_game() {
     // game play
     do {
         switch_player(turn);
-        draw_playing_field(game_data, turn); // update player turn on screen
+        draw_playing_field(game_data, turn);
         player_move(game_data, turn);
     } while (!game_is_over(game_data));
 
     // game results
+    draw_playing_field(game_data, turn);
     // display_results(game_data);
 }
 
