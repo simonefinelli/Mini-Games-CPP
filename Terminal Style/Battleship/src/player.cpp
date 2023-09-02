@@ -218,7 +218,7 @@ void player_move(GameData &gd, player_turn t) {
     } else {
         // TODO duplicate code
         std::cout << " > I'm thinking ... " << std::flush;
-        std::this_thread::sleep_for(std::chrono::milliseconds (500));
+        std::this_thread::sleep_for(std::chrono::seconds(2));
 
         int x, y;
         bool is_valid;
