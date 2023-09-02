@@ -238,7 +238,7 @@ void draw_ships_status(const std::vector<Ship> &p1_ships,
 
         std::cout << " | ";
         // player 1
-        std::string p1_ship_name = get_ship_name(p1_ships.at(i).type);
+        std::string p1_ship_name = get_ship_name_length(p1_ships.at(i).type);
         if (p1_ships.at(i).status == ALIVE) {
             status_msg = "Alive";
         } else {
@@ -255,7 +255,7 @@ void draw_ships_status(const std::vector<Ship> &p1_ships,
         std::cout << "| ";
 
         // player 2
-        std::string p2_ship_name = get_ship_name(p1_ships.at(i).type);
+        std::string p2_ship_name = get_ship_name_length(p1_ships.at(i).type);
         if (p2_ships.at(i).status == ALIVE) {
             status_msg = "Alive";
         } else {

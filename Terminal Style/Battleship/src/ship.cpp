@@ -71,3 +71,25 @@ std::string get_ship_name(ship_type s) {
             throw std::runtime_error("The ship type do not exist!");
     }
 }
+
+/**
+ *
+ * @param s
+ * @return
+ */
+std::string get_ship_name_length(ship_type s) {
+    switch (s) {
+        case AIRCRAFT_CARRIER:
+            return "AIRCRAFT CARRIER [5]";
+        case BATTLESHIP:
+            return "BATTLESHIP       [4]";
+        case CRUISER:
+            return "CRUISER          [4]";
+        case DESTROYER:
+            return "DESTROYER        [2]";
+        case SUBMARINE:
+            return "SUBMARINE        [3]";
+        default:
+            throw std::runtime_error("The ship type do not exist!");
+    }
+}
