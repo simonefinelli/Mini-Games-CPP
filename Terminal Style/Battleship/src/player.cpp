@@ -27,15 +27,18 @@ std::tuple<int, int, ship_orientation> ship_position_choice(const Ship &s);
 
 
 /**
+ * @brief Places the Player's Ships on the Ship Board.
  *
- * @param gd
- * @param t
+ * This board contains all ships that belong to the current player.
+ *
+ * @param gd Game data contains all the game session info.
+ * @param t The current Player turn.
  */
 void place_ships_on_board(GameData &gd, player_turn t) {
     Player &p = (t == PLAYER_1) ? gd.player1 : gd.player2;
 
     for (Ship &s : p.ships) {
-        // get users input or PC choice
+        // get users input or AI choice
         do {
             if (t == PLAYER_1) {
                 auto [x, y, o] = ship_position_choice(s);
@@ -70,9 +73,11 @@ void place_ships_on_board(GameData &gd, player_turn t) {
 }
 
 /**
+ * @brief Allows to the Player 1 to chose safely the coordinates of the current
+ * ship on the Ship Board.
  *
  * @param s The current ship.
- * @return The coordinates and orientation to put the Ship on the board.
+ * @return the coordinates and orientation to put the Ship on the board.
  */
 std::tuple<int, int, ship_orientation> ship_position_choice(const Ship &s) {
     std::string coords {};
@@ -166,9 +171,13 @@ bool is_valid_placement(const std::vector<std::vector<ship_unit_area>> &ship_boa
 
 
 /**
+ * @brief Allows the Players make their attack moves.
  *
- * @param gd
- * @param t
+ * For Player 1 the choice is made by the user, while for Player 2 (AI) a simple
+ * random policy has been implemented.
+ *
+ * @param gd Game data contains all the game session info.
+ * @param t The current Player turn.
  */
 void player_move(GameData &gd, player_turn t) {
     if (t == PLAYER_1) {

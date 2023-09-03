@@ -17,9 +17,11 @@
 #include "ship.h"
 #include "gui.h"
 
+
 void play_game();
 bool play_again();
 void switch_player(player_turn &t);
+
 
 int main() {
     do {
@@ -60,7 +62,7 @@ void play_game() {
 }
 
 /**
- * @brief Check if the Player wants to continue.
+ * @brief Checks if the Player wants to continue.
  *
  * @return True for yes, False for no.
  */

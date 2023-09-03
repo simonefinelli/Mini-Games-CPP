@@ -17,7 +17,7 @@
   *  Used to create the field game that contains the ships of the current
   *  Player.
   */
-typedef struct ShipUnitAreaStatus {  // ShipPartType
+typedef struct ShipUnitAreaStatus {
     ship_type type = NO_TYPE;
     bool is_hit = false;
 } ship_unit_area;
@@ -27,9 +27,9 @@ typedef struct ShipUnitAreaStatus {  // ShipPartType
  * Used to create the field game that contains the (hidden) ships of the other
  * Player and the ongoing game of the current Player.
  */
-typedef enum GuessUnitAreaStatus {  // GuessType
+typedef enum GuessUnitAreaStatus {
     /*
-     * For each piece of the attacker board we can have 3 status: hit, missed
+     * for each piece of the attacker board we can have 3 status: hit, missed
      * and unexplored.
      */
     UNEXPLORED = 0,
@@ -37,7 +37,7 @@ typedef enum GuessUnitAreaStatus {  // GuessType
     HIT
 } guess_unit_area;
 
-// prototypes
+
 std::vector<std::vector<ship_unit_area>> generate_ship_board();
 
 std::vector<std::vector<guess_unit_area>> generate_guess_board();

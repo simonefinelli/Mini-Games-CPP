@@ -53,10 +53,11 @@ struct Ship {
     int sunken_parts = 0;
 };
 
-// prototypes
+
 std::vector<Ship> generate_ships();
 
 std::string get_ship_name(ship_type s);
+
 std::string get_ship_name_length(ship_type s);
 
 #endif //BATTLESHIP_SHIP_H

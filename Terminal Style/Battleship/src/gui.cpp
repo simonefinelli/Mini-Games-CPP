@@ -310,7 +310,7 @@ void display_results(const GameData &gd, player_turn t) {
 }
 
 /**
- * @brief Clear the terminal screen based on the operating system.
+ * @brief Clears the terminal screen based on the Operating System.
  */
 void clear_board() {
 #ifdef _WIN32 // Windows

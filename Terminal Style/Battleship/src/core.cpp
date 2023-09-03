@@ -17,10 +17,11 @@
 Player create_player(const std::string &name);
 bool all_ships_sunk(const Player &p);
 
+
 /**
- * @brief Create the two Players.
+ * @brief Creates the two Players.
  *
- * @return The game data of the two Players.
+ * @return the game data of the two Players.
  */
 GameData initialize_game() {
     Player p1 {};
@@ -34,9 +35,10 @@ GameData initialize_game() {
 }
 
 /**
- * @brief
- * @param name
- * @return
+ * @brief Creates an empty Player.
+ *
+ * @param name The name of the Player.
+ * @return a new Player.
  */
 Player create_player(const std::string &name) {
     Player p {
@@ -48,10 +50,24 @@ Player create_player(const std::string &name) {
     return p;
 }
 
+/**
+ * @brief Checks if the game is over.
+ *
+ * The game is over when all the ships of a Player are sunk.
+ *
+ * @param gd Game data contains all the game session info.
+ * @return True if the game is over, False otherwise.
+ */
 bool game_is_over(const GameData &gd) {
     return all_ships_sunk(gd.player1) or all_ships_sunk(gd.player2);
 }
 
+/**
+ * @brief Checks for a single Player if all his ships are sunk.
+ *
+ * @param p Player.
+ * @return True if the all ships are sunk, False otherwise.
+ */
 bool all_ships_sunk(const Player &p) {
     return std::all_of(p.ships.begin(), p.ships.end(),
                        [](Ship s) {return s.status != ALIVE;});

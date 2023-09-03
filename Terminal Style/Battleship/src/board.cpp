@@ -14,12 +14,12 @@ using std::vector;
 
 
 /**
- * @brief Create an empty Ship Board.
+ * @brief Creates an empty Ship Board.
  *
  * A Ship Board is a playing field where are handled the ships of the current
  * Player.
  *
- * @return board The empty board.
+ * @return the empty Ship Board.
  */
 vector<vector<ship_unit_area>> generate_ship_board() {
     // create the empty Ship Board
@@ -35,7 +35,7 @@ vector<vector<ship_unit_area>> generate_ship_board() {
  * A Guess Board is a playing field where are handled the hits or misses of the
  * current Player against the other Player.
  *
- * @return The empty board.
+ * @return the empty Guess Board.
  */
 vector<vector<guess_unit_area>> generate_guess_board() {
     // create the empty Guess Board

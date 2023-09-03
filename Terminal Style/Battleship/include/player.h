@@ -5,7 +5,6 @@
  * @date 2023-08-14
  */
 
-
 #include "ship.h"
 #include "board.h"
 
@@ -29,8 +28,9 @@ struct GameData {
     Player player2 {};
 };
 
-// prototypes
+
 void place_ships_on_board(GameData &gd, player_turn t);
+
 void player_move(GameData &gd, player_turn t);
 
 #endif //BATTLESHIP_PLAYER_H

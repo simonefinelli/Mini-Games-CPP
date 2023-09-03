@@ -11,6 +11,7 @@
 #include <map>
 #include "ship.h"
 
+
 std::map<ship_type , int> ship_length = {
     {AIRCRAFT_CARRIER, AIRCRAFT_CARRIER_LENGTH},
     {BATTLESHIP, BATTLESHIP_LENGTH},
@@ -24,8 +25,9 @@ void init_ship(Ship &s, ship_type t, int length);
 
 
 /**
+ * @brief Creates empty Ships.
  *
- * @return
+ * @return a vector contains the 5 Ships.
  */
 std::vector<Ship> generate_ships() {
 
@@ -39,10 +41,11 @@ std::vector<Ship> generate_ships() {
 }
 
 /**
+ * @brief Initializes a Ship specifying the Type, the Length and the Status.
  *
- * @param s
- * @param t
- * @param length
+ * @param s The Ship.
+ * @param t The type of the Ship.
+ * @param length The length of the Ship.
  */
 void init_ship(Ship &s, ship_type t, int length) {
     s.type = t;
@@ -51,9 +54,10 @@ void init_ship(Ship &s, ship_type t, int length) {
 }
 
 /**
+ * @brief Converts enum type to the real Ship name.
  *
- * @param s
- * @return
+ * @param s The type of the Ship.
+ * @return the real name.
  */
 std::string get_ship_name(ship_type s) {
     switch (s) {
@@ -73,9 +77,11 @@ std::string get_ship_name(ship_type s) {
 }
 
 /**
+ * @brief Converts enum type to the real Ship name and add the length of the
+ * ship well formatted.
  *
- * @param s
- * @return
+ * @param s The type of the Ship.
+ * @return the real name with the length of the Ship.
  */
 std::string get_ship_name_length(ship_type s) {
     switch (s) {

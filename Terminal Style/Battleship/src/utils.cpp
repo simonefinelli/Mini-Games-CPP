@@ -22,7 +22,7 @@ const std::regex ORIENTATION_PATTERN {ORIENT_CHECK_PATTERN};
  *
  * @param min The minimum in the range.
  * @param max The maximum in the range.
- * @return The generated integer in the range.
+ * @return the generated integer in the range.
  */
 int generate_number(int min, int max) {
     std::random_device rd; // obtain a random seed from hardware
@@ -38,9 +38,10 @@ int generate_number(int min, int max) {
 }
 
 /**
+ * @brief Checks it the coordinates are well formatted using regex.
  *
- * @param coords
- * @return
+ * @param coords The coordinates entered by the Player 1.
+ * @return True if the coordinates are well formatted, False otherwise.
  */
 bool coordinates_validation(std::string &coords) {
     if (coords.length() >= 2 and std::regex_match(coords, COORDINATES_PATTERN)) {
