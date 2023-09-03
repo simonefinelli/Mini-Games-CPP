@@ -61,12 +61,12 @@ void place_ships_on_board(GameData &gd, player_turn t) {
         }
 
         // update playing field
-        draw_playing_field(gd, t);
+        gui::draw_playing_field(gd, t);
     }
 
     // simulate PC thinking sleeping for 3 seconds
     if (t == PLAYER_2) {
-        display_ai_message();
+        gui::display_ai_message();
     }
 }
 
@@ -84,27 +84,26 @@ std::tuple<int, int, ship_orientation> ship_position_choice(const Ship &s) {
 
     // get ship coordinates
     do {
-        std::cout << " > Enter the coordinates for the "
-                  << get_ship_name(s.type) << ": "; std::cin >> coords;
+        gui::display_enter_coords_message(s.type); std::cin >> coords;
+
         if (coordinates_validation(coords)){
             is_valid = true;
         } else {
-            display_coords_not_valid_message();
+            gui::display_coords_not_valid_message();
             is_valid = false;
         }
     } while (!is_valid);
 
     // get ship orientation
     do {
-        std::cout << " > Enter the orientation for the "
-                  << get_ship_name(s.type) << ": "; std::cin >> orient;
+        gui::display_enter_orient_message(s.type); std::cin >> orient;
 
         if (orient.length() == 1 and std::regex_match(orient, ORIENTATION_PATTERN)) {
             std::transform(orient.begin(), orient.end(),
                            orient.begin(), ::toupper);
             is_valid = true;
         } else {
-            std::cout << " > Orientation not valid!" << std::endl;
+            gui::display_orient_not_valid_message();
             is_valid = false;
         }
     } while (!is_valid);
@@ -135,14 +134,14 @@ bool is_valid_placement(const std::vector<std::vector<ship_unit_area>> &ship_boa
         if (c_ship.coordinates.y + c_ship.length > FIELD_SIZE) {
             info = " > The ship cannot be placed as it exceeds the playing field "
                    "horizontally!";
-            if (t == PLAYER_1) std::cout << info<< std::endl;
+            if (t == PLAYER_1) gui::display_invalid_placement_message(info);
             return false;
         }
         // ship overlap other ships
         for (int i = 0; i < c_ship.length; i++) {
             if (ship_board[c_ship.coordinates.x][c_ship.coordinates.y + i].type != NO_TYPE) {
                 info = " > The ship cannot be placed as it overlaps another ship!";
-                if (t == PLAYER_1) std::cout << info<< std::endl;
+                if (t == PLAYER_1) gui::display_invalid_placement_message(info);
                 return false;
             }
         }
@@ -151,14 +150,14 @@ bool is_valid_placement(const std::vector<std::vector<ship_unit_area>> &ship_boa
         if (c_ship.coordinates.x + c_ship.length > FIELD_SIZE) {
             info = " > The ship cannot be placed as it exceeds the playing field "
                    "vertically!";
-            if (t == PLAYER_1) std::cout << info<< std::endl;
+            if (t == PLAYER_1) gui::display_invalid_placement_message(info);
             return false;
         }
         // ship overlap other ships
         for (int i = 0; i < c_ship.length; i++) {
             if (ship_board[c_ship.coordinates.x + i][c_ship.coordinates.y].type != NO_TYPE) {
                 info = " > The ship cannot be placed as it overlaps another ship!";
-                if (t == PLAYER_1) std::cout << info<< std::endl;
+                if (t == PLAYER_1) gui::display_invalid_placement_message(info);
                 return false;
             }
         }
@@ -185,12 +184,12 @@ void player_move(GameData &gd, player_turn t) {
 
         // get coordinates of the location to hit
         do {
-            std::cout << " > Where do you want to hit? "; std::cin >> coords;
+            gui::display_hit_message(); std::cin >> coords;
 
             if (coordinates_validation(coords)){
                 is_valid = true;
             } else {
-                display_coords_not_valid_message();
+                gui::display_coords_not_valid_message();
                 is_valid = false; continue;
             }
 
@@ -200,7 +199,7 @@ void player_move(GameData &gd, player_turn t) {
 
             // check if the cell has already been viewed
             if (gd.player1.guess_board[x][y] != UNEXPLORED) {
-                std::cout << " > Coordinates already checked!" << std::endl;
+                gui::display_checked_coords_message();
                 is_valid = false;
             }
         } while (!is_valid);
@@ -228,7 +227,7 @@ void player_move(GameData &gd, player_turn t) {
             gd.player1.guess_board[x][y] = MISSED;
         }
     } else {
-        display_ai_message();
+        gui::display_ai_message();
 
         int x, y;
         bool is_valid;

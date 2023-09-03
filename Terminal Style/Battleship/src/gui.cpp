@@ -49,7 +49,7 @@ const std::string TITLE = R"(
 )";
 
 
-void draw_playing_field(const GameData &gd, player_turn t) {
+void gui::draw_playing_field(const GameData &gd, player_turn t) {
     // clear the terminal
     clear_board();
 
@@ -272,20 +272,47 @@ void draw_ships_status(const std::vector<Ship> &p1_ships,
     }
 }
 
-void display_results(const GameData &gd, player_turn t) {
+void gui::display_results(const GameData &gd, player_turn t) {
     std::string p_name = (t == PLAYER_1) ? gd.player1.name : gd.player2.name;
 
     std::cout << " > Congratulations " << p_name << ", you win!" << std::endl;
 }
 
-void display_ai_message() {
+void gui::display_ai_message() {
     std::cout << " > I'm thinking ... " << std::flush;
     std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
-void display_coords_not_valid_message() {
+void gui::display_enter_coords_message(ship_type type) {
+    std::cout << " > Enter the coordinates for the " << get_ship_name(type)
+              << ": ";
+}
+
+void gui::display_hit_message() {
+    std::cout << " > Where do you want to hit? ";
+}
+
+void gui::display_checked_coords_message() {
+    std::cout << " > Coordinates already checked!" << std::endl;
+}
+
+void gui::display_enter_orient_message(ship_type type) {
+    std::cout << " > Enter the orientation for the " << get_ship_name(type)
+              << ": ";
+}
+
+void gui::display_coords_not_valid_message() {
     std::cout << " > Coordinates not valid!" << std::endl;
 }
+
+void gui::display_orient_not_valid_message() {
+    std::cout << " > Orientation not valid!" << std::endl;
+}
+
+void gui::display_invalid_placement_message(const std::string &msg) {
+    std::cout << " > " << msg << std::endl;
+}
+
 
 /**
  * @brief Clears the terminal screen based on the Operating System.

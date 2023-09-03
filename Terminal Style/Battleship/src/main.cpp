@@ -43,22 +43,22 @@ void play_game() {
     auto game_data = initialize_game();
 
     // ship positioning
-    draw_playing_field(game_data, turn);
+    gui::draw_playing_field(game_data, turn);
     place_ships_on_board(game_data, turn);
     switch_player(turn);
-    draw_playing_field(game_data, turn);
+    gui::draw_playing_field(game_data, turn);
     place_ships_on_board(game_data, turn);
 
     // game play
     do {
         switch_player(turn);
-        draw_playing_field(game_data, turn);
+        gui::draw_playing_field(game_data, turn);
         player_move(game_data, turn);
     } while (!game_is_over(game_data));
 
     // game results
-    draw_playing_field(game_data, turn);
-    display_results(game_data, turn);
+    gui::draw_playing_field(game_data, turn);
+    gui::display_results(game_data, turn);
 }
 
 /**
