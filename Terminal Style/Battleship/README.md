@@ -55,7 +55,7 @@ a portion of the ship.
 During the game, the first grid takes into account Player2's progress in the 
 match, while the second grid highlights how Player1 is doing.
 
-If a ship is hit then an 'X' symbol will appear on the grid, otherwise 'O' is 
+If a ship is hit then an 'X' symbol will appear on the grid, otherwise '~' is 
 shown.
 
 The game ends when all of one player's ships have been sunk (each has been hit 
