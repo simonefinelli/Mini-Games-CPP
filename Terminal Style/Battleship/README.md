@@ -62,3 +62,4 @@ The game ends when all of one player's ships have been sunk (each has been hit
 along its entire length).
 
 ## Gameplay Demo
+![Demo](./assets/battleship_demo.gif)
