@@ -44,21 +44,3 @@ vector<vector<guess_unit_area>> generate_guess_board() {
 
     return board;
 }
-
-
-
-//update_board(guess, current_player, other_player) {
-//    // if current_plaer guess the postion of one of the other player boat we have
-//    // an HIT
-//        // update the Guess Board with a 'X' in the unit area of the other player
-//        //
-//        // otherwise '~' (MISS)
-//    if () {
-//        // hit
-//        // when a ship is all sunk then status is setted to SUNK
-//        return ShipType  // the ship hit
-//    } else {
-//        // miss
-//        return NO_TYPE;
-//    }
-//}
