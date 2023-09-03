@@ -165,6 +165,11 @@ bool is_valid_placement(const std::vector<std::vector<ship_unit_area>> &ship_boa
 }
 
 
+/**
+ *
+ * @param gd
+ * @param t
+ */
 void player_move(GameData &gd, player_turn t) {
     if (t == PLAYER_1) {
         std::string coords {};

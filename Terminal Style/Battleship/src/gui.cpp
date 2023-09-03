@@ -303,6 +303,12 @@ int row_to_number(char l) {
     }
 }
 
+void display_results(const GameData &gd, player_turn t) {
+    std::string p_name = (t == PLAYER_1) ? gd.player1.name : gd.player2.name;
+
+    std::cout << " > Congratulations " << p_name << ", you win!" << std::endl;
+}
+
 /**
  * @brief Clear the terminal screen based on the operating system.
  */

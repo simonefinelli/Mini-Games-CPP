@@ -56,7 +56,7 @@ void play_game() {
 
     // game results
     draw_playing_field(game_data, turn);
-    // display_results(game_data);
+    display_results(game_data, turn);
 }
 
 /**
