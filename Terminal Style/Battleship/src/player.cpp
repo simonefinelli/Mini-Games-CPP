@@ -9,7 +9,6 @@
 #include <algorithm>
 #include <iostream>
 #include <regex>
-#include <thread>
 #include <tuple>
 #include "gui.h"
 #include "player.h"
@@ -67,8 +66,7 @@ void place_ships_on_board(GameData &gd, player_turn t) {
 
     // simulate PC thinking sleeping for 3 seconds
     if (t == PLAYER_2) {
-        std::cout << " > I'm thinking ... " << std::flush;
-        std::this_thread::sleep_for(std::chrono::seconds(3));
+        display_ai_message();
     }
 }
 
@@ -91,7 +89,7 @@ std::tuple<int, int, ship_orientation> ship_position_choice(const Ship &s) {
         if (coordinates_validation(coords)){
             is_valid = true;
         } else {
-            std::cout << " > Coordinates not valid!" << std::endl;
+            display_coords_not_valid_message();
             is_valid = false;
         }
     } while (!is_valid);
@@ -192,7 +190,7 @@ void player_move(GameData &gd, player_turn t) {
             if (coordinates_validation(coords)){
                 is_valid = true;
             } else {
-                std::cout << " > Coordinates not valid!" << std::endl;
+                display_coords_not_valid_message();
                 is_valid = false; continue;
             }
 
@@ -230,9 +228,7 @@ void player_move(GameData &gd, player_turn t) {
             gd.player1.guess_board[x][y] = MISSED;
         }
     } else {
-        // TODO duplicate code
-        std::cout << " > I'm thinking ... " << std::flush;
-        std::this_thread::sleep_for(std::chrono::seconds(2));
+        display_ai_message();
 
         int x, y;
         bool is_valid;

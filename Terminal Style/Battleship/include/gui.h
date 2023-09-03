@@ -12,8 +12,10 @@
 
 void draw_playing_field(const GameData &gd, player_turn t);
 
-int row_to_number(char l);
-
 void display_results(const GameData &gd, player_turn t);
+
+void display_ai_message();
+
+void display_coords_not_valid_message();
 
 #endif //BATTLESHIP_GUI_H

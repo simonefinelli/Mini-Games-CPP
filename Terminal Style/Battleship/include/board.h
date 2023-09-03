@@ -37,6 +37,7 @@ typedef enum GuessUnitAreaStatus {
     HIT
 } guess_unit_area;
 
+int row_to_number(char l);
 
 std::vector<std::vector<ship_unit_area>> generate_ship_board();
 

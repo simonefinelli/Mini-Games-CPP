@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <vector>
+#include <thread>
 #include "gui.h"
 #include "player.h"
 #include "ship.h"
@@ -271,42 +272,19 @@ void draw_ships_status(const std::vector<Ship> &p1_ships,
     }
 }
 
-/**
- *
- * @param l Letter that indicates the row of the Board
- * @return The relative numerical index
- */
-int row_to_number(char l) {
-    switch (l) {
-        case 'A':
-            return 0;
-        case 'B':
-            return 1;
-        case 'C':
-            return 2;
-        case 'D':
-            return 3;
-        case 'E':
-            return 4;
-        case 'F':
-            return 5;
-        case 'G':
-            return 6;
-        case 'H':
-            return 7;
-        case 'I':
-            return 8;
-        case 'J':
-            return 9;
-        default:
-            return -1;
-    }
-}
-
 void display_results(const GameData &gd, player_turn t) {
     std::string p_name = (t == PLAYER_1) ? gd.player1.name : gd.player2.name;
 
     std::cout << " > Congratulations " << p_name << ", you win!" << std::endl;
+}
+
+void display_ai_message() {
+    std::cout << " > I'm thinking ... " << std::flush;
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+}
+
+void display_coords_not_valid_message() {
+    std::cout << " > Coordinates not valid!" << std::endl;
 }
 
 /**
