@@ -37,10 +37,32 @@ typedef enum GuessUnitAreaStatus {
     HIT
 } guess_unit_area;
 
+/**
+ * @brief Creates either an empty Ship Board or a empty Guess Board.
+ *
+ * A Ship Board is a playing field where are handled the ships of the current
+ * Player.
+ *
+ * A Guess Board is a playing field where are handled the hits or misses of the
+ * current Player against the other Player.
+ *
+ * @return the an empty Ship or Guess Board.
+ */
+template <typename T>
+std::vector<std::vector<T>> generate_board() {
+    // create the empty board
+    std::vector<std::vector<T>> board(FIELD_SIZE, std::vector<T>(FIELD_SIZE));
+
+    // reserve space for rows to improve performance
+    board.reserve(FIELD_SIZE);
+    for (int i = 0; i < FIELD_SIZE; ++i) {
+        // reserve space for columns in each row to improve performance
+        board[i].reserve(FIELD_SIZE);
+    }
+
+    return board;
+}
+
 int row_to_number(char l);
-
-std::vector<std::vector<ship_unit_area>> generate_ship_board();
-
-std::vector<std::vector<guess_unit_area>> generate_guess_board();
 
 #endif //BATTLESHIP_BOARD_H

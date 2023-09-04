@@ -44,8 +44,8 @@ Player create_player(const std::string &name) {
     Player p {
         .name = name,
         .ships = generate_ships(),
-        .ship_board = generate_ship_board(),
-        .guess_board = generate_guess_board()
+        .ship_board = generate_board<ship_unit_area>(),
+        .guess_board = generate_board<guess_unit_area>()
     };
     return p;
 }
