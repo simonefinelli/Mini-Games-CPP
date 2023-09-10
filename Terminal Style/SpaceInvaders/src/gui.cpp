@@ -8,7 +8,6 @@
  * @date 2023-08-14
  */
 
-#include <ncurses.h>
 #include "gui.h"
 
 
@@ -51,7 +50,7 @@ void gui::shutdown_curses() {
 }
 
 /**
- * @brief Retrieves the dimensions of the screen.
+ * @brief Retrieves the dimensions of the standard screen.
  *
  * In Curses library the screen is accessed be 'x' and 'y' coordinates, where\n
  * - initial point (0,0) is the top left corner of the screen;\n
@@ -61,24 +60,53 @@ void gui::shutdown_curses() {
  *
  * @return a structure contains the Width (lines) and Height (cols) of the screen.
  */
-scr_xy gui::screen_size() {
+scr_xy gui::screen_size(WINDOW *win) {
     int window_max_x;  // COLS
     int window_max_y;  // LINES
-    getmaxyx(stdscr, window_max_y, window_max_x);
+    getmaxyx(win, window_max_y, window_max_x);
 
     return {window_max_y, window_max_x};
 }
 
 /**
- * @brief Clears the screen of the terminal.
+ * @brief Clears the standard screen.
  */
 void gui::clear_screen() {
     clear();
 }
 
 /**
- * @brief Refreshes the screen of the terminal.
+ * @brief Refreshes the standard screen.
  */
 void gui::refresh_screen() {
     refresh();
+}
+
+/**
+ * Draws a single character on standard screen in a specif position.
+ *
+ * @param x Column coordinate.
+ * @param y Row coordinate.
+ * @param c Single character.
+ * @return True if the char can be draw, False otherwise (outside the margins).
+ */
+void gui::draw_char(int x, int y, char c) {
+    mvaddch(y, x, c);
+    return true;
+}
+
+
+void move_cursor(int x, int y) {
+    move(y, x);
+    return true;
+}
+
+/**
+ * @brief Retrieves inputs from keyboard one character at a time and return
+ * they as integers.
+ *
+ * @return single char user's input.
+ */
+int gui::get_char() {
+    return getch();
 }
