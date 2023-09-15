@@ -88,24 +88,19 @@ void gui::refresh_screen() {
  * @param x Column coordinate.
  * @param y Row coordinate.
  * @param c Single character.
- * @return True if the char can be draw, False otherwise (outside the margins).
  */
 void gui::draw_char(int x, int y, char c) {
     mvaddch(y, x, c);
-    return true;
 }
 
 
 void move_cursor(int x, int y) {
     move(y, x);
-    return true;
 }
 
 /**
  * @brief Retrieves inputs from keyboard one character at a time and return
  * they as integers.
- *
- * @return single char user's input.
  */
 int gui::get_char() {
     return getch();
