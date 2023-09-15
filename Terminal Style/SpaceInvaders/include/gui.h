@@ -20,6 +20,13 @@ typedef struct ScreenXY {
     int y = 0;  // rows
 } scr_xy;
 
+typedef enum ArrowKeys {
+    UP = KEY_UP,
+    DOWN = KEY_DOWN,
+    LEFT = KEY_LEFT,
+    RIGHT = KEY_RIGHT
+} arrow;
+
 namespace gui {
     // status
     void initialize_curses(bool show_user_input=false, input_mode mode=NON_CANONICAL, bool hide_cursor=true,
