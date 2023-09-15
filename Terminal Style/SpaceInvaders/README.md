@@ -68,8 +68,8 @@ of the screen and award bonus points if destroyed.... [Continue on Wikipedia!](h
 
 ## Special Alien
 ```
-   _/---\_
-    \V^V/
+  _/---\_
+   \V^V/
 ```
 
 ## Alien Explosion
@@ -86,14 +86,20 @@ of the screen and award bonus points if destroyed.... [Continue on Wikipedia!](h
 
 ## Hero Spaceship
 ```
-     /^\
-    ==~==
+   /^\
+  ==~==
 ```
 
 ## Hero Spaceship Missile
 ```
-     |
-     ^
+  |
+  ^
+```
+
+## Hero Explosion
+```
+  .^-_.  ._-^.
+  =====  =====
 ```
 
 ## Earth Shields
