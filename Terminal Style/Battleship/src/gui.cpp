@@ -102,8 +102,6 @@ void draw_board_line() {
 }
 
 void draw_ship_board_row(const vector<vector<ship_unit_area>> &ship_board, int r) {
-
-
     std::string render_row = get_column_title(r) + " |";
 
     if (r >= 0 && r < FIELD_SIZE) {
