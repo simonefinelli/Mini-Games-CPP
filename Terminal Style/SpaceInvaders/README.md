@@ -93,7 +93,6 @@ of the screen and award bonus points if destroyed.... [Continue on Wikipedia!](h
 ## Hero Spaceship Missile
 ```
   |
-  ^
 ```
 
 ## Hero Explosion
@@ -104,7 +103,7 @@ of the screen and award bonus points if destroyed.... [Continue on Wikipedia!](h
 
 ## Earth Shields
 ```
-    #####
+   /#####\
    #######
    #/   \#
 ```
