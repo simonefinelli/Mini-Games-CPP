@@ -1,6 +1,6 @@
 /**
- * @file curses_utils.h
- *
+ * @file gui.h
+ * @brief Wrapper for Curses library.
  * @author SimoX
  * @date 2023-09-09
  */

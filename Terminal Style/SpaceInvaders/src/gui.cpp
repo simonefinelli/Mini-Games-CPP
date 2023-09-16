@@ -1,5 +1,5 @@
 /**
- * @file curses_gui.cpp
+ * @file gui.cpp
  *
  * @brief gui.cpp utilizes Curses library to draw objects and scenario on the
  * computer terminal.
