@@ -11,6 +11,7 @@ add_executable(SpaceInvaders
         src/spaceship.cpp
         src/score.cpp
         src/battlefield.cpp
+        src/core.cpp
 )
 
 # set the include directories
