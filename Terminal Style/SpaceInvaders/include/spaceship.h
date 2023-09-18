@@ -13,19 +13,20 @@
 #ifndef SPACEINVADERS_SPACESHIP_H
 #define SPACEINVADERS_SPACESHIP_H
 
-#define HERO_LIVES 3
-#define MAX_ALIEN_AMMO 3  // max alien's ammo per screen/level
+#define MAX_ALIEN_AMMO 3  // max alien's ammo per screen/levelC
+#define NOT_ON_FIELD (-1)
 
 
 /// Hero Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 typedef struct HeroMissile {
+    coords position {NOT_ON_FIELD, NOT_ON_FIELD};
     std::string frame0 =  "|";
 } Missile;
 
 typedef struct HeroExplosionAnimation {
     std::string frame0 = ".^-_.\n=====";
     std::string frame1 = "._-^.\n=====";
-    int active_frame = 0;  // frame0: 0 - frame2: 1
+    int active_frame = 0;  // frame0: 0 - frame2: 1  // TODO make sense?
 } hero_exp_anim;
 
 /// Aliens Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -61,11 +62,11 @@ typedef enum FleetDirection {
 /// Gameplay Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 struct Hero {
     std::string name {};
-    coords position {0, 0}; // TODO init with the center of the screen
+    coords position {0, 0};
     Missile equipment {};
-    size dimension {5, 2};
+    size dimension {0, 0};
     hero_exp_anim animation {};
-    int lives = HERO_LIVES;
+    int lives = 0;
     int score = 0;
 };
 

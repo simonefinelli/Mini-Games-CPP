@@ -9,9 +9,12 @@
 #ifndef SPACEINVADERS_COMMON_H
 #define SPACEINVADERS_COMMON_H
 
+/**
+ * @brief Game coordinates are calculated starting form 0.
+ */
 typedef struct GameCoordinates {
-    int x = -1;
-    int y = -1;
+    int x = -1;  // cols
+    int y = -1;  // rows
 } coords;
 
 typedef struct ObjectSize {

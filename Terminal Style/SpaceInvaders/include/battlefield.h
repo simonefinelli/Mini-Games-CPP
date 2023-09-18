@@ -12,7 +12,7 @@
 #ifndef SPACEINVADERS_BATTLEFIELD_H
 #define SPACEINVADERS_BATTLEFIELD_H
 
-typedef enum GameState {
+typedef enum FieldGameState {
     WELCOME_SCREEN = 0,
     PLAY_SCREEN,
     PLAYER_DEAD_SCREEN,
@@ -30,9 +30,9 @@ struct FieldShield {
     };
 };
 
-struct Game {
+struct FieldGame {
     size window_size {0, 0};
-    game_state current_state {WELCOME_SCREEN};
+    game_state state {WELCOME_SCREEN};
     int level = 0;
 };
 
