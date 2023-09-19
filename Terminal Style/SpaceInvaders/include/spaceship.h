@@ -1,7 +1,7 @@
 /**
  * @file spaceship.h
- * @brief This file handles oll the data and operation of the spaceships that are
- * involved in the Game: Aliens and Hero.
+ * @brief This file and the relative implementation collect oll the data and
+ * operation of the spaceships that are involved in the Game: Aliens and Hero.
  * @author SimoX
  * @date 2023-09-16
  */
@@ -16,6 +16,11 @@
 #define MAX_ALIEN_AMMO 3  // max alien's ammo per screen/levelC
 #define NOT_ON_FIELD (-1)
 
+// Hero
+#define HERO_NAME "Player1"
+#define HERO_SPRITE_WIDTH 5
+#define HERO_LIVES 3
+
 
 /// Hero Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 typedef struct HeroMissile {
@@ -24,8 +29,8 @@ typedef struct HeroMissile {
 } Missile;
 
 typedef struct HeroExplosionAnimation {
-    std::string frame0 = ".^-_.\n=====";
-    std::string frame1 = "._-^.\n=====";
+    const std::string frame0 = ".^-_.\n=====";
+    const std::string frame1 = "._-^.\n=====";
     int active_frame = 0;  // frame0: 0 - frame2: 1  // TODO make sense?
 } hero_exp_anim;
 
@@ -62,9 +67,9 @@ typedef enum FleetDirection {
 /// Gameplay Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 struct Hero {
     std::string name {};
+    std::array<std::string, HERO_SPRITE_HEIGHT> sprite;
     coords position {0, 0};
     Missile equipment {};
-    size dimension {0, 0};
     hero_exp_anim animation {};
     int lives = 0;
     int score = 0;
@@ -95,5 +100,12 @@ struct SpecialAlien {
     size dimension {0, 0};
     int points = 0;  // 50 - 100 - 150 - 200 randomly
 };
+
+/// Prototypes - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+void define_hero(Hero &h);
+
+void refresh_hero(Hero &hero);
+
+void refresh_missile(Hero &hero);
 
 #endif //SPACEINVADERS_SPACESHIP_H
