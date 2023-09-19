@@ -7,17 +7,7 @@
  */
 
 #include "core.h"
-
-// playing field
-#define W_WIDTH 68 // columns
-#define W_HEIGHT 100 // rows
-
-// hero
-#define HERO_NAME "Player1"
-#define HERO_SPRITE_WIDTH 5
-#define HERO_SPRITE_HEIGHT 2
-#define HERO_LIVES 3
-
+#include "gui.h"
 
 /**
  * @brief Creates the two Players.
@@ -32,16 +22,39 @@ GameData initialize_game() {
     gm.field_game.level = 1;  // first level
 
     // define Hero
-    gm.hero.name = HERO_NAME;
-    gm.hero.dimension = {HERO_SPRITE_WIDTH, HERO_SPRITE_HEIGHT};
-    gm.hero.lives = HERO_LIVES;
-    gm.hero.score = 0;
-    gm.hero.position = {((W_WIDTH / 2 - HERO_SPRITE_WIDTH / 2) - 1),   // -1 because coors starts from 0
-                        ((W_HEIGHT - (HERO_SPRITE_HEIGHT / 2)) - 1)};  // centre of the screen
-    gm.hero.equipment.position = {NOT_ON_FIELD, NOT_ON_FIELD};
-
+    define_hero(gm.hero);
 
     return {};
 }
 
+/**
+ * @brief Updates game data structure while the game is going on.
+ *
+ * @param gm Game data.
+ */
+void update_game_data(GameData gm) {
 
+}
+
+/**
+ * @brief Gets the user input to move the Hero left or right.
+ * The user is allowed to go only in the left or right position during the game,
+ * so the input is a arrow keys. In ncurses arrow keys are treated with integer
+ * type.
+ * @return the
+ */
+int get_user_input() {
+    return gui::get_char();
+}
+
+/**
+ * @brief Uses the graphical library (ncurses - gui.h) to draw the game on
+ * terminal screen.
+ */
+void draw_screen_game() {
+    // clear the terminal screen
+    gui::clear_screen();
+
+    // refresh the terminal screen
+    gui::refresh_screen();
+}

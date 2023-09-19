@@ -20,4 +20,8 @@ struct GameData {
 
 GameData initialize_game();
 
+int get_user_input();
+
+void draw_screen_game();
+
 #endif //SPACEINVADERS_CORE_H
