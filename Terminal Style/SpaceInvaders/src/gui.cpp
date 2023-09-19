@@ -8,6 +8,8 @@
  * @date 2023-08-14
  */
 
+#include <array>
+#include <string>
 #include "gui.h"
 
 
@@ -70,6 +72,7 @@ scr_xy gui::screen_size(WINDOW *win) {
 
 /**
  * @brief Clears the standard screen.
+ * Is used to clear the internal data structures of ncurses.
  */
 void gui::clear_screen() {
     clear();
@@ -77,6 +80,7 @@ void gui::clear_screen() {
 
 /**
  * @brief Refreshes the standard screen.
+ * Is used to update the physical display.
  */
 void gui::refresh_screen() {
     refresh();
@@ -104,4 +108,20 @@ void move_cursor(int x, int y) {
  */
 int gui::get_char() {
     return getch();
+}
+
+/**
+ * @brief Draws on the ncurses terminal a spaceship (sprite).
+ *
+ * @param x X coordinate (columns).
+ * @param y Y coordinate (rows).
+ * @param s Sprite to draw.
+ */
+void gui::draw_sprite(int x, int y, const std::array<std::string, SPRITE_HEIGHT> &s) {
+    int height_offset = 0;
+    for (const auto &sprite_part : s) {
+        mvprintw(y + height_offset, x, "%s", sprite_part.c_str());
+        height_offset++;
+    }
+
 }

@@ -6,6 +6,7 @@
  */
 
 #include <ncurses.h>
+#include "common.h"
 
 #ifndef SPACEINVADERS_GUI_H
 #define SPACEINVADERS_GUI_H
@@ -41,6 +42,7 @@ namespace gui {
     void refresh_screen();
     void draw_char(int x, int y, char c);
     void move_cursor(int x, int y);
+    void draw_sprite(int x, int y, const std::array<std::string, SPRITE_HEIGHT> &s);
 
     // user input
     int get_char();
