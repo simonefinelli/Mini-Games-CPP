@@ -6,6 +6,7 @@
  * @date 2023-09-16
  */
 
+#include <array>
 #include <string>
 #include <vector>
 #include "common.h"
@@ -60,14 +61,14 @@ typedef struct AlienBomb {
 } Bomb;
 
 typedef enum FleetDirection {
-    RIGHT = 0,
-    LEFT
+    RIGHT_DIRECTION = 0,
+    LEFT_DIRECTION
 } direction;
 
 /// Gameplay Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 struct Hero {
     std::string name {};
-    std::array<std::string, HERO_SPRITE_HEIGHT> sprite;
+    std::array<std::string, SPRITE_HEIGHT> sprite;
     coords position {0, 0};
     Missile equipment {};
     hero_exp_anim animation {};
@@ -87,7 +88,7 @@ struct Alien {
 
 struct AlienFleet {
     std::vector<std::vector<Alien>> aliens {};
-    direction attack_direction = RIGHT;
+    direction attack_direction = RIGHT_DIRECTION;
     int bombs_in_play = 0;
     float speed_movement = 0.0; // how fast Aliens should be move down against the Hero
     float explosion_duration = 0.0;

@@ -21,7 +21,7 @@ void define_hero(Hero &h) {
     h.lives = HERO_LIVES;
     h.score = 0;
     h.position = {((W_WIDTH / 2 - HERO_SPRITE_WIDTH / 2) - 1),   // -1 because coors starts from 0
-                  ((W_HEIGHT - (HERO_SPRITE_HEIGHT / 2)) - 1)};  // centre of the screen
+                  ((W_HEIGHT - (SPRITE_HEIGHT / 2)) - 1)};  // centre of the screen
     h.equipment.position = {NOT_ON_FIELD, NOT_ON_FIELD};
 }
 
