@@ -11,8 +11,9 @@
 
 // playing field
 #define W_WIDTH 68 // columns
-#define W_HEIGHT 100 // rows
+#define W_HEIGHT 45 // rows
 
+// spaceships height
 #define SPRITE_HEIGHT 2
 
 /**
