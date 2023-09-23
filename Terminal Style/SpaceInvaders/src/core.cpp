@@ -16,8 +16,8 @@ void move_hero(Hero &h, int peace);
  * @return the game data of the two Players.
  */
 GameData initialize_game() {
-    // define field size (window size)
     GameData gd {};
+    // define game field characteristics
     gd.field_game.window_size = {W_WIDTH, W_HEIGHT};
     gd.field_game.state = PLAY_SCREEN; // TODO after change with WELCOME_SCREEN
     gd.field_game.level = 1;  // first level
@@ -86,12 +86,14 @@ void draw_screen_game(const GameData &gd) {
 }
 
 /**
- * @brief Checks if the new hero spaceship position is in the game boundaries.
+ * @brief Checks if the new hero spaceship position is in the game boundaries,
+ * than update the hero position.
  *
- * @param x_pos Current hero position.
+ * @param h The Hero object.
  * @param peace The offset to apply to the current hero position.
- * @return True if the move is legal, False otherwise.
  */
 void move_hero(Hero &h, int peace) {
-        h.position.x = h.position.x + peace;
+    if ((h.position.x + peace < 0) or ((h.position.x + peace + h.sprite[0].size()) > W_WIDTH))
+        return;
+    h.position.x = h.position.x + peace;
 }
