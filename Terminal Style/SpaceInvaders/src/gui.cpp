@@ -35,7 +35,7 @@ void gui::initialize_curses(bool show_user_input, input_mode mode, bool hide_cur
     // acquisition mode
     if (mode != CANONICAL) cbreak();
     // cursor behaviour
-    curs_set(hide_cursor); // to hide the cursor
+    curs_set(!hide_cursor); // to hide the cursor
     // delay behaviour
     nodelay(stdscr, no_delay);
     // keypad behaviour
