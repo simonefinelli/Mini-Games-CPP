@@ -9,6 +9,8 @@
 #ifndef SPACEINVADERS_COMMON_H
 #define SPACEINVADERS_COMMON_H
 
+#define FPS 30
+
 // playing field
 #define W_WIDTH 68 // columns
 #define W_HEIGHT 45 // rows
