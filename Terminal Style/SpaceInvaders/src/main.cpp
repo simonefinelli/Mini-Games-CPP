@@ -6,9 +6,11 @@
  * @date 2023-09-09
  */
 
+#include <chrono>
+#include <thread>
+#include "common.h"
 #include "core.h"
 #include "gui.h"
-#include <iostream>
 
 void play_game();
 bool play_again();
@@ -33,6 +35,9 @@ int main() {
  * results and check if the game is over.
  */
 void play_game() {
+    // init game clock
+    const std::chrono::duration<double> frame_duration(1.0 / FPS); // get first time interval
+
     int user_choice;
     bool quit = false;
 
@@ -44,6 +49,9 @@ void play_game() {
     // refresh on screen game data
     draw_screen_game(game_data);
     while (!quit) {
+        // get current time
+        auto start_time = std::chrono::high_resolution_clock::now();
+
         // get user movement
         user_choice = get_user_input();
         // check for user input
@@ -53,6 +61,14 @@ void play_game() {
         update_game_data(game_data, static_cast<key>(user_choice));
         // refresh on screen game data
         draw_screen_game(game_data);
+
+        // calculate how long to sleep to achieve the desired FPS
+        auto end_time = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> elapsed = end_time - start_time;
+        std::chrono::duration<double> sleep_duration = frame_duration - elapsed;
+        if (sleep_duration > std::chrono::duration<double>(0)) {
+            std::this_thread::sleep_for(sleep_duration);
+        }
     }
 }
 
