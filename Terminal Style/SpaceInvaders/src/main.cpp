@@ -42,8 +42,8 @@ void play_game() {
     bool quit = false;
     while (!quit) {
         user_choice = get_user_input();
-        // update_game_data();
-        draw_screen_game();
+        // update_game_data(game_data);
+        draw_screen_game(game_data);
     }
 }
 

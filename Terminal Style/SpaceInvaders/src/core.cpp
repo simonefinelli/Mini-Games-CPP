@@ -16,15 +16,15 @@
  */
 GameData initialize_game() {
     // define field size (window size)
-    GameData gm {};
-    gm.field_game.window_size = {W_WIDTH, W_HEIGHT};
-    gm.field_game.state = PLAY_SCREEN; // TODO after change with WELCOME_SCREEN
-    gm.field_game.level = 1;  // first level
+    GameData gd {};
+    gd.field_game.window_size = {W_WIDTH, W_HEIGHT};
+    gd.field_game.state = PLAY_SCREEN; // TODO after change with WELCOME_SCREEN
+    gd.field_game.level = 1;  // first level
 
     // define Hero
-    define_hero(gm.hero);
+    define_hero(gd.hero);
 
-    return {};
+    return gd;
 }
 
 /**
@@ -51,10 +51,12 @@ int get_user_input() {
  * @brief Uses the graphical library (ncurses - gui.h) to draw the game on
  * terminal screen.
  */
-void draw_screen_game() {
+void draw_screen_game(const GameData &gd) {
+    const Hero &h = gd.hero;
     // clear the terminal screen
     gui::clear_screen();
 
+    gui::draw_sprite(h.position.x, h.position.y, h.sprite);
     // refresh the terminal screen
     gui::refresh_screen();
 }

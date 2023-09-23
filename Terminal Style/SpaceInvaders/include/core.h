@@ -15,13 +15,12 @@
 struct GameData {
     FieldGame field_game {};
     Hero hero {};
-
 };
 
 GameData initialize_game();
 
 int get_user_input();
 
-void draw_screen_game();
+void draw_screen_game(const GameData &gd);
 
 #endif //SPACEINVADERS_CORE_H
