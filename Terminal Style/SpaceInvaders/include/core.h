@@ -8,9 +8,15 @@
 
 #include "battlefield.h"
 #include "spaceship.h"
+#include "gui.h"
 
 #ifndef SPACEINVADERS_CORE_H
 #define SPACEINVADERS_CORE_H
+
+const char QUIT_CHAR_LOWER = 'q';
+const char QUIT_CHAR_UPPER = 'Q';
+#define IS_QUIT_CHAR(x) ((x == QUIT_CHAR_UPPER) || (x == QUIT_CHAR_LOWER))
+#define IS_VALID_INPUT(x) ((x == LEFT) || (x == RIGHT))
 
 struct GameData {
     FieldGame field_game {};
@@ -20,6 +26,8 @@ struct GameData {
 GameData initialize_game();
 
 int get_user_input();
+
+void update_game_data(GameData &gd, key user_choice);
 
 void draw_screen_game(const GameData &gd);
 

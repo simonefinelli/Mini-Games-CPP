@@ -11,6 +11,8 @@
 #ifndef SPACEINVADERS_GUI_H
 #define SPACEINVADERS_GUI_H
 
+#define HER0_MOVEMENT_OFFSET 1
+
 typedef enum InputMode {
     CANONICAL = 0,  // the terminal buffers input until a newline character ('\n') is received (when press enter)
     NON_CANONICAL  // (raw mode) the input is processed character by character, without buffering
@@ -21,12 +23,11 @@ typedef struct ScreenXY {
     int y = 0;  // rows
 } scr_xy;
 
-typedef enum ArrowKeys {
-    UP = KEY_UP,
-    DOWN = KEY_DOWN,
+typedef enum GameKeys {
     LEFT = KEY_LEFT,
-    RIGHT = KEY_RIGHT
-} arrow;
+    RIGHT = KEY_RIGHT,
+    SPACE = KEY_BREAK
+} key;
 
 namespace gui {
     // status

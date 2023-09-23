@@ -7,7 +7,8 @@
  */
 
 #include "core.h"
-#include "gui.h"
+
+void move_hero(Hero &h, int peace);
 
 /**
  * @brief Creates the two Players.
@@ -28,15 +29,6 @@ GameData initialize_game() {
 }
 
 /**
- * @brief Updates game data structure while the game is going on.
- *
- * @param gm Game data.
- */
-void update_game_data(GameData gm) {
-
-}
-
-/**
  * @brief Gets the user input to move the Hero left or right.
  * The user is allowed to go only in the left or right position during the game,
  * so the input is a arrow keys. In ncurses arrow keys are treated with integer
@@ -44,7 +36,39 @@ void update_game_data(GameData gm) {
  * @return the
  */
 int get_user_input() {
-    return gui::get_char();
+    int input = gui::get_char();
+
+    switch (input) {
+        case QUIT_CHAR_UPPER:
+        case QUIT_CHAR_LOWER:
+            return input;
+        case KEY_LEFT:
+            return LEFT;
+        case KEY_RIGHT:
+            return RIGHT;
+        default:
+            return -1;
+    }
+}
+
+/**
+ * @brief Updates game data structure while the game is going on.
+ *
+ * @param gm Game data.
+ */
+void update_game_data(GameData &gd, key user_choice) {
+    switch (user_choice) {
+        case LEFT:
+            // move hero to left
+            move_hero(gd.hero, -HER0_MOVEMENT_OFFSET);
+            break;
+        case RIGHT:
+            // move hero to left
+            move_hero(gd.hero, HER0_MOVEMENT_OFFSET);
+            break;
+        case SPACE:
+            break;
+    }
 }
 
 /**
@@ -59,4 +83,15 @@ void draw_screen_game(const GameData &gd) {
     gui::draw_sprite(h.position.x, h.position.y, h.sprite);
     // refresh the terminal screen
     gui::refresh_screen();
+}
+
+/**
+ * @brief Checks if the new hero spaceship position is in the game boundaries.
+ *
+ * @param x_pos Current hero position.
+ * @param peace The offset to apply to the current hero position.
+ * @return True if the move is legal, False otherwise.
+ */
+void move_hero(Hero &h, int peace) {
+        h.position.x = h.position.x + peace;
 }
