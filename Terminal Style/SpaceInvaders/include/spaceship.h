@@ -108,6 +108,6 @@ void define_hero(Hero &h);
 
 void refresh_hero(Hero &hero);
 
-void refresh_missile(Hero &hero);
+void refresh_missile_position(Hero &hero);
 
 #endif //SPACEINVADERS_SPACESHIP_H

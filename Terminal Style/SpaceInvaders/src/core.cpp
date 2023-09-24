@@ -11,7 +11,6 @@
 void draw_hero_on_field(const Hero &h);
 void move_hero(Hero &h, int peace);
 void hero_init_shoot(Hero &h);
-void update_missile_position(Hero &h);
 
 /**
  * @brief Creates the two Players.
@@ -74,11 +73,11 @@ void update_game_data(GameData &gd, key user_choice) {
             break;
         default:
             // ignore input
-            ;
+            break;
     }
 
     // update hero missile position
-    update_missile_position(gd.hero);
+    refresh_missile_position(gd.hero);
 }
 
 /**
@@ -107,51 +106,3 @@ void draw_hero_on_field(const Hero &h) {
         gui::draw_char(h.missile.position.x, h.missile.position.y, h.missile.frame0);
     }
 };
-
-
-/**
- * @brief Checks if the new hero spaceship position is in the game boundaries,
- * than update the hero position.
- *
- * @param h The Hero object.
- * @param peace The offset to apply to the current hero position.
- */
-void move_hero(Hero &h, int peace) {
-    if ((h.position.x + peace < 0) or ((h.position.x + peace + HERO_SPRITE_WIDTH) > W_WIDTH))
-        return;
-    h.position.x = h.position.x + peace;
-}
-
-/**
- * @brief Set the first position of the Hero missile.
- * Note that a missile can only be launched if there is no other missile
- * previously launched in the game screen.
- * A missile is destroyed when it hits an alien spaceship or when it reaches the
- * end of the playing field.
- * @param h The Hero object.
- */
-void hero_init_shoot(Hero &h) {
-    if (h.missile.position.x == NOT_ON_FIELD or h.missile.position.y == NOT_ON_FIELD) {
-        // set initial position if the missile is not on field
-        h.missile.position.y = h.position.y;  // same position of hero spaceship head
-        h.missile.position.x = h.position.x + (HERO_SPRITE_WIDTH / 2);  // center of the hero
-    }
-}
-
-/**
- * @brief Updates the position of the Hero missile at each frame.
- * The missile will be launched towards upwards, until it reaches an alien or
- * the end of the playing field.
- * @param h The Hero object.
- */
-void update_missile_position(Hero &h) {
-    if (h.missile.position.x != NOT_ON_FIELD) {
-        h.missile.position.y -= MISSILE_PACE;
-
-        // check if the missile exits from boundaries
-        if (h.missile.position.y < 0) {
-            h.missile.position.x = NOT_ON_FIELD;
-            h.missile.position.y = NOT_ON_FIELD;
-        }
-    }
-}
