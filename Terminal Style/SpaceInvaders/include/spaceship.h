@@ -15,18 +15,19 @@
 #define SPACEINVADERS_SPACESHIP_H
 
 #define MAX_ALIEN_AMMO 3  // max alien's ammo per screen/levelC
-#define NOT_ON_FIELD (-1)
 
 // Hero
 #define HERO_NAME "Player1"
 #define HERO_SPRITE_WIDTH 5
 #define HERO_LIVES 3
+#define NOT_ON_FIELD (-1)
+#define MISSILE_PACE 1
 
 
 /// Hero Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 typedef struct HeroMissile {
     coords position {NOT_ON_FIELD, NOT_ON_FIELD};
-    std::string frame0 =  "|";
+    char frame0 =  '|';
 } Missile;
 
 typedef struct HeroExplosionAnimation {
@@ -70,7 +71,7 @@ struct Hero {
     std::string name {};
     std::array<std::string, SPRITE_HEIGHT> sprite;
     coords position {0, 0};
-    Missile equipment {};
+    Missile missile {};
     hero_exp_anim animation {};
     int lives = 0;
     int score = 0;

@@ -26,7 +26,7 @@ typedef struct ScreenXY {
 typedef enum GameKeys {
     LEFT = KEY_LEFT,
     RIGHT = KEY_RIGHT,
-    SPACE = KEY_BREAK
+    SPACE = ' '
 } key;
 
 namespace gui {

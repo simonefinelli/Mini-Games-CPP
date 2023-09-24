@@ -8,7 +8,10 @@
 
 #include "core.h"
 
+void draw_hero_on_field(const Hero &h);
 void move_hero(Hero &h, int peace);
+void hero_init_shoot(Hero &h);
+void update_missile_position(Hero &h);
 
 /**
  * @brief Creates the two Players.
@@ -37,15 +40,15 @@ GameData initialize_game() {
  */
 int get_user_input() {
     int input = gui::get_char();
+    // int input = ' ';
 
     switch (input) {
         case QUIT_CHAR_UPPER:
         case QUIT_CHAR_LOWER:
+        case LEFT:
+        case RIGHT:
+        case SPACE:
             return input;
-        case KEY_LEFT:
-            return LEFT;
-        case KEY_RIGHT:
-            return RIGHT;
         default:
             return -1;
     }
@@ -67,8 +70,15 @@ void update_game_data(GameData &gd, key user_choice) {
             move_hero(gd.hero, HER0_MOVEMENT_OFFSET);
             break;
         case SPACE:
+            hero_init_shoot(gd.hero);  // set initial position of the missile
             break;
+        default:
+            // ignore input
+            ;
     }
+
+    // update hero missile position
+    update_missile_position(gd.hero);
 }
 
 /**
@@ -76,14 +86,28 @@ void update_game_data(GameData &gd, key user_choice) {
  * terminal screen.
  */
 void draw_screen_game(const GameData &gd) {
-    const Hero &h = gd.hero;
     // clear the terminal screen
     gui::clear_screen();
 
-    gui::draw_sprite(h.position.x, h.position.y, h.sprite);
+    // draw hero data
+    draw_hero_on_field(gd.hero);
+
+    // draw alien fleet
+
     // refresh the terminal screen
     gui::refresh_screen();
 }
+
+void draw_hero_on_field(const Hero &h) {
+    // hero spaceship
+    gui::draw_sprite(h.position.x, h.position.y, h.sprite);
+    // hero missile
+    if (h.missile.position.x != NOT_ON_FIELD) {
+        // draw missile
+        gui::draw_char(h.missile.position.x, h.missile.position.y, h.missile.frame0);
+    }
+};
+
 
 /**
  * @brief Checks if the new hero spaceship position is in the game boundaries,
@@ -93,7 +117,41 @@ void draw_screen_game(const GameData &gd) {
  * @param peace The offset to apply to the current hero position.
  */
 void move_hero(Hero &h, int peace) {
-    if ((h.position.x + peace < 0) or ((h.position.x + peace + h.sprite[0].size()) > W_WIDTH))
+    if ((h.position.x + peace < 0) or ((h.position.x + peace + HERO_SPRITE_WIDTH) > W_WIDTH))
         return;
     h.position.x = h.position.x + peace;
+}
+
+/**
+ * @brief Set the first position of the Hero missile.
+ * Note that a missile can only be launched if there is no other missile
+ * previously launched in the game screen.
+ * A missile is destroyed when it hits an alien spaceship or when it reaches the
+ * end of the playing field.
+ * @param h The Hero object.
+ */
+void hero_init_shoot(Hero &h) {
+    if (h.missile.position.x == NOT_ON_FIELD or h.missile.position.y == NOT_ON_FIELD) {
+        // set initial position if the missile is not on field
+        h.missile.position.y = h.position.y;  // same position of hero spaceship head
+        h.missile.position.x = h.position.x + (HERO_SPRITE_WIDTH / 2);  // center of the hero
+    }
+}
+
+/**
+ * @brief Updates the position of the Hero missile at each frame.
+ * The missile will be launched towards upwards, until it reaches an alien or
+ * the end of the playing field.
+ * @param h The Hero object.
+ */
+void update_missile_position(Hero &h) {
+    if (h.missile.position.x != NOT_ON_FIELD) {
+        h.missile.position.y -= MISSILE_PACE;
+
+        // check if the missile exits from boundaries
+        if (h.missile.position.y < 0) {
+            h.missile.position.x = NOT_ON_FIELD;
+            h.missile.position.y = NOT_ON_FIELD;
+        }
+    }
 }

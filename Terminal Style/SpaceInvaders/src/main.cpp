@@ -56,7 +56,6 @@ void play_game() {
         user_choice = get_user_input();
         // check for user input
         if (IS_QUIT_CHAR(user_choice)) { quit = true; continue; }
-        if (!IS_VALID_INPUT(user_choice)) continue;
         // update game data
         update_game_data(game_data, static_cast<key>(user_choice));
         // refresh on screen game data

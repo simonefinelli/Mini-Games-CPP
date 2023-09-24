@@ -16,7 +16,7 @@
 const char QUIT_CHAR_LOWER = 'q';
 const char QUIT_CHAR_UPPER = 'Q';
 #define IS_QUIT_CHAR(x) ((x == QUIT_CHAR_UPPER) || (x == QUIT_CHAR_LOWER))
-#define IS_VALID_INPUT(x) ((x == LEFT) || (x == RIGHT))
+#define IS_VALID_INPUT(x) ((x == LEFT) || (x == RIGHT) || (x == ' '))
 
 struct GameData {
     FieldGame field_game {};
