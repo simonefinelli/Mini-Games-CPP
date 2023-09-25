@@ -12,14 +12,16 @@
 #include "core.h"
 #include "gui.h"
 
-void play_game();
+const std::chrono::duration<double> FRAME_DURATION(1.0 / FPS); // get first time interval
+
+void game_loop();
 bool play_again();
 
 int main() {
     // initialize graphics
     gui::initialize_curses();
     do {
-        play_game();
+        game_loop();
     } while (play_again());
 
     // shutdown graphics
@@ -34,10 +36,7 @@ int main() {
  * It initializes the game data, draw and update the board, display the
  * results and check if the game is over.
  */
-void play_game() {
-    // init game clock
-    const std::chrono::duration<double> frame_duration(1.0 / FPS); // get first time interval
-
+void game_loop() {
     int user_choice;
     bool quit = false;
 
@@ -50,7 +49,7 @@ void play_game() {
     draw_screen_game(game_data);
     while (!quit) {
         // get current time
-        auto start_time = std::chrono::high_resolution_clock::now();
+        auto curr_time = std::chrono::high_resolution_clock::now();
 
         // get user movement
         user_choice = get_user_input();
@@ -63,8 +62,8 @@ void play_game() {
 
         // calculate how long to sleep to achieve the desired FPS
         auto end_time = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> elapsed = end_time - start_time;
-        std::chrono::duration<double> sleep_duration = frame_duration - elapsed;
+        std::chrono::duration<double> elapsed = end_time - curr_time;
+        std::chrono::duration<double> sleep_duration = FRAME_DURATION - elapsed;
         if (sleep_duration > std::chrono::duration<double>(0)) {
             std::this_thread::sleep_for(sleep_duration);
         }

@@ -105,4 +105,4 @@ void draw_hero_on_field(const Hero &h) {
         // draw missile
         gui::draw_char(h.missile.position.x, h.missile.position.y, h.missile.frame0);
     }
-};
+}
