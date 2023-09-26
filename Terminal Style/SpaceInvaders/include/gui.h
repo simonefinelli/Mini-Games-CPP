@@ -43,7 +43,14 @@ namespace gui {
     void refresh_screen();
     void draw_char(int x, int y, char c);
     void move_cursor(int x, int y);
-    void draw_sprite(int x, int y, const std::array<std::string, SPRITE_HEIGHT> &s);
+    template <typename T, size_t N>
+    void draw_sprite(int x, int y,const std::array<T, N> &s) {
+        int height_offset = 0;
+        for (const auto &sprite_part : s) {
+            mvprintw(y + height_offset, x, "%s", sprite_part.c_str());
+            height_offset++;
+        }
+    }
 
     // user input
     int get_char();

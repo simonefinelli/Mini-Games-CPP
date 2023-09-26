@@ -6,6 +6,7 @@
  * @date 2023-09-18
  */
 
+#include <array>
 #include "core.h"
 
 void draw_hero_on_field(const Hero &h);
@@ -23,9 +24,13 @@ GameData initialize_game() {
     gd.field_game.window_size = {W_WIDTH, W_HEIGHT};
     gd.field_game.state = PLAY_SCREEN; // TODO after change with WELCOME_SCREEN
     gd.field_game.level = 1;  // first level
+    init_shields(gd.field_game.shields);
 
     // define Hero
     define_hero(gd.hero);
+
+    // define shields
+
 
     return gd;
 }
@@ -87,6 +92,9 @@ void update_game_data(GameData &gd, key user_choice) {
 void draw_screen_game(const GameData &gd) {
     // clear the terminal screen
     gui::clear_screen();
+
+    // draw shields
+    draw_shields_on_field(gd.field_game.shields);
 
     // draw hero data
     draw_hero_on_field(gd.hero);

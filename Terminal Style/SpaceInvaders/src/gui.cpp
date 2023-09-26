@@ -117,10 +117,6 @@ int gui::get_char() {
  * @param y Y coordinate (rows).
  * @param s Sprite to draw.
  */
-void gui::draw_sprite(int x, int y, const std::array<std::string, SPRITE_HEIGHT> &s) {
-    int height_offset = 0;
-    for (const auto &sprite_part : s) {
-        mvprintw(y + height_offset, x, "%s", sprite_part.c_str());
-        height_offset++;
-    }
-}
+//void gui::draw_sprite(int x, int y, const std::array<std::string, SPRITE_HEIGHT> &s);
+
+

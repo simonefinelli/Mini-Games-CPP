@@ -6,20 +6,23 @@
  * @date 2023-09-18
  */
 
+
 #include "battlefield.h"
 #include "spaceship.h"
 #include "gui.h"
 
 #ifndef SPACEINVADERS_CORE_H
 #define SPACEINVADERS_CORE_H
+#define IS_QUIT_CHAR(x) ((x == QUIT_CHAR_UPPER) || (x == QUIT_CHAR_LOWER))
 
 const char QUIT_CHAR_LOWER = 'q';
 const char QUIT_CHAR_UPPER = 'Q';
-#define IS_QUIT_CHAR(x) ((x == QUIT_CHAR_UPPER) || (x == QUIT_CHAR_LOWER))
+
 
 struct GameData {
     FieldGame field_game {};
     Hero hero {};
+
 };
 
 GameData initialize_game();
