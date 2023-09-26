@@ -23,6 +23,8 @@
 #define NOT_ON_FIELD (-1)
 #define MISSILE_PACE 1
 
+const std::string HERO_SPRITE[] {" /^\\ ", "==~=="};
+
 
 /// Hero Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 typedef struct HeroMissile {
@@ -69,7 +71,7 @@ typedef enum FleetDirection {
 /// Gameplay Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 struct Hero {
     std::string name {};
-    std::array<std::string, SPRITE_HEIGHT> sprite;
+    const std::array<std::string, SPRITE_HEIGHT> sprite = {HERO_SPRITE[0], HERO_SPRITE[1]};;
     coords position {0, 0};
     Missile missile {};
     hero_exp_anim animation {};

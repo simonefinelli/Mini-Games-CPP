@@ -9,15 +9,11 @@
 #include <array>
 #include "spaceship.h"
 
-// Hero
-const std::string HERO_SPRITE[] {" /^\\ ", "==~=="};
-
 /**
  * @brief Populates the Hero structure.
  */
 void define_hero(Hero &h) {
     h.name = HERO_NAME;
-    h.sprite = {HERO_SPRITE[0], HERO_SPRITE[1]};
     h.lives = HERO_LIVES;
     h.score = 0;
     h.position = {((W_WIDTH / 2 - HERO_SPRITE_WIDTH / 2) - 1),   // -1 because coords start from 0
