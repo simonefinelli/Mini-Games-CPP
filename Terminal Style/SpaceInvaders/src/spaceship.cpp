@@ -27,6 +27,7 @@ void define_hero(Hero &h) {
  * previously launched in the game screen.
  * A missile is destroyed when it hits an alien spaceship or when it reaches the
  * end of the playing field.
+ *
  * @param h The Hero object.
  */
 void hero_init_shoot(Hero &h) {
@@ -54,6 +55,7 @@ void move_hero(Hero &h, int peace) {
  * @brief Updates the position of the Hero missile at each frame.
  * The missile will be launched towards upwards, until it reaches an alien or
  * the end of the playing field.
+ *
  * @param h The Hero object.
  */
 void refresh_missile_position(Hero &h) {
@@ -66,4 +68,18 @@ void refresh_missile_position(Hero &h) {
             h.missile.position.y = NOT_ON_FIELD;
         }
     }
+}
+
+/**
+ * @brief Checks if there is a collision between a missile/bomb and one of the
+ * shields.
+ *
+ * @param projectile_pos Position of the Hero missile or the Alien bomb.
+ * @param shields Shields in the playing field.
+ * @param c_info with a collision the structure is filled using the index of the
+ *               Shield hit, and the index of the its hit part, -1s otherwise.
+ * @return True if there was an hit, False otherwise.
+ */
+bool is_collision(const coords &projectile_pos, const std::array<FieldShield, SHIELD_NUMBER> &shields, collision &c_info) {
+
 }

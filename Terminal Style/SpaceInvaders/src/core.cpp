@@ -105,6 +105,10 @@ void draw_screen_game(const GameData &gd) {
     gui::refresh_screen();
 }
 
+/**
+ * TODO
+ * @param h
+ */
 void draw_hero_on_field(const Hero &h) {
     // hero spaceship
     gui::draw_sprite(h.position.x, h.position.y, h.sprite);

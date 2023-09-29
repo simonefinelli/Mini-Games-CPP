@@ -111,7 +111,7 @@ int gui::get_char() {
 }
 
 /**
- * @brief Draws on the ncurses terminal a spaceship (sprite).
+ * @brief Draws on the ncurses terminal a generic sprite.
  *
  * @param x X coordinate (columns).
  * @param y Y coordinate (rows).

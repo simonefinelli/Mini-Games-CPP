@@ -9,6 +9,7 @@
 #include <array>
 #include <string>
 #include <vector>
+#include "battlefield.h"
 #include "common.h"
 
 #ifndef SPACEINVADERS_SPACESHIP_H
@@ -22,6 +23,7 @@
 #define HERO_LIVES 3
 #define NOT_ON_FIELD (-1)
 #define MISSILE_PACE 1
+#define NO_COLLISION (-1)
 
 const std::string HERO_SPRITE[] {" /^\\ ", "==~=="};
 
@@ -68,6 +70,11 @@ typedef enum FleetDirection {
     LEFT_DIRECTION
 } direction;
 
+typedef struct CollisionInfo {
+    int shield = -1;
+    int shield_part_hit = -1;
+} collision;
+
 /// Gameplay Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 struct Hero {
     std::string name {};
@@ -111,5 +118,7 @@ void define_hero(Hero &h);
 void refresh_hero(Hero &hero);
 
 void refresh_missile_position(Hero &hero);
+
+bool is_collision(const coords &projectile_pos, const std::array<FieldShield, SHIELD_NUMBER> &shields, collision c_info);
 
 #endif //SPACEINVADERS_SPACESHIP_H

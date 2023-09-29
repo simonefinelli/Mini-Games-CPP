@@ -24,7 +24,7 @@ void init_shields(std::array<FieldShield, SHIELD_NUMBER> &shields) {
 }
 
 /**
- *
+ * TODO
  * @param field_game
  */
 void draw_shields_on_field(const std::array<FieldShield, SHIELD_NUMBER> &shields) {
