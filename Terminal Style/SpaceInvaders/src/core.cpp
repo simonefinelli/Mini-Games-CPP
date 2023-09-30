@@ -6,7 +6,6 @@
  * @date 2023-09-18
  */
 
-#include <array>
 #include "core.h"
 
 void draw_hero_on_field(const Hero &h);
@@ -111,15 +110,16 @@ void draw_screen_game(const GameData &gd) {
 }
 
 /**
- * TODO
- * @param h
+ * @brief Shows the Hero player components on the playing field. So also the
+ * missile is shown using this function.
+ *
+ * @param h The Hero object.
  */
 void draw_hero_on_field(const Hero &h) {
     // hero spaceship
     gui::draw_sprite(h.position.x, h.position.y, h.sprite);
     // hero missile
     if (h.missile.position.x != NOT_ON_FIELD) {
-        // draw missile
         gui::draw_char(h.missile.position.x, h.missile.position.y, h.missile.frame0);
     }
 }

@@ -25,8 +25,9 @@ void init_shields(std::array<FieldShield, SHIELD_NUMBER> &shields) {
 }
 
 /**
- * TODO
- * @param field_game
+ * @brief Draws all 4 shields on the field.
+ *
+ * @param field_game Playing field.
  */
 void draw_shields_on_field(const std::array<FieldShield, SHIELD_NUMBER> &shields) {
     for (const auto &s: shields) {
