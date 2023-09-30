@@ -9,6 +9,8 @@
 #include <array>
 #include "spaceship.h"
 
+bool is_collision(const coords &shot_pos, const std::array<FieldShield, SHIELD_NUMBER> &shields, collision &c);
+
 /**
  * @brief Populates the Hero structure.
  */
@@ -74,12 +76,43 @@ void refresh_missile_position(Hero &h) {
  * @brief Checks if there is a collision between a missile/bomb and one of the
  * shields.
  *
- * @param projectile_pos Position of the Hero missile or the Alien bomb.
+ * @param shot_pos Position of the Hero missile or the Alien bomb.
  * @param shields Shields in the playing field.
- * @param c_info with a collision the structure is filled using the index of the
- *               Shield hit, and the index of the its hit part, -1s otherwise.
+ * @param c with a collision the structure is filled using the index of the
+ *          Shield hit, and the coordinates of the its hit part, -1 otherwise.
  * @return True if there was an hit, False otherwise.
  */
-bool is_collision(const coords &projectile_pos, const std::array<FieldShield, SHIELD_NUMBER> &shields, collision &c_info) {
+bool is_collision(const coords &shot_pos, const std::array<FieldShield, SHIELD_NUMBER> &shields, collision &c) {
+    c.shield_idx = NO_COLLISION;
+    c.shield_part_hit = {NO_COLLISION, NO_COLLISION};
 
+    // if the missile/bomb is in the field check there is a collision with a shield
+    if (shot_pos.y != NOT_ON_FIELD) {
+        for (const FieldShield &s : shields) {
+            if (
+                (shot_pos.x >= s.position.x and shot_pos.x < (s.position.x + SHIELD_SPRITE_WIDTH)) and  // shot in shield width
+                (shot_pos.y >= s.position.y and shot_pos.y < (s.position.y + SHIELD_SPRITE_HEIGHT)) and  // shot in shield height
+                (s.sprite[shot_pos.y - s.position.y][shot_pos.x - s.position.x] != ' ')  // collision with a shield part
+            ) {
+                // collision
+                c.shield_idx = s.id;
+                c.shield_part_hit = {shot_pos.x - s.position.x, shot_pos.y - s.position.y};  // get part index using row,column tuple
+                return true;
+            }
+        }
+    }
+
+    c.shield_idx = -1;
+    c.shield_part_hit = {NO_COLLISION, NO_COLLISION};
+    return false;
+}
+
+void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Missile &missile) {
+    collision c {};
+    if (is_collision(missile.position, shields, c)) {
+        // remove hit part
+        shields[c.shield_idx].sprite[c.shield_part_hit.y][c.shield_part_hit.x] = ' ';
+        // reset hero missile
+        missile.position = {NOT_ON_FIELD, NOT_ON_FIELD};
+    }
 }

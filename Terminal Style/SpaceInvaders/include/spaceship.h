@@ -71,8 +71,8 @@ typedef enum FleetDirection {
 } direction;
 
 typedef struct CollisionInfo {
-    int shield = -1;
-    int shield_part_hit = -1;
+    int shield_idx = -1;
+    coords shield_part_hit = {-1, -1};
 } collision;
 
 /// Gameplay Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -119,6 +119,6 @@ void refresh_hero(Hero &hero);
 
 void refresh_missile_position(Hero &hero);
 
-bool is_collision(const coords &projectile_pos, const std::array<FieldShield, SHIELD_NUMBER> &shields, collision c_info);
+void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Missile &missile);
 
 #endif //SPACEINVADERS_SPACESHIP_H

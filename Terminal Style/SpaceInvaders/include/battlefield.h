@@ -31,8 +31,9 @@ typedef enum FieldGameState {
 } game_state;
 
 struct FieldShield {
+    int id = 0;
     coords position = {0, 0};
-    const std::array<std::string, SHIELD_SPRITE_HEIGHT> sprite = {
+    std::array<std::string, SHIELD_SPRITE_HEIGHT> sprite = {
             "/#####\\",
             "#######",
             "#/   \\#"

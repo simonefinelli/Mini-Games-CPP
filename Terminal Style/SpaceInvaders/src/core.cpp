@@ -20,18 +20,19 @@ void hero_init_shoot(Hero &h);
  */
 GameData initialize_game() {
     GameData gd {};
-    // define game field characteristics
+
+    // define game field characteristics TODO make a function in appropriate object
     gd.field_game.window_size = {W_WIDTH, W_HEIGHT};
     gd.field_game.state = PLAY_SCREEN; // TODO after change with WELCOME_SCREEN
     gd.field_game.level = 1;  // first level
+
+    // init shields
     init_shields(gd.field_game.shields);
 
     // define Hero
     define_hero(gd.hero);
 
-    // define shields
-
-
+    // define fleet
     return gd;
 }
 
@@ -83,6 +84,10 @@ void update_game_data(GameData &gd, key user_choice) {
 
     // update hero missile position
     refresh_missile_position(gd.hero);
+
+    // check shield collision with Hero
+    check_shield_collision(gd.field_game.shields, gd.hero.missile);
+
 }
 
 /**
