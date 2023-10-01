@@ -14,7 +14,7 @@ bool is_collision(const coords &shot_pos, const std::array<FieldShield, SHIELD_N
 /**
  * @brief Populates the Hero structure.
  */
-void define_hero(Hero &h) {
+void init_hero(Hero &h) {
     h.name = HERO_NAME;
     h.lives = HERO_LIVES;
     h.score = 0;
@@ -107,12 +107,25 @@ bool is_collision(const coords &shot_pos, const std::array<FieldShield, SHIELD_N
     return false;
 }
 
-void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Missile &missile) {
+/**
+ * TODO
+ * @param shields
+ * @param missile
+ */
+void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Missile &m) {
     collision c {};
-    if (is_collision(missile.position, shields, c)) {
+    if (is_collision(m.position, shields, c)) {
         // remove hit part
         shields[c.shield_idx].sprite[c.shield_part_hit.y][c.shield_part_hit.x] = ' ';
         // reset hero missile
-        missile.position = {NOT_ON_FIELD, NOT_ON_FIELD};
+        m.position = {NOT_ON_FIELD, NOT_ON_FIELD};
     }
+}
+
+/**
+ * TODO
+ * @param f
+ */
+void init_fleet(AlienFleet &f) {
+
 }

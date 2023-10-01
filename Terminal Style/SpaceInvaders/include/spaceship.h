@@ -113,12 +113,14 @@ struct SpecialAlien {
 };
 
 /// Prototypes - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-void define_hero(Hero &h);
+void init_hero(Hero &h);
 
-void refresh_hero(Hero &hero);
+void refresh_hero(Hero &h);
 
-void refresh_missile_position(Hero &hero);
+void refresh_missile_position(Hero &h);
 
-void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Missile &missile);
+void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Missile &m);
+
+void init_fleet(AlienFleet &f);
 
 #endif //SPACEINVADERS_SPACESHIP_H
