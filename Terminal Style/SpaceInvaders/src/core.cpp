@@ -11,6 +11,7 @@
 void draw_hero_on_field(const Hero &h);
 void move_hero(Hero &h, int peace);
 void hero_init_shoot(Hero &h);
+void draw_alien_fleet(const AlienFleet &f);
 
 /**
  * @brief Creates the two Players.
@@ -46,7 +47,7 @@ GameData initialize_game() {
  */
 int get_user_input() {
     int input = gui::get_char();
-    // int input = ' ';
+    //int input = ' ';
 
     switch (input) {
         case QUIT_CHAR_UPPER:
@@ -106,6 +107,7 @@ void draw_screen_game(const GameData &gd) {
     draw_hero_on_field(gd.hero);
 
     // draw alien fleet
+    draw_alien_fleet(gd.alien_fleet);
 
     // refresh the terminal screen
     gui::refresh_screen();
@@ -123,5 +125,17 @@ void draw_hero_on_field(const Hero &h) {
     // hero missile
     if (h.missile.position.x != NOT_ON_FIELD) {
         gui::draw_char(h.missile.position.x, h.missile.position.y, h.missile.frame0);
+    }
+}
+
+/**
+ * TODO
+ * @param fleet
+ */
+void draw_alien_fleet(const AlienFleet &f) {
+    for (auto &aliens_line : f.aliens) {
+        for (auto &alien : aliens_line) {
+            gui::draw_sprite(alien.position.x, alien.position.y, alien.sprite[0]);
+        }
     }
 }

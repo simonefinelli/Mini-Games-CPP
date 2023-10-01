@@ -32,6 +32,8 @@
 #define FIRST_CLASS_PTS 30
 #define SECOND_CLASS_PTS 20
 #define THIRD_CLASS_PTS 10
+#define INITIAL_FLEET_X_POSITION 4
+#define INITIAL_FLEET_Y_POSITION 10
 
 
 const std::string HERO_SPRITE[] {" /^\\ ", "==~=="};
@@ -113,6 +115,7 @@ struct Alien {
 };
 
 struct AlienFleet {
+    coords start_position {-1, -1};
     std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> aliens {};
     direction attack_direction = RIGHT_DIRECTION;
     int bombs_in_play = 0;

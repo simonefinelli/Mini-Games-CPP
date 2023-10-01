@@ -75,7 +75,8 @@ scr_xy gui::screen_size(WINDOW *win) {
  * Is used to clear the internal data structures of ncurses.
  */
 void gui::clear_screen() {
-    clear();
+    // clear(); // flickering at 30 FPS
+    erase();  // no flickering
 }
 
 /**

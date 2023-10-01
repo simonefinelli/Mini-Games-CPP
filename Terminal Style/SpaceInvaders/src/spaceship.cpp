@@ -10,7 +10,7 @@
 #include "spaceship.h"
 
 bool is_collision(const coords &shot_pos, const std::array<FieldShield, SHIELD_NUMBER> &shields, collision &c);
-void init_alien(Alien &a, alien_type type);
+void init_alien(Alien &a, alien_type type, int x_offset, int y_offset);
 
 /**
  * @brief Populates the Hero structure.
@@ -132,26 +132,32 @@ void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Mis
  * @param f
  */
 void init_fleet(AlienFleet &f) {
-    // init aliens
-    int attack_line = ALIEN_ROWS;
-    for (auto &aliens_line : f.aliens) {
-        for (auto &alien : aliens_line) {
-            if (attack_line == 5) {
-                init_alien(alien, FIRST_CLASS);
-            } else if (attack_line == 4 or attack_line == 3) {
-                init_alien(alien, SECOND_CLASS);
-            } else {  // line 2 and line 1
-                init_alien(alien, THIRD_CLASS);
-            }
-        }
-        attack_line--;
-    }
+    f.start_position = {INITIAL_FLEET_X_POSITION, INITIAL_FLEET_Y_POSITION};
     f.bombs_in_play = 0;
     f.movement_speed = 1.5;
     f.explosion_duration = 1.5;
     f.attack_direction = RIGHT_DIRECTION;
     f.population = int(f.aliens.size());
     f.animation_frame = FRAME_1;
+
+    // init aliens based on fleet starting position
+    int attack_line = ALIEN_ROWS;
+    int x_offset = 0, y_offset = 0;
+    for (auto &aliens_line : f.aliens) {
+        for (auto &alien : aliens_line) {
+            if (attack_line == 5) {
+                init_alien(alien, FIRST_CLASS, x_offset, y_offset);
+            } else if (attack_line == 4 or attack_line == 3) {
+                init_alien(alien, SECOND_CLASS, x_offset, y_offset);
+            } else {  // line 2 and line 1
+                init_alien(alien, THIRD_CLASS, x_offset, y_offset);
+            }
+            x_offset += 6;  // TODO make define const
+        }
+        y_offset += 3;
+        x_offset = 0;  // reset column index
+        attack_line--;
+    }
 }
 
 /**
@@ -160,23 +166,23 @@ void init_fleet(AlienFleet &f) {
  * @param a The Alien object.
  * @param type The Class of the Alien.
  */
-void init_alien(Alien &a, alien_type type) {
+void init_alien(Alien &a, alien_type type, int x_offset, int y_offset) {
     switch (type) {
         case FIRST_CLASS:
             a.type = FIRST_CLASS;
-            a.position = {0, 0};
+            a.position = {INITIAL_FLEET_X_POSITION + x_offset, INITIAL_FLEET_Y_POSITION + y_offset};
             a.sprite = {{{"/oo\\", "<  >"}, {"/oo\\", "/^^\\"}}};
             a.points = FIRST_CLASS_PTS;
             break;
         case SECOND_CLASS:
             a.type = SECOND_CLASS;
-            a.position = {0, 0};
+            a.position = {INITIAL_FLEET_X_POSITION + x_offset, INITIAL_FLEET_Y_POSITION + y_offset};
             a.sprite = {{{" 66 ", "|\\/|"}, {"|66|", "/  \\"}}};
             a.points = SECOND_CLASS_PTS;
             break;
         case THIRD_CLASS:
             a.type = THIRD_CLASS;
-            a.position = {0, 0};
+            a.position = {INITIAL_FLEET_X_POSITION + x_offset, INITIAL_FLEET_Y_POSITION + y_offset};
             a.sprite = {{{"(--)", "/  \\"}, {"(--)", " <> "}}};
             a.points = THIRD_CLASS_PTS;
             break;

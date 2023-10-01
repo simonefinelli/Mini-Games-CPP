@@ -14,8 +14,8 @@
  * @param shields
  */
 void init_shields(std::array<FieldShield, SHIELD_NUMBER> &shields) {
+    int x = SHIELD_INITIAL_PADDING;  // distance between shields and game boundaries
     int offset = SHIELD_SPACING;  // distance between shields
-    int x = SHIELD_PADDING;  // distance between shields and game boundaries
 
     for (auto &s : shields) {
         s.id = int(&s  - &shields[0]);  // to retrieve the index

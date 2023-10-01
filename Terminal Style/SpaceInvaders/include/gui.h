@@ -5,6 +5,7 @@
  * @date 2023-09-09
  */
 
+#include <array>
 #include <ncurses.h>
 #include "common.h"
 
