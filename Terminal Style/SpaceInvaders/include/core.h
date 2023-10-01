@@ -22,7 +22,7 @@ const char QUIT_CHAR_UPPER = 'Q';
 struct GameData {
     FieldGame field_game {};
     Hero hero {};
-
+    AlienFleet alien_fleet {};
 };
 
 GameData initialize_game();

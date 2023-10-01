@@ -29,9 +29,11 @@ GameData initialize_game() {
     init_shields(gd.field_game.shields);
 
     // define Hero
-    define_hero(gd.hero);
+    init_hero(gd.hero);
 
     // define fleet
+    init_fleet(gd.alien_fleet);
+
     return gd;
 }
 
@@ -43,8 +45,8 @@ GameData initialize_game() {
  * @return the
  */
 int get_user_input() {
-    int input = gui::get_char();
-    // int input = ' ';
+    // int input = gui::get_char();
+    int input = ' ';
 
     switch (input) {
         case QUIT_CHAR_UPPER:

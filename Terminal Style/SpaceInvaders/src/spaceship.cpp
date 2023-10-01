@@ -10,6 +10,7 @@
 #include "spaceship.h"
 
 bool is_collision(const coords &shot_pos, const std::array<FieldShield, SHIELD_NUMBER> &shields, collision &c);
+void init_alien(Alien &a, alien_type type);
 
 /**
  * @brief Populates the Hero structure.
@@ -123,9 +124,56 @@ void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Mis
 }
 
 /**
- * TODO
+ * @brief Creates the Alien Fleet.
+ * The Fleet is created by placing the highest ranking aliens in the first
+ * positions and then the lowest ranking aliens in order to emphasize the way in
+ * which they are displayed on the playing field.
+ *
  * @param f
  */
 void init_fleet(AlienFleet &f) {
+    int attack_line = ALIEN_ROWS;
+    for (auto &aliens_line : f.aliens) {
+        for (auto &alien : aliens_line) {
+            if (attack_line == 5) {
+                init_alien(alien, FIRST_CLASS);
+            } else if (attack_line == 4 or attack_line == 3) {
+                init_alien(alien, SECOND_CLASS);
+            } else {  // line 2 and line 1
+                init_alien(alien, THIRD_CLASS);
+            }
+        }
+        attack_line--;
+    }
+}
 
+/**
+ * @brief Initializes the single Alien taking into account its Class.
+ *
+ * @param a The Alien object.
+ * @param type The Class of the Alien.
+ */
+void init_alien(Alien &a, alien_type type) {
+    switch (type) {
+        case FIRST_CLASS:
+            a.type = FIRST_CLASS;
+            a.position = {0, 0};
+            a.sprite = {{{"/oo\\", "<  >"}, {"/oo\\", "/^^\\"}}};
+            a.points = FIRST_CLASS_PTS;
+            break;
+        case SECOND_CLASS:
+            a.type = SECOND_CLASS;
+            a.position = {0, 0};
+            a.sprite = {{{" 66 ", "|\\/|"}, {"|66|", "/  \\"}}};
+            a.points = SECOND_CLASS_PTS;
+            break;
+        case THIRD_CLASS:
+            a.type = THIRD_CLASS;
+            a.position = {0, 0};
+            a.sprite = {{{"(--)", "/  \\"}, {"(--)", " <> "}}};
+            a.points = THIRD_CLASS_PTS;
+            break;
+        default: ;
+    }
+    a.status = ALIVE;
 }

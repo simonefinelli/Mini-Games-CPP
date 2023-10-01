@@ -15,7 +15,7 @@
 #ifndef SPACEINVADERS_SPACESHIP_H
 #define SPACEINVADERS_SPACESHIP_H
 
-#define MAX_ALIEN_AMMO 3  // max alien's ammo per screen/levelC
+#define MAX_ALIEN_AMMO 3
 
 // Hero
 #define HERO_NAME "Player1"
@@ -25,7 +25,17 @@
 #define MISSILE_PACE 1
 #define NO_COLLISION (-1)
 
+// ALIEN FLEET
+#define ALIEN_PER_ROW 11
+#define ALIEN_ROWS 5
+#define SPRITE_FRAME 2
+#define FIRST_CLASS_PTS 30
+#define SECOND_CLASS_PTS 20
+#define THIRD_CLASS_PTS 10
+
+
 const std::string HERO_SPRITE[] {" /^\\ ", "==~=="};
+const std::string ALIEN_1_SPRITE[] {"", ""};
 
 
 /// Hero Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -61,7 +71,7 @@ typedef struct AlienBombAnimation {
 } bomb_anim;
 
 typedef struct AlienBomb {
-    coords position {0, 0};
+    coords position {NOT_ON_FIELD, NOT_ON_FIELD};
     bomb_anim animation {};
 } Bomb;
 
@@ -87,17 +97,17 @@ struct Hero {
 };
 
 struct Alien {
-    alien_type type {};
-    coords position {0, 0};
+    alien_type type = NONE;
+    coords position {NOT_ON_FIELD, NOT_ON_FIELD};
     alien_status status {};
-    size dimension {0, 0};
-    std::vector<Bomb> equipment {MAX_ALIEN_AMMO};
+    std::array<std::array<std::string, SPRITE_HEIGHT>, SPRITE_FRAME> sprite = {};
+    std::array<Bomb, MAX_ALIEN_AMMO> bombs {};
     int ammo = MAX_ALIEN_AMMO;
     int points = 0;
 };
 
 struct AlienFleet {
-    std::vector<std::vector<Alien>> aliens {};
+    std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> aliens {};
     direction attack_direction = RIGHT_DIRECTION;
     int bombs_in_play = 0;
     float speed_movement = 0.0; // how fast Aliens should be move down against the Hero
