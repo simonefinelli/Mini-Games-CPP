@@ -51,7 +51,7 @@ of the screen and award bonus points if destroyed.... [Continue on Wikipedia!](h
 ## First Level Alien
 ```
   (--)  (--)
-  /  \   <>
+  /  \   <> 
 ```
 
 ## Second Level Alien
