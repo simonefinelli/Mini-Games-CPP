@@ -85,6 +85,12 @@ typedef struct CollisionInfo {
     coords shield_part_hit = {-1, -1};
 } collision;
 
+typedef enum AnimationFrame {
+    NO_ANIM = 0,
+    FRAME_1,
+    FRAME_2
+} frame;
+
 /// Gameplay Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 struct Hero {
     std::string name {};
@@ -110,10 +116,10 @@ struct AlienFleet {
     std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> aliens {};
     direction attack_direction = RIGHT_DIRECTION;
     int bombs_in_play = 0;
-    float speed_movement = 0.0; // how fast Aliens should be move down against the Hero
+    float movement_speed = 0.0; // how fast Aliens should be move down against the Hero
     float explosion_duration = 0.0;
     int population = 0;  // number of Aliens in the fleet
-    int line_position = 0;  // fleet height in the Playing Field
+    frame animation_frame = NO_ANIM;
 };
 
 struct SpecialAlien {

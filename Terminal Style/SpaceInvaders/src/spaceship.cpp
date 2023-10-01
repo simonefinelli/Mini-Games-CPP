@@ -132,6 +132,7 @@ void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Mis
  * @param f
  */
 void init_fleet(AlienFleet &f) {
+    // init aliens
     int attack_line = ALIEN_ROWS;
     for (auto &aliens_line : f.aliens) {
         for (auto &alien : aliens_line) {
@@ -145,6 +146,12 @@ void init_fleet(AlienFleet &f) {
         }
         attack_line--;
     }
+    f.bombs_in_play = 0;
+    f.movement_speed = 1.5;
+    f.explosion_duration = 1.5;
+    f.attack_direction = RIGHT_DIRECTION;
+    f.population = int(f.aliens.size());
+    f.animation_frame = FRAME_1;
 }
 
 /**

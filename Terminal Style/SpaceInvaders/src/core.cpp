@@ -45,8 +45,8 @@ GameData initialize_game() {
  * @return the
  */
 int get_user_input() {
-    // int input = gui::get_char();
-    int input = ' ';
+    int input = gui::get_char();
+    // int input = ' ';
 
     switch (input) {
         case QUIT_CHAR_UPPER:
