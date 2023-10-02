@@ -47,7 +47,7 @@ GameData initialize_game() {
  */
 int get_user_input() {
     int input = gui::get_char();
-    //int input = ' ';
+    // int input = ' ';
 
     switch (input) {
         case QUIT_CHAR_UPPER:
@@ -89,6 +89,9 @@ void update_game_data(GameData &gd, key user_choice) {
 
     // check shield collision with Hero
     check_shield_collision(gd.field_game.shields, gd.hero.missile);
+
+    // check aliens collision in fleet
+    check_fleet_collision(gd.alien_fleet.aliens, gd.hero.missile);
 
 }
 

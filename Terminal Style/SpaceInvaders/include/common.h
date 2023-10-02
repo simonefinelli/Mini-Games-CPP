@@ -17,6 +17,7 @@
 
 // spaceships height
 #define SPRITE_HEIGHT 2
+#define SPRITE_WIDTH 4
 
 /**
  * @brief Game coordinates are calculated starting form 0.

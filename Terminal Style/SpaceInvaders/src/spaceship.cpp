@@ -11,6 +11,7 @@
 
 bool is_collision(const coords &shot_pos, const std::array<FieldShield, SHIELD_NUMBER> &shields, shield_collision &c);
 void init_alien(Alien &a, alien_type type, int x_offset, int y_offset);
+bool is_collision(const coords &shot_pos, const std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens, alien_collision &c);
 
 /**
  * @brief Populates the Hero structure.
@@ -74,12 +75,12 @@ void refresh_missile_position(Hero &h) {
 }
 
 /**
- * @brief Checks if there is a collision between a missile/bomb and one of the
+ * @brief Checks if there is a shield_collision between a missile/bomb and one of the
  * shields.
  *
  * @param shot_pos Position of the Hero missile or the Alien bomb.
  * @param shields Shields in the playing field.
- * @param c with a collision the structure is filled using the index of the
+ * @param c with a shield_collision the structure is filled using the index of the
  *          Shield hit, and the coordinates of the its hit part, -1 otherwise.
  * @return True if there was an hit, False otherwise.
  */
@@ -104,6 +105,8 @@ bool is_collision(const coords &shot_pos, const std::array<FieldShield, SHIELD_N
             return true;
         }
     }
+
+    return false;
 }
 
 /**
@@ -137,7 +140,6 @@ void init_fleet(AlienFleet &f) {
     f.attack_direction = RIGHT_DIRECTION;
     f.population = int(f.aliens.size());
     f.animation_frame = FRAME_1;
-
     // init aliens based on fleet starting position
     int attack_line = ALIEN_ROWS;
     int x_offset = 0, y_offset = 0;
@@ -150,9 +152,9 @@ void init_fleet(AlienFleet &f) {
             } else {  // line 2 and line 1
                 init_alien(alien, THIRD_CLASS, x_offset, y_offset);
             }
-            x_offset += 6;  // TODO make define const
+            x_offset += X_OFFSET_BETWEEN_ALIEN;
         }
-        y_offset += 3;
+        y_offset += Y_OFFSET_BETWEEN_ALIEN;
         x_offset = 0;  // reset column index
         attack_line--;
     }
@@ -187,4 +189,69 @@ void init_alien(Alien &a, alien_type type, int x_offset, int y_offset) {
         default: ;
     }
     a.status = ALIVE;
+}
+
+/**
+ * @brief Checks if there is a shield_collision between a missile and one of the
+ * Alien in the fleet.
+ *
+ * @param shot_pos Position of the Hero missile or the Alien bomb.
+ * @param shields Shields in the playing field.
+ * @param c with a shield_collision the structure is filled using the index of the
+ *          Shield hit, and the coordinates of the its hit part, -1 otherwise.
+ * @return True if there was an hit, False otherwise.
+ */
+bool is_collision(const coords &shot_pos, const std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens, alien_collision &c) {
+    c.alien_idx = {NO_COLLISION, NO_COLLISION};
+    c.ship_part_hit = {NO_COLLISION, NO_COLLISION};
+
+    if (shot_pos.y == NOT_ON_FIELD) {
+        return false;
+    }
+
+    // check all aliens in the fleet
+    int attack_line = ALIEN_ROWS;
+    int x_offset = 0, y_offset = 0;
+    int x = 0, y;
+    for (auto &aliens_line : aliens) {
+        y = 0;
+        for (auto &a : aliens_line) {
+            if (a.status == DEAD) {
+                continue;
+            }
+
+            if ((shot_pos.x >= a.position.x and shot_pos.x < (a.position.x + SPRITE_WIDTH)) and  // shot in spaceship width
+                (shot_pos.y >= a.position.y and shot_pos.y < (a.position.y + SPRITE_HEIGHT)) and  // shot in spaceship height
+                (a.sprite[0][shot_pos.y - a.position.y][shot_pos.x - a.position.x] != ' ')) { // shield_collision with a shield part
+                // collision
+                c.alien_idx = {x,  y};
+                c.ship_part_hit = {shot_pos.x - a.position.x, shot_pos.y - a.position.y};  // get part index using row,column tuple
+                return true;
+            }
+            y++;
+            x_offset += X_OFFSET_BETWEEN_ALIEN;
+        }
+        x++;
+        y_offset += Y_OFFSET_BETWEEN_ALIEN;
+        x_offset = 0;  // reset column index
+        attack_line--;
+    }
+
+    return false;
+}
+
+/**
+ * TODOa
+ */
+void check_fleet_collision(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens, Missile &m) {
+    alien_collision c {};
+    if (is_collision(m.position, aliens, c)) {
+        // remove all the alien spaceship
+        aliens[c.alien_idx.x][c.alien_idx.y].sprite[0][0] = "    ";
+        aliens[c.alien_idx.x][c.alien_idx.y].sprite[0][1] = "    ";
+        aliens[c.alien_idx.x][c.alien_idx.y].sprite[1][0] = "    ";
+        aliens[c.alien_idx.x][c.alien_idx.y].sprite[1][1] = "    ";
+        // reset hero missile
+        m.position = {NOT_ON_FIELD, NOT_ON_FIELD};
+    }
 }

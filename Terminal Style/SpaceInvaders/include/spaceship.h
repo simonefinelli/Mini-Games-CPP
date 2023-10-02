@@ -34,11 +34,10 @@
 #define THIRD_CLASS_PTS 10
 #define INITIAL_FLEET_X_POSITION 8
 #define INITIAL_FLEET_Y_POSITION 10
-
+#define Y_OFFSET_BETWEEN_ALIEN (SPRITE_HEIGHT + 1)
+#define X_OFFSET_BETWEEN_ALIEN 6
 
 const std::string HERO_SPRITE[] {" /^\\ ", "==~=="};
-const std::string ALIEN_1_SPRITE[] {"", ""};
-
 
 /// Hero Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 typedef struct HeroMissile {
@@ -51,6 +50,11 @@ typedef struct HeroExplosionAnimation {
     const std::string frame1 = "._-^.\n=====";
     int active_frame = 0;  // frame0: 0 - frame2: 1  // TODO make sense?
 } hero_exp_anim;
+
+typedef struct ShieldCollisionInfo {
+    int shield_idx = NO_COLLISION;
+    coords shield_part_hit = {NO_COLLISION, NO_COLLISION};
+} shield_collision;
 
 /// Aliens Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 typedef enum AlienType {
@@ -82,16 +86,16 @@ typedef enum FleetDirection {
     LEFT_DIRECTION
 } direction;
 
-typedef struct CollisionInfo {
-    int shield_idx = -1;
-    coords shield_part_hit = {-1, -1};
-} collision;
-
 typedef enum AnimationFrame {
     NO_ANIM = 0,
     FRAME_1,
     FRAME_2
 } frame;
+
+typedef struct AlienFleetCollisionInfo {
+    coords alien_idx = {NO_COLLISION, NO_COLLISION};
+    coords ship_part_hit = {NO_COLLISION, NO_COLLISION};
+} alien_collision;
 
 /// Gameplay Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 struct Hero {
@@ -141,5 +145,7 @@ void refresh_missile_position(Hero &h);
 void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Missile &m);
 
 void init_fleet(AlienFleet &f);
+
+void check_fleet_collision(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens, Missile &m);
 
 #endif //SPACEINVADERS_SPACESHIP_H
