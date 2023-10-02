@@ -12,7 +12,7 @@
 #define FPS 30
 
 // playing field
-#define W_WIDTH 72 // columns
+#define W_WIDTH 80 // columns
 #define W_HEIGHT 45 // rows
 
 // spaceships height

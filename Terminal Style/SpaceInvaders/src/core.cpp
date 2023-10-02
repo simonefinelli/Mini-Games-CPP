@@ -114,7 +114,7 @@ void draw_screen_game(const GameData &gd) {
 }
 
 /**
- * @brief Shows the Hero player components on the playing field. So also the
+ * @brief Shows the Hero player components on the playing field. Also the
  * missile is shown using this function.
  *
  * @param h The Hero object.
@@ -129,8 +129,9 @@ void draw_hero_on_field(const Hero &h) {
 }
 
 /**
- * TODO
- * @param fleet
+ * @brief Draws the alien fleet according to their position in the playing field.
+ *
+ * @param fleet The Fleet object.
  */
 void draw_alien_fleet(const AlienFleet &f) {
     for (auto &aliens_line : f.aliens) {
