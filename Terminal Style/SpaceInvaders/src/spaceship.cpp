@@ -98,7 +98,7 @@ bool is_collision(const coords &shot_pos, const std::array<FieldShield, SHIELD_N
             (shot_pos.y >= s.position.y and shot_pos.y < (s.position.y + SHIELD_SPRITE_HEIGHT)) and  // shot in shield height
             (s.sprite[shot_pos.y - s.position.y][shot_pos.x - s.position.x] != ' ')  // shield_collision with a shield part
         ) {
-            // shield_collision
+            // shield collision
             c.shield_idx = s.id;
             c.shield_part_hit = {shot_pos.x - s.position.x, shot_pos.y - s.position.y};  // get part index using row,column tuple
             return true;
