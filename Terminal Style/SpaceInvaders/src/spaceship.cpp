@@ -110,9 +110,10 @@ bool is_collision(const coords &shot_pos, const std::array<FieldShield, SHIELD_N
 }
 
 /**
- * TODO
- * @param shields
- * @param missile
+ * @brief Checks if there is a collision between a hero missile and the shields.
+ *
+ * @param shields The shields on the playing field.
+ * @param missile The hero missile.
  */
 void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Missile &m) {
     shield_collision c {};
@@ -241,7 +242,11 @@ bool is_collision(const coords &shot_pos, const std::array<std::array<Alien, ALI
 }
 
 /**
- * TODOa
+ * @brief Checks the collision between the hero missile and the Aliens in the
+ * fleet.
+ *
+ * @param aliens Aliens objects in the Fleet.
+ * @param m The hero missile.
  */
 void check_fleet_collision(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens, Missile &m) {
     alien_collision c {};
