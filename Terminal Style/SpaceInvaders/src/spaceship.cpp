@@ -217,9 +217,7 @@ bool is_collision(const coords &shot_pos, const std::array<std::array<Alien, ALI
     for (auto &aliens_line : aliens) {
         y = 0;
         for (auto &a : aliens_line) {
-            if (a.status == DEAD) {
-                continue;
-            }
+            if (a.status == DEAD) continue;
 
             if ((shot_pos.x >= a.position.x and shot_pos.x < (a.position.x + SPRITE_WIDTH)) and  // shot in spaceship width
                 (shot_pos.y >= a.position.y and shot_pos.y < (a.position.y + SPRITE_HEIGHT)) and  // shot in spaceship height
@@ -251,11 +249,13 @@ bool is_collision(const coords &shot_pos, const std::array<std::array<Alien, ALI
 void check_fleet_collision(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens, Missile &m) {
     alien_collision c {};
     if (is_collision(m.position, aliens, c)) {
-        // remove all the alien spaceship
+        // remove the alien spaceship
         aliens[c.alien_idx.x][c.alien_idx.y].sprite[0][0] = "    ";
         aliens[c.alien_idx.x][c.alien_idx.y].sprite[0][1] = "    ";
         aliens[c.alien_idx.x][c.alien_idx.y].sprite[1][0] = "    ";
         aliens[c.alien_idx.x][c.alien_idx.y].sprite[1][1] = "    ";
+        // update status
+        aliens[c.alien_idx.x][c.alien_idx.y].status = DEAD;
         // reset hero missile
         m.position = {NOT_ON_FIELD, NOT_ON_FIELD};
     }
