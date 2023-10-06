@@ -220,8 +220,8 @@ bool is_collision(const coords &shot_pos, const std::array<std::array<Alien, ALI
             if (a.status != ALIVE) continue;
 
             if ((shot_pos.x >= a.position.x and shot_pos.x < (a.position.x + SPRITE_WIDTH)) and  // shot in spaceship width
-                (shot_pos.y >= a.position.y and shot_pos.y < (a.position.y + SPRITE_HEIGHT)) and  // shot in spaceship height
-                (a.sprite[0][shot_pos.y - a.position.y][shot_pos.x - a.position.x] != ' ')) { // shield_collision with a shield part
+                (shot_pos.y >= a.position.y and shot_pos.y < (a.position.y + SPRITE_HEIGHT)) // shot in spaceship height
+                ) {  // alien part is not empty
                 // collision
                 c.alien_idx = {x,  y};
                 c.ship_part_hit = {shot_pos.x - a.position.x, shot_pos.y - a.position.y};  // get part index using row,column tuple
