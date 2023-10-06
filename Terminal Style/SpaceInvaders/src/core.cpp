@@ -91,7 +91,9 @@ void update_game_data(GameData &gd, key user_choice) {
     check_shield_collision(gd.field_game.shields, gd.hero.missile);
 
     // check aliens collision in fleet
-    check_fleet_collision(gd.alien_fleet.aliens, gd.hero.missile);
+    check_fleet_collision(gd.alien_fleet, gd.hero.missile);
+
+    // make alien explosion
 
 }
 

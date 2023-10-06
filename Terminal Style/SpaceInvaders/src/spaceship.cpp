@@ -246,16 +246,18 @@ bool is_collision(const coords &shot_pos, const std::array<std::array<Alien, ALI
  * @param aliens Aliens objects in the Fleet.
  * @param m The hero missile.
  */
-void check_fleet_collision(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens, Missile &m) {
+void check_fleet_collision(AlienFleet &f, Missile &m) {
     alien_collision c {};
-    if (is_collision(m.position, aliens, c)) {
+    if (is_collision(m.position, f.aliens, c)) {
         // remove the alien spaceship
-        aliens[c.alien_idx.x][c.alien_idx.y].sprite[0][0] = "    ";
-        aliens[c.alien_idx.x][c.alien_idx.y].sprite[0][1] = "    ";
-        aliens[c.alien_idx.x][c.alien_idx.y].sprite[1][0] = "    ";
-        aliens[c.alien_idx.x][c.alien_idx.y].sprite[1][1] = "    ";
-        // update status
-        aliens[c.alien_idx.x][c.alien_idx.y].status = DEAD;
+        f.aliens[c.alien_idx.x][c.alien_idx.y].sprite[0][0] = "    ";
+        f.aliens[c.alien_idx.x][c.alien_idx.y].sprite[0][1] = "    ";
+        f.aliens[c.alien_idx.x][c.alien_idx.y].sprite[1][0] = "    ";
+        f.aliens[c.alien_idx.x][c.alien_idx.y].sprite[1][1] = "    ";
+        // update alien status
+        f.aliens[c.alien_idx.x][c.alien_idx.y].status = EXPLODING;
+        // update fleet population
+        f.population--;
         // reset hero missile
         m.position = {NOT_ON_FIELD, NOT_ON_FIELD};
     }
