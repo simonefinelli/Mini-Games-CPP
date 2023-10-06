@@ -91,9 +91,7 @@ void update_game_data(GameData &gd, key user_choice) {
     check_shield_collision(gd.field_game.shields, gd.hero.missile);
 
     // check aliens collision in fleet
-    check_fleet_collision(gd.alien_fleet, gd.hero.missile);
-
-    // make alien explosion
+    check_fleet_collision(gd.alien_fleet, gd.hero);
 
 }
 
@@ -113,6 +111,8 @@ void draw_screen_game(const GameData &gd) {
 
     // draw alien fleet
     draw_alien_fleet(gd.alien_fleet);
+
+    // make alien explosion (if any)
 
     // refresh the terminal screen
     gui::refresh_screen();
@@ -141,7 +141,8 @@ void draw_hero_on_field(const Hero &h) {
 void draw_alien_fleet(const AlienFleet &f) {
     for (auto &aliens_line : f.aliens) {
         for (auto &alien : aliens_line) {
-            gui::draw_sprite(alien.position.x, alien.position.y, alien.sprite[0]);
+            if (alien.status == ALIVE)
+                gui::draw_sprite(alien.position.x, alien.position.y, alien.sprite[0]);
         }
     }
 }

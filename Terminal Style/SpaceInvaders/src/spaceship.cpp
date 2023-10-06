@@ -193,7 +193,7 @@ void init_alien(Alien &a, alien_type type, int x_offset, int y_offset) {
 }
 
 /**
- * @brief Checks if there is a shield_collision between a missile and one of the
+ * @brief Checks if there is a collision between a missile and one of the
  * Alien in the fleet.
  *
  * @param shot_pos Position of the Hero missile or the Alien bomb.
@@ -217,7 +217,7 @@ bool is_collision(const coords &shot_pos, const std::array<std::array<Alien, ALI
     for (auto &aliens_line : aliens) {
         y = 0;
         for (auto &a : aliens_line) {
-            if (a.status == DEAD) continue;
+            if (a.status != ALIVE) continue;
 
             if ((shot_pos.x >= a.position.x and shot_pos.x < (a.position.x + SPRITE_WIDTH)) and  // shot in spaceship width
                 (shot_pos.y >= a.position.y and shot_pos.y < (a.position.y + SPRITE_HEIGHT)) and  // shot in spaceship height
@@ -246,19 +246,18 @@ bool is_collision(const coords &shot_pos, const std::array<std::array<Alien, ALI
  * @param aliens Aliens objects in the Fleet.
  * @param m The hero missile.
  */
-void check_fleet_collision(AlienFleet &f, Missile &m) {
+void check_fleet_collision(AlienFleet &f, Hero &h) {
     alien_collision c {};
-    if (is_collision(m.position, f.aliens, c)) {
+    if (is_collision(h.missile.position, f.aliens, c)) {
         // remove the alien spaceship
-        f.aliens[c.alien_idx.x][c.alien_idx.y].sprite[0][0] = "    ";
-        f.aliens[c.alien_idx.x][c.alien_idx.y].sprite[0][1] = "    ";
-        f.aliens[c.alien_idx.x][c.alien_idx.y].sprite[1][0] = "    ";
-        f.aliens[c.alien_idx.x][c.alien_idx.y].sprite[1][1] = "    ";
+        Alien &a = f.aliens[c.alien_idx.x][c.alien_idx.y];
         // update alien status
-        f.aliens[c.alien_idx.x][c.alien_idx.y].status = EXPLODING;
+        a.status = EXPLODING;
         // update fleet population
         f.population--;
         // reset hero missile
-        m.position = {NOT_ON_FIELD, NOT_ON_FIELD};
+        h.missile.position = {NOT_ON_FIELD, NOT_ON_FIELD};
+        // update hero score
+        h.score += a.points;
     }
 }

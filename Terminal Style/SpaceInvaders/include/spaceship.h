@@ -146,6 +146,6 @@ void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Mis
 
 void init_fleet(AlienFleet &f);
 
-void check_fleet_collision(AlienFleet &f, Missile &m);
+void check_fleet_collision(AlienFleet &f, Hero &h);
 
 #endif //SPACEINVADERS_SPACESHIP_H
