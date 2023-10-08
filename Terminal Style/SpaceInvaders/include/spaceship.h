@@ -94,7 +94,6 @@ typedef enum AnimationFrame {
 
 typedef struct AlienFleetCollisionInfo {
     coords alien_idx = {NO_COLLISION, NO_COLLISION};
-    coords ship_part_hit = {NO_COLLISION, NO_COLLISION};
 } alien_collision;
 
 /// Gameplay Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

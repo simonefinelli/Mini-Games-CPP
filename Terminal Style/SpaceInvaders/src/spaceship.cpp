@@ -204,27 +204,23 @@ void init_alien(Alien &a, alien_type type, int x_offset, int y_offset) {
  */
 bool is_collision(const coords &shot_pos, const std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens, alien_collision &c) {
     c.alien_idx = {NO_COLLISION, NO_COLLISION};
-    c.ship_part_hit = {NO_COLLISION, NO_COLLISION};
 
     if (shot_pos.y == NOT_ON_FIELD) {
+        // c.ship_part_hit = {NO_COLLISION, NO_COLLISION};
         return false;
     }
 
     // check all aliens in the fleet
-    int attack_line = ALIEN_ROWS;
     int x_offset = 0, y_offset = 0;
-    int x = 0, y;
+    int x = 0;
     for (auto &aliens_line : aliens) {
-        y = 0;
+        int y = 0;
         for (auto &a : aliens_line) {
-            if (a.status != ALIVE) continue;
-
             if ((shot_pos.x >= a.position.x and shot_pos.x < (a.position.x + SPRITE_WIDTH)) and  // shot in spaceship width
-                (shot_pos.y >= a.position.y and shot_pos.y < (a.position.y + SPRITE_HEIGHT)) // shot in spaceship height
-                ) {  // alien part is not empty
+                (shot_pos.y >= a.position.y and shot_pos.y < (a.position.y + SPRITE_HEIGHT)) and // shot in spaceship height
+                a.status == ALIVE) {
                 // collision
                 c.alien_idx = {x,  y};
-                c.ship_part_hit = {shot_pos.x - a.position.x, shot_pos.y - a.position.y};  // get part index using row,column tuple
                 return true;
             }
             y++;
@@ -233,7 +229,6 @@ bool is_collision(const coords &shot_pos, const std::array<std::array<Alien, ALI
         x++;
         y_offset += Y_OFFSET_BETWEEN_ALIEN;
         x_offset = 0;  // reset column index
-        attack_line--;
     }
 
     return false;
@@ -252,7 +247,7 @@ void check_fleet_collision(AlienFleet &f, Hero &h) {
         // remove the alien spaceship
         Alien &a = f.aliens[c.alien_idx.x][c.alien_idx.y];
         // update alien status
-        a.status = EXPLODING;
+        a.status = DEAD;
         // update fleet population
         f.population--;
         // reset hero missile
