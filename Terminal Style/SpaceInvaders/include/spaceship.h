@@ -24,6 +24,7 @@
 #define NOT_ON_FIELD (-1)
 #define MISSILE_PACE 1
 #define NO_COLLISION (-1)
+const std::string HERO_SPRITE[] {" /^\\ ", "==~=="};
 
 // ALIEN FLEET
 #define ALIEN_PER_ROW 11
@@ -36,8 +37,9 @@
 #define INITIAL_FLEET_Y_POSITION 10
 #define Y_OFFSET_BETWEEN_ALIEN (SPRITE_HEIGHT + 1)
 #define X_OFFSET_BETWEEN_ALIEN 6
+#define ALIEN_EXPLOSION_DURATION 0.4
+const std::string ALIEN_EXPLOSION_SPRITE[] {"\\\\//", "//\\\\"};
 
-const std::string HERO_SPRITE[] {" /^\\ ", "==~=="};
 
 /// Hero Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 typedef struct HeroMissile {
@@ -45,11 +47,11 @@ typedef struct HeroMissile {
     char frame0 =  '|';
 } Missile;
 
-typedef struct HeroExplosionAnimation {
-    const std::string frame0 = ".^-_.\n=====";
-    const std::string frame1 = "._-^.\n=====";
+struct HeroExplosionAnimation {
+    const std::string frame0 = ".^-_.\n=====";  // TODO modify
+    const std::string frame1 = "._-^.\n=====";  // TODO modify
     int active_frame = 0;  // frame0: 0 - frame2: 1  // TODO make sense?
-} hero_exp_anim;
+};
 
 typedef struct ShieldCollisionInfo {
     int shield_idx = NO_COLLISION;
@@ -81,6 +83,15 @@ typedef struct AlienBomb {
     bomb_anim animation {};
 } Bomb;
 
+struct AlienExplosionAnimation {
+    const std::array<std::string, SPRITE_HEIGHT> frame0 = {
+            ALIEN_EXPLOSION_SPRITE[0],
+            ALIEN_EXPLOSION_SPRITE[1]
+    };
+    float timer = FPS * ALIEN_EXPLOSION_DURATION;
+    int active_frame = 0;  // frame0: 0 - frame2: 1  // TODO make sense?
+};
+
 typedef enum FleetDirection {
     RIGHT_DIRECTION = 0,
     LEFT_DIRECTION
@@ -99,10 +110,10 @@ typedef struct AlienFleetCollisionInfo {
 /// Gameplay Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 struct Hero {
     std::string name {};
-    const std::array<std::string, SPRITE_HEIGHT> sprite = {HERO_SPRITE[0], HERO_SPRITE[1]};;
+    const std::array<std::string, SPRITE_HEIGHT> sprite = {HERO_SPRITE[0], HERO_SPRITE[1]};
     coords position {0, 0};
     Missile missile {};
-    hero_exp_anim animation {};
+    HeroExplosionAnimation explosion {};
     int lives = 0;
     int score = 0;
 };
@@ -112,6 +123,7 @@ struct Alien {
     coords position {NOT_ON_FIELD, NOT_ON_FIELD};
     alien_status status {};
     std::array<std::array<std::string, SPRITE_HEIGHT>, SPRITE_FRAME> sprite = {};
+    AlienExplosionAnimation explosion {};
     std::array<Bomb, MAX_ALIEN_AMMO> bombs {};
     int ammo = MAX_ALIEN_AMMO;
     int points = 0;
@@ -123,7 +135,6 @@ struct AlienFleet {
     direction attack_direction = RIGHT_DIRECTION;
     int bombs_in_play = 0;
     float movement_speed = 0.0; // how fast Aliens should be move down against the Hero
-    float explosion_duration = 0.0;
     int population = 0;  // number of Aliens in the fleet
     frame animation_frame = NO_ANIM;
 };
@@ -136,8 +147,6 @@ struct SpecialAlien {
 
 /// Prototypes - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 void init_hero(Hero &h);
-
-void refresh_hero(Hero &h);
 
 void refresh_missile_position(Hero &h);
 

@@ -31,6 +31,6 @@ int get_user_input();
 
 void update_game_data(GameData &gd, key user_choice);
 
-void draw_screen_game(const GameData &gd);
+void draw_screen_game(GameData &gd);
 
 #endif //SPACEINVADERS_CORE_H

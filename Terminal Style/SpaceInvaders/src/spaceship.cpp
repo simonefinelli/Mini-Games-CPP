@@ -7,6 +7,8 @@
  */
 
 #include <array>
+#include <chrono>
+#include <iostream>
 #include "spaceship.h"
 
 bool is_collision(const coords &shot_pos, const std::array<FieldShield, SHIELD_NUMBER> &shields, shield_collision &c);
@@ -137,7 +139,6 @@ void init_fleet(AlienFleet &f) {
     f.start_position = {INITIAL_FLEET_X_POSITION, INITIAL_FLEET_Y_POSITION};
     f.bombs_in_play = 0;
     f.movement_speed = 1.5;
-    f.explosion_duration = 1.5;
     f.attack_direction = RIGHT_DIRECTION;
     f.population = int(f.aliens.size());
     f.animation_frame = FRAME_1;
@@ -247,7 +248,7 @@ void check_fleet_collision(AlienFleet &f, Hero &h) {
         // remove the alien spaceship
         Alien &a = f.aliens[c.alien_idx.x][c.alien_idx.y];
         // update alien status
-        a.status = DEAD;
+        a.status = EXPLODING;
         // update fleet population
         f.population--;
         // reset hero missile
@@ -255,4 +256,26 @@ void check_fleet_collision(AlienFleet &f, Hero &h) {
         // update hero score
         h.score += a.points;
     }
+}
+
+/**
+ * TODO
+ * @param aliens
+ */
+void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens) {
+    // check if an alien is exploding
+    // if true check if the explosion timer is not 0
+    // if the time is 0 == alien.status = DEAD
+    for (auto &aliens_line : aliens) {
+        for (auto &a : aliens_line) {
+            if (a.status == EXPLODING and a.explosion.timer > 0) {
+                a.explosion.timer--;
+                if (a.explosion.timer <= 0) {
+                    a.status = DEAD;
+                }
+            }
+        }
+    }
+
+
 }

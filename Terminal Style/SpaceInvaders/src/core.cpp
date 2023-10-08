@@ -6,12 +6,15 @@
  * @date 2023-09-18
  */
 
+#include <chrono>
+#include <iostream>
 #include "core.h"
 
 void draw_hero_on_field(const Hero &h);
 void move_hero(Hero &h, int peace);
 void hero_init_shoot(Hero &h);
-void draw_alien_fleet(const AlienFleet &f);
+void draw_alien_fleet(AlienFleet &f);
+void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens);
 
 /**
  * @brief Creates the two Players.
@@ -93,13 +96,16 @@ void update_game_data(GameData &gd, key user_choice) {
     // check aliens collision in fleet
     check_fleet_collision(gd.alien_fleet, gd.hero);
 
+    // handle alien explosion
+    check_alien_explosion(gd.alien_fleet.aliens);
+
 }
 
 /**
  * @brief Uses the graphical library (ncurses - gui.h) to draw the game on
  * terminal screen.
  */
-void draw_screen_game(const GameData &gd) {
+void draw_screen_game(GameData &gd) {
     // clear the terminal screen
     gui::clear_screen();
 
@@ -111,8 +117,6 @@ void draw_screen_game(const GameData &gd) {
 
     // draw alien fleet
     draw_alien_fleet(gd.alien_fleet);
-
-    // make alien explosion (if any)
 
     // refresh the terminal screen
     gui::refresh_screen();
@@ -138,9 +142,12 @@ void draw_hero_on_field(const Hero &h) {
  *
  * @param fleet The Fleet object.
  */
-void draw_alien_fleet(const AlienFleet &f) {
+void draw_alien_fleet(AlienFleet &f) {
     for (auto &aliens_line : f.aliens) {
         for (auto &alien : aliens_line) {
+            if (alien.status == EXPLODING) {
+                gui::draw_sprite(alien.position.x, alien.position.y, alien.explosion.frame0);  // explosion animation
+            }
             if (alien.status == ALIVE)
                 gui::draw_sprite(alien.position.x, alien.position.y, alien.sprite[0]);
         }
