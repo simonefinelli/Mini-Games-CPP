@@ -263,13 +263,10 @@ void check_fleet_collision(AlienFleet &f, Hero &h) {
  * @param aliens
  */
 void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens) {
-    // check if an alien is exploding
-    // if true check if the explosion timer is not 0
-    // if the time is 0 == alien.status = DEAD
     for (auto &aliens_line : aliens) {
         for (auto &a : aliens_line) {
             if (a.status == EXPLODING and a.explosion.timer > 0) {
-                a.explosion.timer--;
+                a.explosion.timer--; // decrease explosion show time
                 if (a.explosion.timer <= 0) {
                     a.status = DEAD;
                 }

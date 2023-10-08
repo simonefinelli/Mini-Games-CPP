@@ -24,7 +24,7 @@
 #define NOT_ON_FIELD (-1)
 #define MISSILE_PACE 1
 #define NO_COLLISION (-1)
-const std::string HERO_SPRITE[] {" /^\\ ", "==~=="};
+const std::string HERO_SPRITE[] {R"(  ^  )", R"(|-V-|)"};
 
 // ALIEN FLEET
 #define ALIEN_PER_ROW 11
