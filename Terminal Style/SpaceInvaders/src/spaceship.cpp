@@ -7,7 +7,6 @@
  */
 
 #include <array>
-#include <chrono>
 #include <iostream>
 #include "spaceship.h"
 
@@ -259,7 +258,10 @@ void check_fleet_collision(AlienFleet &f, Hero &h) {
 }
 
 /**
- * TODO
+ * @brief Checks if an Alien is hit and decrease the explosion timer.
+ * When the explosion timer is less than 0, then the alien status is set to
+ * DEAD.
+ *
  * @param aliens
  */
 void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens) {
@@ -273,6 +275,4 @@ void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_RO
             }
         }
     }
-
-
 }
