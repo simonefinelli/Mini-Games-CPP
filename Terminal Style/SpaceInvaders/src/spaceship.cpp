@@ -262,7 +262,7 @@ void check_fleet_collision(AlienFleet &f, Hero &h) {
  * When the explosion timer is less than 0, then the alien status is set to
  * DEAD.
  *
- * @param aliens
+ * @param aliens Alien Fleet
  */
 void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens) {
     for (auto &aliens_line : aliens) {
