@@ -99,6 +99,9 @@ void update_game_data(GameData &gd, key user_choice) {
     // handle alien explosion
     check_alien_explosion(gd.alien_fleet.aliens);
 
+    // move fleet
+    void update_fleet_speed(AlienFleet &fleet);
+
 }
 
 /**

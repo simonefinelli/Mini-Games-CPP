@@ -262,7 +262,7 @@ void check_fleet_collision(AlienFleet &f, Hero &h) {
  * When the explosion timer is less than 0, then the alien status is set to
  * DEAD.
  *
- * @param aliens Alien Fleet
+ * @param aliens Alien Fleet.
  */
 void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens) {
     for (auto &aliens_line : aliens) {
@@ -275,4 +275,14 @@ void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_RO
             }
         }
     }
+}
+
+/**
+ * @brief Every time the alien fleet speed is reset, the velocity of aliens will
+ * increase, in according the field line and the number of Aliens left.
+ *
+ * @param fleet The alien Fleet.
+ */
+void reset_fleet_speed(AlienFleet &fleet) {
+    fleet.movement_speed = float(fleet.game_line * 2.0 + (float(fleet.population) / float(ALIEN_PER_ROW * ALIEN_ROWS)));
 }

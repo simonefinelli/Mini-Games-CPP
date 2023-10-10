@@ -134,9 +134,10 @@ struct AlienFleet {
     std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> aliens {};
     direction attack_direction = RIGHT_DIRECTION;
     int bombs_in_play = 0;
-    float movement_speed = 0.0; // how fast Aliens should be move down against the Hero
     int population = 0;  // number of Aliens in the fleet
     frame animation_frame = NO_ANIM;
+    float movement_speed = 0.0; // how fast Aliens should be move down against the Hero
+    int game_line = 0; // current Fleet position in field vertically. (used to update the movement speed)
 };
 
 struct SpecialAlien {
@@ -155,5 +156,7 @@ void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Mis
 void init_fleet(AlienFleet &f);
 
 void check_fleet_collision(AlienFleet &f, Hero &h);
+
+void void update_fleet_speed(AlienFleet &fleet);
 
 #endif //SPACEINVADERS_SPACESHIP_H
