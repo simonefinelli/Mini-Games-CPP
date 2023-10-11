@@ -99,7 +99,7 @@ void update_game_data(GameData &gd, key user_choice) {
     check_alien_explosion(gd.alien_fleet.aliens);
 
     // move fleet
-    reset_fleet_speed(gd.alien_fleet);
+    make_fleet_movement(gd.alien_fleet);
 
 }
 

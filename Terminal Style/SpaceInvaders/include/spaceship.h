@@ -94,7 +94,8 @@ struct AlienExplosionAnimation {
 
 typedef enum FleetDirection {
     RIGHT_DIRECTION = 0,
-    LEFT_DIRECTION
+    LEFT_DIRECTION,
+    DOWN_DIRECTION
 } direction;
 
 typedef enum AnimationFrame {
@@ -159,6 +160,6 @@ void check_fleet_collision(AlienFleet &f, Hero &h);
 
 void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens);
 
-void reset_fleet_speed(AlienFleet &fleet);
+void make_fleet_movement(AlienFleet &fleet);
 
 #endif //SPACEINVADERS_SPACESHIP_H
