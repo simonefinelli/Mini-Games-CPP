@@ -157,6 +157,8 @@ void init_fleet(AlienFleet &f);
 
 void check_fleet_collision(AlienFleet &f, Hero &h);
 
-void void update_fleet_speed(AlienFleet &fleet);
+void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens);
+
+void reset_fleet_speed(AlienFleet &fleet);
 
 #endif //SPACEINVADERS_SPACESHIP_H

@@ -14,7 +14,6 @@ void draw_hero_on_field(const Hero &h);
 void move_hero(Hero &h, int peace);
 void hero_init_shoot(Hero &h);
 void draw_alien_fleet(AlienFleet &f);
-void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens);
 
 /**
  * @brief Creates the two Players.
@@ -100,7 +99,7 @@ void update_game_data(GameData &gd, key user_choice) {
     check_alien_explosion(gd.alien_fleet.aliens);
 
     // move fleet
-    void update_fleet_speed(AlienFleet &fleet);
+    reset_fleet_speed(gd.alien_fleet);
 
 }
 
