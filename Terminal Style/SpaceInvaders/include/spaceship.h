@@ -99,8 +99,8 @@ typedef enum FleetDirection {
 } direction;
 
 typedef enum AnimationFrame {
-    NO_ANIM = 0,
-    FRAME_1,
+    NO_ANIM = -1,
+    FRAME_1 = 0,
     FRAME_2
 } frame;
 

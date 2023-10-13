@@ -151,7 +151,7 @@ void draw_alien_fleet(AlienFleet &f) {
                 gui::draw_sprite(alien.position.x, alien.position.y, alien.explosion.frame0);  // explosion animation
             }
             if (alien.status == ALIVE)
-                gui::draw_sprite(alien.position.x, alien.position.y, alien.sprite[0]);
+                gui::draw_sprite(alien.position.x, alien.position.y, alien.sprite[f.animation_frame]);
         }
     }
 }

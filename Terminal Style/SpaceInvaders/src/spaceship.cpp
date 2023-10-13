@@ -138,9 +138,9 @@ void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Mis
 void init_fleet(AlienFleet &f) {
     f.start_position = {INITIAL_FLEET_X_POSITION, INITIAL_FLEET_Y_POSITION};
     f.bombs_in_play = 0;
-    f.movement_speed = 400;
+    f.movement_speed = 30;
     f.attack_direction = RIGHT_DIRECTION;
-    f.population = int(f.aliens.size());
+    f.population = int(std::end(f.aliens) - std::begin(f.aliens) );
     f.animation_frame = FRAME_1;
     // init aliens based on fleet starting position
     int attack_line = ALIEN_ROWS;
@@ -284,23 +284,30 @@ void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_RO
  * @param aliens Alien Fleet.
  */
 void make_fleet_movement(AlienFleet &fleet) {
-    int offset;
-    if (fleet.attack_direction == RIGHT_DIRECTION)
-        offset = 1;
-    else
-        offset = -1;
+    int x_offset, y_offset = 1;
 
-    for (auto &aliens_line : fleet.aliens) {
-        for (auto &a : aliens_line) {
-            if (fleet.movement_speed <= 0) {
-                a.position.x += offset;
-                reset_fleet_speed(fleet);
-            } else {
-                fleet.movement_speed--;
+    if (fleet.movement_speed == 0.0) {
+        for (auto &aliens_line : fleet.aliens) {
+            for (auto &a : aliens_line) {
+                    if (a.position.x + x_offset > (W_WIDTH - SPRITE_WIDTH) or (a.position.x + x_offset < 0)) { // check alien for boundaries
+                        fleet.attack_direction == RIGHT_DIRECTION ? fleet.attack_direction = LEFT_DIRECTION : fleet.attack_direction = RIGHT_DIRECTION;
+                    }
+                    if (fleet.attack_direction == RIGHT_DIRECTION) {
+                        x_offset = 1;
+                    } else {
+                        x_offset = -1;
+                    }
+                    a.position.x += x_offset;
+                }
             }
-        }
+        // change frame
+        fleet.animation_frame == FRAME_1 ? fleet.animation_frame = FRAME_2 : fleet.animation_frame = FRAME_1;
     }
+    fleet.movement_speed--;
 
+    if (fleet.movement_speed < 0.0) {
+        reset_fleet_speed(fleet);
+    }
 
 }
 
@@ -311,5 +318,6 @@ void make_fleet_movement(AlienFleet &fleet) {
  * @param fleet The alien Fleet.
  */
 void reset_fleet_speed(AlienFleet &fleet) {
-    fleet.movement_speed = float(fleet.game_line * 2.0 + (float(fleet.population) / float(ALIEN_PER_ROW * ALIEN_ROWS)));
+    // fleet.movement_speed = float(fleet.game_line * 2.0 + (float(fleet.population) / float(ALIEN_PER_ROW * ALIEN_ROWS)));
+    fleet.movement_speed = 15;
 }
