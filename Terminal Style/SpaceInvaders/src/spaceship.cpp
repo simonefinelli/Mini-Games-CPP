@@ -284,20 +284,25 @@ void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_RO
  * @param aliens Alien Fleet.
  */
 void make_fleet_movement(AlienFleet &fleet) {
-    int x_offset, y_offset = 1;
+    int x_offset = 1, y_offset = 1;
 
     if (fleet.movement_speed == 0.0) {
         for (auto &aliens_line : fleet.aliens) {
             for (auto &a : aliens_line) {
-                    if (a.position.x + x_offset > (W_WIDTH - SPRITE_WIDTH) or (a.position.x + x_offset < 0)) { // check alien for boundaries
-                        fleet.attack_direction == RIGHT_DIRECTION ? fleet.attack_direction = LEFT_DIRECTION : fleet.attack_direction = RIGHT_DIRECTION;
+                    if (a.status == ALIVE) {
+                        if (a.position.x + x_offset > (W_WIDTH - SPRITE_WIDTH) or (a.position.x + x_offset < 0)) { // check alien for boundaries
+                            // change attack direction
+                            fleet.attack_direction == RIGHT_DIRECTION ? fleet.attack_direction = LEFT_DIRECTION : fleet.attack_direction = RIGHT_DIRECTION;
+                        }
+
+                        if (fleet.attack_direction == RIGHT_DIRECTION) {
+                            x_offset = 1;
+                        } else {
+                            x_offset = -1;
+                        }
+
+                        a.position.x += x_offset;
                     }
-                    if (fleet.attack_direction == RIGHT_DIRECTION) {
-                        x_offset = 1;
-                    } else {
-                        x_offset = -1;
-                    }
-                    a.position.x += x_offset;
                 }
             }
         // change frame
