@@ -284,27 +284,42 @@ void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_RO
  * @param aliens Alien Fleet.
  */
 void make_fleet_movement(AlienFleet &fleet) {
-    int x_offset = 1, y_offset = 1;
+    int x_offset = 1, y_offset = 0;
+    bool alien_overflow = false;
 
     if (fleet.movement_speed == 0.0) {
         for (auto &aliens_line : fleet.aliens) {
             for (auto &a : aliens_line) {
-                    if (a.status == ALIVE) {
-                        if (a.position.x + x_offset > (W_WIDTH - SPRITE_WIDTH) or (a.position.x + x_offset < 0)) { // check alien for boundaries
-                            // change attack direction
-                            fleet.attack_direction == RIGHT_DIRECTION ? fleet.attack_direction = LEFT_DIRECTION : fleet.attack_direction = RIGHT_DIRECTION;
-                        }
-
-                        if (fleet.attack_direction == RIGHT_DIRECTION) {
-                            x_offset = 1;
-                        } else {
+                if (a.status == ALIVE) {
+                    if (a.position.x + x_offset > (W_WIDTH - SPRITE_WIDTH) or (a.position.x - x_offset < 0)) { // check alien for boundaries
+                        // advancement of the fleet
+                        y_offset = 1;
+                        // change attack direction
+                        if (fleet.attack_direction) {
+                            fleet.attack_direction = LEFT_DIRECTION;
                             x_offset = -1;
+                        } else {
+                            fleet.attack_direction = RIGHT_DIRECTION;
+                            x_offset = 1;
                         }
-
-                        a.position.x += x_offset;
+                        alien_overflow = true;
+                        break;
                     }
                 }
             }
+            if (alien_overflow) {
+                break;
+            }
+        }
+
+        // update aliens position
+        for (auto &aliens_line : fleet.aliens) {
+            for (auto &a : aliens_line) {
+                a.position.x += x_offset;
+                a.position.y += y_offset;
+            }
+        }
+
         // change frame
         fleet.animation_frame == FRAME_1 ? fleet.animation_frame = FRAME_2 : fleet.animation_frame = FRAME_1;
     }
@@ -324,5 +339,5 @@ void make_fleet_movement(AlienFleet &fleet) {
  */
 void reset_fleet_speed(AlienFleet &fleet) {
     // fleet.movement_speed = float(fleet.game_line * 2.0 + (float(fleet.population) / float(ALIEN_PER_ROW * ALIEN_ROWS)));
-    fleet.movement_speed = 15;
+    fleet.movement_speed = 30;
 }

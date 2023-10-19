@@ -93,9 +93,8 @@ struct AlienExplosionAnimation {
 };
 
 typedef enum FleetDirection {
-    RIGHT_DIRECTION = 0,
-    LEFT_DIRECTION,
-    DOWN_DIRECTION
+    RIGHT_DIRECTION = 1,
+    LEFT_DIRECTION = 0
 } direction;
 
 typedef enum AnimationFrame {
