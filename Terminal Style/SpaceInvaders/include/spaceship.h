@@ -29,6 +29,7 @@ const std::string HERO_SPRITE[] {R"(  ^  )", R"(|-V-|)"};
 // ALIEN FLEET
 #define ALIEN_PER_ROW 11
 #define ALIEN_ROWS 5
+#define ALIEN_FLEET_N (ALIEN_PER_ROW * ALIEN_ROWS)
 #define SPRITE_FRAME 2
 #define FIRST_CLASS_PTS 30
 #define SECOND_CLASS_PTS 20
@@ -40,6 +41,7 @@ const std::string HERO_SPRITE[] {R"(  ^  )", R"(|-V-|)"};
 #define ALIEN_EXPLOSION_DURATION 0.4
 #define LATERAL_MOVEMENT_STEP 1
 #define VERTICAL_MOVEMENT_STEP 1
+#define INITIAL_FLEET_SPEED 50
 const std::string ALIEN_EXPLOSION_SPRITE[] {"\\\\//", "//\\\\"};
 
 
@@ -138,8 +140,8 @@ struct AlienFleet {
     int bombs_in_play = 0;
     int population = 0;  // number of Aliens in the fleet
     frame animation_frame = NO_ANIM;
-    float movement_speed = 0.0; // how fast Aliens should be move down against the Hero
-    int game_line = 0; // current Fleet position in field vertically. (used to update the movement speed)
+    int movement_speed = 0; // how fast Aliens should be move down against the Hero
+    int game_line = 0; // current Fleet position in field vertically. TODO check if used
 };
 
 struct SpecialAlien {

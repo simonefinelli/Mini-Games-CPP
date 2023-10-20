@@ -139,9 +139,9 @@ void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Mis
 void init_fleet(AlienFleet &f) {
     f.start_position = {INITIAL_FLEET_X_POSITION, INITIAL_FLEET_Y_POSITION};
     f.bombs_in_play = 0;
-    f.movement_speed = 30;
+    f.movement_speed = INITIAL_FLEET_SPEED;
     f.attack_direction = RIGHT_DIRECTION;
-    f.population = int(std::end(f.aliens) - std::begin(f.aliens) );
+    f.population = ALIEN_FLEET_N;
     f.animation_frame = FRAME_1;
     // init aliens based on fleet starting position
     int attack_line = ALIEN_ROWS;
@@ -291,6 +291,8 @@ void make_fleet_movement(AlienFleet &fleet) {
     // update fleet position at the end of each movement time
     if (fleet.movement_speed == 0.0) {
         if (is_alien_overflow(fleet)) {
+            // update game line
+            fleet.game_line++;
             // advancement of the fleet
             y_offset = VERTICAL_MOVEMENT_STEP;
             // change attack direction
@@ -312,9 +314,9 @@ void make_fleet_movement(AlienFleet &fleet) {
     }
 
     // update movement time
-    fleet.movement_speed--;
+    fleet.movement_speed -= 1;
     // reset the movement if the time is finished
-    if (fleet.movement_speed < 0.0) reset_fleet_speed(fleet);
+    if (fleet.movement_speed < 0) reset_fleet_speed(fleet);
 }
 
 /**
@@ -341,9 +343,18 @@ bool is_alien_overflow(const AlienFleet &fleet) {
  * @brief Every time the alien fleet speed is reset, the velocity of aliens will
  * increase, in according the field line and the number of Aliens left.
  *
+ * Note that in the Original Game the Aliens' speed only increase when an Alien
+ * is hit, and not when the fleet advances. So we follow that approach.
+ *
  * @param fleet The alien Fleet.
  */
 void reset_fleet_speed(AlienFleet &fleet) {
-    // fleet.movement_speed = float(fleet.game_line * 2.0 + (float(fleet.population) / float(ALIEN_PER_ROW * ALIEN_ROWS)));
-    fleet.movement_speed = 30;
+    // fleet.movement_speed -= float(fleet.game_line * 2.0 + fleet.population);
+    if (fleet.population >= 2) {
+        int new_speed = INITIAL_FLEET_SPEED - (ALIEN_FLEET_N - fleet.population);
+        fleet.movement_speed = new_speed > 5 ? new_speed : 5;
+    } else {
+        fleet.movement_speed = 1;
+    }
+
 }
