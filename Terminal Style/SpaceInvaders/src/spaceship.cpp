@@ -349,7 +349,6 @@ bool is_alien_overflow(const AlienFleet &fleet) {
  * @param fleet The alien Fleet.
  */
 void reset_fleet_speed(AlienFleet &fleet) {
-    // fleet.movement_speed -= float(fleet.game_line * 2.0 + fleet.population);
     if (fleet.population >= 2) {
         int new_speed = INITIAL_FLEET_SPEED - (ALIEN_FLEET_N - fleet.population);
         fleet.movement_speed = new_speed > 5 ? new_speed : 5;
