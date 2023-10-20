@@ -14,6 +14,7 @@ bool is_collision(const coords &shot_pos, const std::array<FieldShield, SHIELD_N
 void init_alien(Alien &a, alien_type type, int x_offset, int y_offset, const coords &fleet_position);
 bool is_collision(const coords &shot_pos, const std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens, alien_collision &c);
 void reset_fleet_speed(AlienFleet &fleet);
+bool is_alien_overflow(const AlienFleet &fleet);
 
 /**
  * @brief Populates the Hero structure.
@@ -284,38 +285,18 @@ void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_RO
  * @param aliens Alien Fleet.
  */
 void make_fleet_movement(AlienFleet &fleet) {
-    int x_offset;
+    static int x_offset = 1;
     int y_offset = 0;
-    bool alien_overflow = false;
 
+    // update fleet position at the end of each movement time
     if (fleet.movement_speed == 0.0) {
-        for (auto &aliens_line : fleet.aliens) {
-            for (auto &a : aliens_line) {
-                if (a.status == ALIVE) {
-                    if ((a.position.x + 1 > (W_WIDTH - SPRITE_WIDTH)) or (a.position.x - 1 < 0)) { // check alien for boundaries todo create alien_step const fro 1s
-                        // advancement of the fleet
-                        y_offset = 1;
-                        // change attack direction
-                        if (fleet.attack_direction) {
-                            fleet.attack_direction = LEFT_DIRECTION;
-                        } else {
-                            fleet.attack_direction = RIGHT_DIRECTION;
-                        }
-                        alien_overflow = true;
-                        break;
-                    }
-                }
-            }
-            if (alien_overflow) {
-                break;
-            }
-        }
-
-        // chose offset with regard the current fleet direction
-        if (fleet.attack_direction) {
-            x_offset = 1;
-        } else {
-            x_offset = -1;
+        if (is_alien_overflow(fleet)) {
+            // advancement of the fleet
+            y_offset = VERTICAL_MOVEMENT_STEP;
+            // change attack direction
+            fleet.attack_direction = fleet.attack_direction ? LEFT_DIRECTION : RIGHT_DIRECTION;
+            // chose offset with regard the current fleet direction
+            x_offset = fleet.attack_direction ? LATERAL_MOVEMENT_STEP : -LATERAL_MOVEMENT_STEP;
         }
 
         // update aliens position
@@ -330,11 +311,30 @@ void make_fleet_movement(AlienFleet &fleet) {
         fleet.animation_frame == FRAME_1 ? fleet.animation_frame = FRAME_2 : fleet.animation_frame = FRAME_1;
     }
 
+    // update movement time
     fleet.movement_speed--;
-    if (fleet.movement_speed < 0.0) {
-        reset_fleet_speed(fleet);
-    }
+    // reset the movement if the time is finished
+    if (fleet.movement_speed < 0.0) reset_fleet_speed(fleet);
+}
 
+/**
+ * @brief Check if an Alien in the Fleet went outside the boundaries of the
+ * playing field.
+ *
+ * @return True if an Alien hit the boundaries, False otherwise.
+ */
+bool is_alien_overflow(const AlienFleet &fleet) {
+    for (auto &aliens_line : fleet.aliens) {
+        for (auto &a : aliens_line) {
+            if (a.status == ALIVE) {
+                if ((a.position.x + LATERAL_MOVEMENT_STEP > (W_WIDTH - SPRITE_WIDTH)) or
+                   (a.position.x - LATERAL_MOVEMENT_STEP < 0)) { // alien out of boundaries
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 /**

@@ -38,6 +38,8 @@ const std::string HERO_SPRITE[] {R"(  ^  )", R"(|-V-|)"};
 #define Y_OFFSET_BETWEEN_ALIEN (SPRITE_HEIGHT + 1)
 #define X_OFFSET_BETWEEN_ALIEN 6
 #define ALIEN_EXPLOSION_DURATION 0.4
+#define LATERAL_MOVEMENT_STEP 1
+#define VERTICAL_MOVEMENT_STEP 1
 const std::string ALIEN_EXPLOSION_SPRITE[] {"\\\\//", "//\\\\"};
 
 
