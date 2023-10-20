@@ -284,23 +284,22 @@ void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_RO
  * @param aliens Alien Fleet.
  */
 void make_fleet_movement(AlienFleet &fleet) {
-    int x_offset = 1, y_offset = 0;
+    int x_offset;
+    int y_offset = 0;
     bool alien_overflow = false;
 
     if (fleet.movement_speed == 0.0) {
         for (auto &aliens_line : fleet.aliens) {
             for (auto &a : aliens_line) {
                 if (a.status == ALIVE) {
-                    if (a.position.x + x_offset > (W_WIDTH - SPRITE_WIDTH) or (a.position.x - x_offset < 0)) { // check alien for boundaries
+                    if ((a.position.x + 1 > (W_WIDTH - SPRITE_WIDTH)) or (a.position.x - 1 < 0)) { // check alien for boundaries todo create alien_step const fro 1s
                         // advancement of the fleet
                         y_offset = 1;
                         // change attack direction
                         if (fleet.attack_direction) {
                             fleet.attack_direction = LEFT_DIRECTION;
-                            x_offset = -1;
                         } else {
                             fleet.attack_direction = RIGHT_DIRECTION;
-                            x_offset = 1;
                         }
                         alien_overflow = true;
                         break;
@@ -310,6 +309,13 @@ void make_fleet_movement(AlienFleet &fleet) {
             if (alien_overflow) {
                 break;
             }
+        }
+
+        // chose offset with regard the current fleet direction
+        if (fleet.attack_direction) {
+            x_offset = 1;
+        } else {
+            x_offset = -1;
         }
 
         // update aliens position
@@ -323,8 +329,8 @@ void make_fleet_movement(AlienFleet &fleet) {
         // change frame
         fleet.animation_frame == FRAME_1 ? fleet.animation_frame = FRAME_2 : fleet.animation_frame = FRAME_1;
     }
-    fleet.movement_speed--;
 
+    fleet.movement_speed--;
     if (fleet.movement_speed < 0.0) {
         reset_fleet_speed(fleet);
     }
