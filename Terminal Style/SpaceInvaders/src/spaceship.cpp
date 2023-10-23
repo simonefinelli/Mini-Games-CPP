@@ -285,22 +285,28 @@ void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_RO
  * @param aliens Alien Fleet.
  */
 void make_fleet_movement(AlienFleet &fleet) {
-    int x_offset = 1;
-    static bool attack_line_changed = false;
+    int x_offset;
+    static int clock_counter = FLEET_ADVANCE_STEP;
 
     // update fleet position at the end of each movement time
     if (fleet.movement_speed == 0.0) {
-        if (is_alien_overflow(fleet) and !attack_line_changed) {
+        if (is_alien_overflow(fleet) and clock_counter >= 1) {
             // update game line
             fleet.game_line++;
-            attack_line_changed = true;
+            clock_counter--;
+
+            // update vertical aliens position
+            for (auto &aliens_line : fleet.aliens) {
+                for (auto &a : aliens_line) {
+                    a.position.y += VERTICAL_MOVEMENT_STEP;
+                }
+            }
             // change attack direction
             fleet.attack_direction = fleet.attack_direction ? LEFT_DIRECTION : RIGHT_DIRECTION;
+
+        } else {
             // chose offset with regard the current fleet direction
             x_offset = fleet.attack_direction ? LATERAL_MOVEMENT_STEP : -LATERAL_MOVEMENT_STEP;
-        }
-
-        if (!attack_line_changed) {
             // update horizontal position
             for (auto &aliens_line : fleet.aliens) {
                 for (auto &a : aliens_line) {
@@ -309,14 +315,8 @@ void make_fleet_movement(AlienFleet &fleet) {
             }
             // change animation frame
             fleet.animation_frame == FRAME_1 ? fleet.animation_frame = FRAME_2 : fleet.animation_frame = FRAME_1;
-        } else {
-            // update vertical aliens position
-            for (auto &aliens_line : fleet.aliens) {
-                for (auto &a : aliens_line) {
-                    a.position.y += VERTICAL_MOVEMENT_STEP;
-                }
-            }
-            attack_line_changed = false;
+
+            clock_counter = FLEET_ADVANCE_STEP;
         }
     }
 

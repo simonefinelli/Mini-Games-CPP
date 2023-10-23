@@ -42,6 +42,7 @@ const std::string HERO_SPRITE[] {R"(  ^  )", R"(|-V-|)"};
 #define LATERAL_MOVEMENT_STEP 1
 #define VERTICAL_MOVEMENT_STEP 1
 #define INITIAL_FLEET_SPEED 50
+#define FLEET_ADVANCE_STEP 1
 const std::string ALIEN_EXPLOSION_SPRITE[] {"\\\\//", "//\\\\"};
 
 
