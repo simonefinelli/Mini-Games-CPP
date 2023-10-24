@@ -281,6 +281,17 @@ void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_RO
 
 /**
  * @brief Moves the alien Fleet right or left and refresh/reset the fleet speed.
+ * The function at each clock game (frame) checks for the movement speed of the
+ * fleet.
+ *
+ * When the movement time is finished (0), then the position is update. If an
+ * Alien hit the playing field edge, then the Fleet is shifted vertically by one.
+ * In this occasion also the clock counter is updated. The clock counter is used
+ * to know how many steps the Fleet must advance forward. Finally the attack
+ * direction is updated.
+ *
+ * If the movement time is not finished, then is decremented and when it turns
+ * minor of zero the movement itself is updated.
  *
  * @param aliens Alien Fleet.
  */
@@ -289,13 +300,11 @@ void make_fleet_movement(AlienFleet &fleet) {
     static int clock_counter = FLEET_ADVANCE_STEP;
 
     // update fleet position at the end of each movement time
-    if (fleet.movement_speed == 0.0) {
+    if (fleet.movement_speed == 0) {
         if (is_alien_overflow(fleet) and clock_counter >= 1) {
-            // update game line
             fleet.game_line++;
             clock_counter--;
-
-            // update vertical aliens position
+            // update vertical fleet position
             for (auto &aliens_line : fleet.aliens) {
                 for (auto &a : aliens_line) {
                     a.position.y += VERTICAL_MOVEMENT_STEP;
@@ -305,9 +314,11 @@ void make_fleet_movement(AlienFleet &fleet) {
             fleet.attack_direction = fleet.attack_direction ? LEFT_DIRECTION : RIGHT_DIRECTION;
 
         } else {
+            // reset clock counter
+            clock_counter = FLEET_ADVANCE_STEP;
             // chose offset with regard the current fleet direction
             x_offset = fleet.attack_direction ? LATERAL_MOVEMENT_STEP : -LATERAL_MOVEMENT_STEP;
-            // update horizontal position
+            // update horizontal fleet position
             for (auto &aliens_line : fleet.aliens) {
                 for (auto &a : aliens_line) {
                     a.position.x += x_offset;
@@ -315,14 +326,10 @@ void make_fleet_movement(AlienFleet &fleet) {
             }
             // change animation frame
             fleet.animation_frame == FRAME_1 ? fleet.animation_frame = FRAME_2 : fleet.animation_frame = FRAME_1;
-
-            clock_counter = FLEET_ADVANCE_STEP;
         }
     }
-
-    // update movement time
+    // update and/or reset movement time
     fleet.movement_speed -= 1;
-    // reset the movement if the time is finished
     if (fleet.movement_speed < 0) reset_fleet_speed(fleet);
 }
 
