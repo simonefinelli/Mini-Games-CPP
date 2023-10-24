@@ -75,7 +75,7 @@ void update_game_data(GameData &gd, key user_choice) {
             move_hero(gd.hero, -HER0_MOVEMENT_OFFSET);
             break;
         case RIGHT:
-            // move hero to left
+            // move hero to right
             move_hero(gd.hero, HER0_MOVEMENT_OFFSET);
             break;
         case SPACE:

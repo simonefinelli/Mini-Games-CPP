@@ -15,6 +15,7 @@ void init_alien(Alien &a, alien_type type, int x_offset, int y_offset, const coo
 bool is_collision(const coords &shot_pos, const std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens, alien_collision &c);
 void reset_fleet_speed(AlienFleet &fleet);
 bool is_alien_overflow(const AlienFleet &fleet);
+bool no_alien_explosion(const std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens);
 
 /**
  * @brief Populates the Hero structure.
@@ -300,7 +301,7 @@ void make_fleet_movement(AlienFleet &fleet) {
     static int clock_counter = FLEET_ADVANCE_STEP;
 
     // update fleet position at the end of each movement time
-    if (fleet.movement_speed == 0) {
+    if (fleet.movement_speed == 0 and no_alien_explosion(fleet.aliens)) {
         if (is_alien_overflow(fleet) and clock_counter >= 1) {
             fleet.game_line++;
             clock_counter--;
@@ -369,5 +370,20 @@ void reset_fleet_speed(AlienFleet &fleet) {
     } else {
         fleet.movement_speed = 1;
     }
+}
 
+/**
+ * @brief TODO
+ *
+ * @param aliens Aliens of the Fleet.
+ */
+bool no_alien_explosion(const std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens) {
+    for (auto &aliens_line : aliens) {
+        for (auto &a : aliens_line) {
+            if (a.status == EXPLODING) {
+                return false;
+            }
+        }
+    }
+    return true;
 }
