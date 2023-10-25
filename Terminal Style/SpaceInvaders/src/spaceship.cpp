@@ -130,6 +130,23 @@ void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Mis
 }
 
 /**
+ * @brief TODO
+ */
+void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, AlienFleet &fleet) {
+    shield_collision c {};
+
+    for (const auto &aliens_line : fleet.aliens) {
+        for (const auto &a : aliens_line) {
+            // TODO improve shield collision
+            if (a.status == ALIVE and is_collision(a.position, shields, c)) {
+                // remove hit part
+                shields[c.shield_idx].sprite[c.shield_part_hit.y][c.shield_part_hit.x] = ' ';
+            }
+        }
+    }
+}
+
+/**
  * @brief Creates the Alien Fleet.
  * The Fleet is created by placing the highest ranking aliens in the first
  * positions and then the lowest ranking aliens in order to emphasize the way in

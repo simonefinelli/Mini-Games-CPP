@@ -166,4 +166,6 @@ void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_RO
 
 void make_fleet_movement(AlienFleet &fleet);
 
+void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, AlienFleet &fleet);
+
 #endif //SPACEINVADERS_SPACESHIP_H

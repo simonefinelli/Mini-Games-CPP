@@ -101,6 +101,9 @@ void update_game_data(GameData &gd, key user_choice) {
     // move fleet
     make_fleet_movement(gd.alien_fleet);
 
+    // check shield collision with Fleet
+    check_shield_collision(gd.field_game.shields, gd.alien_fleet);
+
 }
 
 /**
