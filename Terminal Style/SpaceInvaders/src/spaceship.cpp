@@ -10,7 +10,7 @@
 #include <iostream>
 #include "spaceship.h"
 
-bool is_collision(const coords &shot_pos, const std::array<FieldShield, SHIELD_NUMBER> &shields, shield_collision &c);
+bool is_collision(const coords &pos, const std::array<FieldShield, SHIELD_NUMBER> &shields, shield_collision &c);
 void init_alien(Alien &a, alien_type type, int x_offset, int y_offset, const coords &fleet_position);
 bool is_collision(const coords &shot_pos, const std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens, alien_collision &c);
 void reset_fleet_speed(AlienFleet &fleet);
@@ -79,33 +79,33 @@ void refresh_missile_position(Hero &h) {
 }
 
 /**
- * @brief Checks if there is a shield_collision between a missile/bomb and one of the
- * shields.
+ * @brief Checks if there is a collision between a missile, a bomb or an Alien
+ * and one of the shields.
  *
- * @param shot_pos Position of the Hero missile or the Alien bomb.
+ * @param pos Position of the Hero missile, the Alien bomb or Alien spaceship.
  * @param shields Shields in the playing field.
  * @param c with a shield_collision the structure is filled using the index of the
  *          Shield hit, and the coordinates of the its hit part, -1 otherwise.
  * @return True if there was an hit, False otherwise.
  */
-bool is_collision(const coords &shot_pos, const std::array<FieldShield, SHIELD_NUMBER> &shields, shield_collision &c) {
+bool is_collision(const coords &pos, const std::array<FieldShield, SHIELD_NUMBER> &shields, shield_collision &c) {
     c.shield_idx = NO_COLLISION;
     c.shield_part_hit = {NO_COLLISION, NO_COLLISION};
 
-    if (shot_pos.y == NOT_ON_FIELD) {
+    if (pos.y == NOT_ON_FIELD) {
         return false;
     }
 
     // if the missile/bomb is in the field check there is a shield_collision with a shield
     for (const FieldShield &s : shields) {
         if (
-            (shot_pos.x >= s.position.x and shot_pos.x < (s.position.x + SHIELD_SPRITE_WIDTH)) and  // shot in shield width
-            (shot_pos.y >= s.position.y and shot_pos.y < (s.position.y + SHIELD_SPRITE_HEIGHT)) and  // shot in shield height
-            (s.sprite[shot_pos.y - s.position.y][shot_pos.x - s.position.x] != ' ')  // shield_collision with a shield part
+                (pos.x >= s.position.x and pos.x < (s.position.x + SHIELD_SPRITE_WIDTH)) and  // shot in shield width
+            (pos.y >= s.position.y and pos.y < (s.position.y + SHIELD_SPRITE_HEIGHT)) and  // shot in shield height
+            (s.sprite[pos.y - s.position.y][pos.x - s.position.x] != ' ')  // shield_collision with a shield part
         ) {
             // shield collision
             c.shield_idx = s.id;
-            c.shield_part_hit = {shot_pos.x - s.position.x, shot_pos.y - s.position.y};  // get part index using row,column tuple
+            c.shield_part_hit = {pos.x - s.position.x, pos.y - s.position.y};  // get part index using row,column tuple
             return true;
         }
     }
@@ -134,14 +134,22 @@ void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Mis
  */
 void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, AlienFleet &fleet) {
     shield_collision c {};
+    coords curr_position;
+    int x, y;
 
     for (const auto &aliens_line : fleet.aliens) {
         for (const auto &a : aliens_line) {
-            // TODO improve shield collision
-            if (a.status == ALIVE and is_collision(a.position, shields, c)) {
-                // remove hit part
-                shields[c.shield_idx].sprite[c.shield_part_hit.y][c.shield_part_hit.x] = ' ';
+            // check a collision with the bottom row of the Alien
+            for (int i = 0; i < SPRITE_WIDTH; i++) {
+                x = a.position.x + i;
+                y = a.position.y + 1;
+                curr_position = {x, y};
+                if (a.status == ALIVE and is_collision(curr_position, shields, c)) {
+                    // remove hit part
+                    shields[c.shield_idx].sprite[c.shield_part_hit.y][c.shield_part_hit.x] = ' ';
+                }
             }
+
         }
     }
 }
@@ -383,7 +391,7 @@ bool is_alien_overflow(const AlienFleet &fleet) {
 void reset_fleet_speed(AlienFleet &fleet) {
     if (fleet.population >= 2) {
         int new_speed = INITIAL_FLEET_SPEED - (ALIEN_FLEET_N - fleet.population);
-        fleet.movement_speed = new_speed > 5 ? new_speed : 5;
+        fleet.movement_speed = new_speed > 5 ? 10 : 5;
     } else {
         fleet.movement_speed = 1;
     }
