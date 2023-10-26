@@ -130,7 +130,11 @@ void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Mis
 }
 
 /**
- * @brief TODO
+ * @brief The function checks if there was a collision Alien with shields.
+ * To check fo a collision we only check for the second row of the sprite.
+ *
+ * @param shields Shields into the playing field.
+ * @param fleet The Alien Fleet.
  */
 void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, AlienFleet &fleet) {
     shield_collision c {};
@@ -149,7 +153,6 @@ void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Ali
                     shields[c.shield_idx].sprite[c.shield_part_hit.y][c.shield_part_hit.x] = ' ';
                 }
             }
-
         }
     }
 }
