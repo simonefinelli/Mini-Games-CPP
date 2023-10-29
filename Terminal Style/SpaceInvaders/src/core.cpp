@@ -28,14 +28,14 @@ GameData initialize_game() {
     gd.field_game.state = PLAY_SCREEN; // TODO after change with WELCOME_SCREEN
     gd.field_game.level = 1;  // first level
 
+    // define fleet
+    init_fleet(gd.alien_fleet);
+
     // init shields
     init_shields(gd.field_game.shields);
 
     // define Hero
     init_hero(gd.hero);
-
-    // define fleet
-    init_fleet(gd.alien_fleet);
 
     return gd;
 }

@@ -9,22 +9,13 @@
 #include <array>
 #include <string>
 #include <vector>
-#include "battlefield.h"
 #include "common.h"
 
 #ifndef SPACEINVADERS_SPACESHIP_H
 #define SPACEINVADERS_SPACESHIP_H
 
 #define MAX_ALIEN_AMMO 3
-
-// Hero
-#define HERO_NAME "Player1"
-#define HERO_SPRITE_WIDTH 5
-#define HERO_LIVES 3
-#define NOT_ON_FIELD (-1)
-#define MISSILE_PACE 1
 #define NO_COLLISION (-1)
-const std::string HERO_SPRITE[] {R"(  ^  )", R"(|-V-|)"};
 
 // ALIEN FLEET
 #define ALIEN_PER_ROW 11
@@ -41,9 +32,21 @@ const std::string HERO_SPRITE[] {R"(  ^  )", R"(|-V-|)"};
 #define ALIEN_EXPLOSION_DURATION 0.2
 #define LATERAL_MOVEMENT_STEP 1
 #define VERTICAL_MOVEMENT_STEP 1
-#define INITIAL_FLEET_SPEED 50
+#define INITIAL_FLEET_SPEED 35
 #define FLEET_ADVANCE_STEP 1
 const std::string ALIEN_EXPLOSION_SPRITE[] {"\\\\//", "//\\\\"};
+
+// Hero
+#define HERO_NAME "Player1"
+#define HERO_SPRITE_WIDTH 5
+#define INITIAL_HERO_X_POSITION ((W_WIDTH / 2 - HERO_SPRITE_WIDTH / 2) - 1)
+#define INITIAL_HERO_Y_POSITION (INITIAL_FLEET_Y_POSITION + (ALIEN_ROWS * (SPRITE_HEIGHT + 1) * 2) - 1)
+#define HERO_LIVES 3
+#define NOT_ON_FIELD (-1)
+#define MISSILE_PACE 1
+
+const std::string HERO_SPRITE[] {R"(  ^  )", R"(|-V-|)"};
+
 
 
 /// Hero Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -57,11 +60,6 @@ struct HeroExplosionAnimation {
     const std::string frame1 = "._-^.\n=====";  // TODO modify
     int active_frame = 0;  // frame0: 0 - frame2: 1  // TODO make sense?
 };
-
-typedef struct ShieldCollisionInfo {
-    int shield_idx = NO_COLLISION;
-    coords shield_part_hit = {NO_COLLISION, NO_COLLISION};
-} shield_collision;
 
 /// Aliens Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 typedef enum AlienType {
@@ -156,8 +154,6 @@ void init_hero(Hero &h);
 
 void refresh_missile_position(Hero &h);
 
-void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Missile &m);
-
 void init_fleet(AlienFleet &f);
 
 void check_fleet_collision(AlienFleet &f, Hero &h);
@@ -165,7 +161,5 @@ void check_fleet_collision(AlienFleet &f, Hero &h);
 void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens);
 
 void make_fleet_movement(AlienFleet &fleet);
-
-void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, AlienFleet &fleet);
 
 #endif //SPACEINVADERS_SPACESHIP_H

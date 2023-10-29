@@ -8,19 +8,25 @@
 #include <array>
 #include <string>
 #include <vector>
-#include "common.h"
 #include "gui.h"
+#include "spaceship.h"
 
 #ifndef SPACEINVADERS_BATTLEFIELD_H
 #define SPACEINVADERS_BATTLEFIELD_H
 
 #define SHIELD_NUMBER 4
-#define SHIELD_DISTANCE 36
+#define SHIELD_DISTANCE (29 - 1)
 #define SHIELD_PADDING 10
 #define SHIELD_INITIAL_PADDING 11
 #define SHIELD_SPRITE_HEIGHT 3
 #define SHIELD_SPRITE_WIDTH 7
 #define SHIELD_SPACING (SHIELD_SPRITE_WIDTH + SHIELD_PADDING)
+#define NO_SHIELD_COLLISION (-1)
+
+typedef struct ShieldCollisionInfo {
+    int shield_idx = NO_SHIELD_COLLISION;
+    coords shield_part_hit = {NO_SHIELD_COLLISION, NO_SHIELD_COLLISION};
+} shield_collision;
 
 typedef enum FieldGameState {
     WELCOME_SCREEN = 0,
@@ -48,8 +54,13 @@ struct FieldGame {
     std::array<FieldShield, SHIELD_NUMBER> shields {};
 };
 
+/// Prototypes - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 void init_shields(std::array<FieldShield, SHIELD_NUMBER> &shields);
 
 void draw_shields_on_field(const std::array<FieldShield, SHIELD_NUMBER> &shields);
+
+void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, AlienFleet &fleet);
+
+void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Missile &m);
 
 #endif //SPACEINVADERS_BATTLEFIELD_H
