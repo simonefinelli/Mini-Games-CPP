@@ -16,6 +16,7 @@ bool is_collision(const coords &shot_pos, const std::array<std::array<Alien, ALI
 void reset_fleet_speed(AlienFleet &fleet);
 bool is_alien_overflow(const AlienFleet &fleet);
 bool no_alien_explosion(const std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens);
+bool should_shoot(int aliens_left);
 
 /**
  * @brief Populates the Hero structure.
@@ -259,6 +260,8 @@ void make_fleet_movement(AlienFleet &fleet) {
                     a.position.y += VERTICAL_MOVEMENT_STEP;
                 }
             }
+            // update advancing flag
+            fleet.advancing = true;
             // change attack direction
             fleet.attack_direction = fleet.attack_direction ? LEFT_DIRECTION : RIGHT_DIRECTION;
 
@@ -273,6 +276,8 @@ void make_fleet_movement(AlienFleet &fleet) {
                     a.position.x += x_offset;
                 }
             }
+            // update advancing flag
+            fleet.advancing = false;
             // change animation frame
             fleet.animation_frame == FRAME_1 ? fleet.animation_frame = FRAME_2 : fleet.animation_frame = FRAME_1;
         }
@@ -334,4 +339,60 @@ bool no_alien_explosion(const std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN
         }
     }
     return true;
+}
+
+/**
+ * @brief The functions checks for each Alien in the Fleet if it is allowed to
+ * make a shot.
+ *
+ * There are at most only 3 bombs at the same time in play.
+ *
+ * @param fleet The alien Fleet.
+ */
+void make_fleet_shoot(AlienFleet &fleet) {
+    // shoot only if the Fleet is not advancing and there is not too many bombs in play
+    if (!fleet.advancing and fleet.bombs_in_play < MAX_BOMBS_IN_PLAY) {
+        for (auto alien_line = fleet.aliens.rbegin(); alien_line != fleet.aliens.rend(); alien_line++) {
+            for(auto &alien : *alien_line)  {
+                if (alien.status == ALIVE and should_shoot(1) and alien.ammo != 0) {
+                    // shoot bomb
+                    alien.bombs[alien.ammo-1] = {39,0};  // set initial position for the bomb
+                    alien.ammo--;
+                }
+            }
+        }
+    }
+}
+
+/**
+ * @brief Makes an Alien shot with a certain probability.
+ */
+bool should_shoot(int aliens_left) {
+    // TODO
+    return true;
+}
+
+/**
+ * @brief TODO
+ *
+ * @param fleet The alien Fleet object.
+ */
+void refresh_bombs_position(AlienFleet &fleet) {
+    for (auto &aliens_line : fleet.aliens) {
+        for (auto &a : aliens_line) {
+            if (a.status == ALIVE) {
+                for (auto bomb : a.bombs) {
+                    if (bomb.position.x != NOT_ON_FIELD) {
+                        bomb.position.y += MISSILE_PACE;  // todo change this
+
+                        // check if the missile exits from boundaries
+                        if (bomb.position.y > W_HEIGHT) {
+                            bomb.position.x = NOT_ON_FIELD;
+                            bomb.position.y = NOT_ON_FIELD;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

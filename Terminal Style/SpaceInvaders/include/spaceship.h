@@ -34,7 +34,9 @@
 #define VERTICAL_MOVEMENT_STEP 1
 #define INITIAL_FLEET_SPEED 35
 #define FLEET_ADVANCE_STEP 1
+#define MAX_BOMBS_IN_PLAY 3
 const std::string ALIEN_EXPLOSION_SPRITE[] {"\\\\//", "//\\\\"};
+const std::string ALIEN_BOMB_SPRITE[] {"<\n", ">"};
 
 // Hero
 #define HERO_NAME "Player1"
@@ -44,10 +46,14 @@ const std::string ALIEN_EXPLOSION_SPRITE[] {"\\\\//", "//\\\\"};
 #define HERO_LIVES 3
 #define NOT_ON_FIELD (-1)
 #define MISSILE_PACE 1
-
 const std::string HERO_SPRITE[] {R"(  ^  )", R"(|-V-|)"};
 
 
+typedef enum AnimationFrame {
+    NO_ANIM = -1,
+    FRAME_1 = 0,
+    FRAME_2
+} frame;
 
 /// Hero Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 typedef struct HeroMissile {
@@ -75,15 +81,12 @@ typedef enum AlienStatus {
     EXPLODING
 } alien_status;
 
-typedef struct AlienBombAnimation {
-    std::string frame0 = "<";
-    std::string frame1 = ">";
-    int active_frame = 0;  // frame0: 0 - frame2: 1
-} bomb_anim;
-
 typedef struct AlienBomb {
     coords position {NOT_ON_FIELD, NOT_ON_FIELD};
-    bomb_anim animation {};
+    std::array<std::array<std::string, SPRITE_HEIGHT>, SPRITE_FRAME> sprite ={
+            {{ALIEN_BOMB_SPRITE[0], ALIEN_BOMB_SPRITE[1]},
+             {ALIEN_BOMB_SPRITE[1], ALIEN_BOMB_SPRITE[0]}}};
+    frame animation_frame = FRAME_1;
 } Bomb;
 
 struct AlienExplosionAnimation {
@@ -92,19 +95,12 @@ struct AlienExplosionAnimation {
             ALIEN_EXPLOSION_SPRITE[1]
     };
     float timer = FPS * ALIEN_EXPLOSION_DURATION;
-    int active_frame = 0;  // frame0: 0 - frame2: 1  // TODO make sense?
 };
 
 typedef enum FleetDirection {
     RIGHT_DIRECTION = 1,
     LEFT_DIRECTION = 0
 } direction;
-
-typedef enum AnimationFrame {
-    NO_ANIM = -1,
-    FRAME_1 = 0,
-    FRAME_2
-} frame;
 
 typedef struct AlienFleetCollisionInfo {
     coords alien_idx = {NO_COLLISION, NO_COLLISION};
@@ -113,7 +109,8 @@ typedef struct AlienFleetCollisionInfo {
 /// Gameplay Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 struct Hero {
     std::string name {};
-    const std::array<std::string, SPRITE_HEIGHT> sprite = {HERO_SPRITE[0], HERO_SPRITE[1]};
+    const std::array<std::string, SPRITE_HEIGHT> sprite = {
+            HERO_SPRITE[0], HERO_SPRITE[1]};
     coords position {0, 0};
     Missile missile {};
     HeroExplosionAnimation explosion {};
@@ -140,7 +137,8 @@ struct AlienFleet {
     int population = 0;  // number of Aliens in the fleet
     frame animation_frame = NO_ANIM;
     int movement_speed = 0; // how fast Aliens should be move down against the Hero
-    int game_line = 0; // current Fleet position in field vertically. TODO check if used
+    int game_line = 0; // current Fleet position in field vertically.
+    bool advancing = false;  // flag that indicates if the Fleet is advancing or not during the game
 };
 
 struct SpecialAlien {
@@ -161,5 +159,9 @@ void check_fleet_collision(AlienFleet &f, Hero &h);
 void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens);
 
 void make_fleet_movement(AlienFleet &fleet);
+
+void make_fleet_shoot(AlienFleet &f);
+
+void refresh_bombs_position(AlienFleet &fleet);
 
 #endif //SPACEINVADERS_SPACESHIP_H

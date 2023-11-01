@@ -6,7 +6,6 @@
  * @date 2023-09-18
  */
 
-#include <chrono>
 #include <iostream>
 #include "core.h"
 
@@ -69,6 +68,7 @@ int get_user_input() {
  * @param gm Game data.
  */
 void update_game_data(GameData &gd, key user_choice) {
+    // TODO make a function
     switch (user_choice) {
         case LEFT:
             // move hero to left
@@ -100,6 +100,12 @@ void update_game_data(GameData &gd, key user_choice) {
 
     // move fleet
     make_fleet_movement(gd.alien_fleet);
+
+    // shot bomb from aliens
+    make_fleet_shoot(gd.alien_fleet);
+
+    // update bombs position
+    refresh_bombs_position(gd.alien_fleet);
 
     // check shield collision with Fleet
     check_shield_collision(gd.field_game.shields, gd.alien_fleet);
@@ -148,13 +154,25 @@ void draw_hero_on_field(const Hero &h) {
  * @param fleet The Fleet object.
  */
 void draw_alien_fleet(AlienFleet &f) {
-    for (auto &aliens_line : f.aliens) {
-        for (auto &alien : aliens_line) {
-            if (alien.status == EXPLODING) {
+
+    for (const auto &aliens_line : f.aliens) {
+        for (const auto &alien : aliens_line) {
+            // fleet spaceships
+            if (alien.status == EXPLODING)
                 gui::draw_sprite(alien.position.x, alien.position.y, alien.explosion.frame0);  // explosion animation
-            }
+
             if (alien.status == ALIVE)
                 gui::draw_sprite(alien.position.x, alien.position.y, alien.sprite[f.animation_frame]);
+        }
+    }
+
+    for (const auto &aliens_line : f.aliens) {
+        for (const auto &alien : aliens_line) {
+            for (const auto &bomb : alien.bombs) {
+                if (bomb.position.x != NOT_ON_FIELD) {
+                    gui::draw_sprite(bomb.position.x, bomb.position.y, bomb.sprite[bomb.animation_frame]);
+                }
+            }
         }
     }
 }
