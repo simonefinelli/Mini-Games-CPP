@@ -154,7 +154,7 @@ void draw_hero_on_field(const Hero &h) {
  * @param fleet The Fleet object.
  */
 void draw_alien_fleet(AlienFleet &f) {
-
+    // draw fleet
     for (const auto &aliens_line : f.aliens) {
         for (const auto &alien : aliens_line) {
             // fleet spaceships
@@ -166,6 +166,7 @@ void draw_alien_fleet(AlienFleet &f) {
         }
     }
 
+    // draw aliens' bombs
     for (const auto &aliens_line : f.aliens) {
         for (const auto &alien : aliens_line) {
             for (const auto &bomb : alien.bombs) {

@@ -8,6 +8,7 @@
 
 #include <array>
 #include <iostream>
+#include <random>
 #include "spaceship.h"
 
 
@@ -283,7 +284,7 @@ void make_fleet_movement(AlienFleet &fleet) {
         }
     }
     // update and/or reset movement time
-    fleet.movement_speed -= 1;
+    fleet.movement_speed -= FLEET_ADVANCE_STEP;
     if (fleet.movement_speed < 0) reset_fleet_speed(fleet);
 }
 
@@ -354,10 +355,12 @@ void make_fleet_shoot(AlienFleet &fleet) {
     if (!fleet.advancing and fleet.bombs_in_play < MAX_BOMBS_IN_PLAY) {
         for (auto alien_line = fleet.aliens.rbegin(); alien_line != fleet.aliens.rend(); alien_line++) {
             for(auto &alien : *alien_line)  {
-                if (alien.status == ALIVE and should_shoot(1) and alien.ammo != 0) {
+                if (alien.status == ALIVE and should_shoot(1)
+                    and alien.ammo != 0 and fleet.bombs_in_play < MAX_BOMBS_IN_PLAY) {
                     // shoot bomb
-                    alien.bombs[alien.ammo-1] = {39,0};  // set initial position for the bomb
+                    alien.bombs[alien.ammo-1] = {alien.position.x + 3,alien.position.y};  // set initial position for the bomb
                     alien.ammo--;
+                    fleet.bombs_in_play++;
                 }
             }
         }
@@ -369,7 +372,16 @@ void make_fleet_shoot(AlienFleet &fleet) {
  */
 bool should_shoot(int aliens_left) {
     // TODO
-    return true;
+    std::random_device rd;  // to obtain a random seed from hardware
+    std::mt19937 gen(rd());  // Standard Mersenne Twister engine seeded with rd()
+
+    // set the range
+    std::uniform_real_distribution<float> distribution(0.0, 1.0);
+
+    // get random float number
+    float random_num = distribution(gen);
+
+    return random_num > 0.85;  // todo make a define
 }
 
 /**
@@ -378,21 +390,30 @@ bool should_shoot(int aliens_left) {
  * @param fleet The alien Fleet object.
  */
 void refresh_bombs_position(AlienFleet &fleet) {
-    for (auto &aliens_line : fleet.aliens) {
-        for (auto &a : aliens_line) {
-            if (a.status == ALIVE) {
-                for (auto bomb : a.bombs) {
-                    if (bomb.position.x != NOT_ON_FIELD) {
-                        bomb.position.y += MISSILE_PACE;  // todo change this
+    static int pause_shoot_attack = 0;
+
+    if (pause_shoot_attack == 0) {
+        for (auto &aliens_line : fleet.aliens) {
+            for (auto &a : aliens_line) {
+                for (auto &bomb : a.bombs) {
+                    if (bomb.position.x != NOT_ON_FIELD and pause_shoot_attack == 0) {
+
+                        bomb.position.y += 1;  // todo change this into a define
+                        // change animation frame
+                        bomb.animation_frame = (bomb.animation_frame == FRAME_1) ? FRAME_2: FRAME_1;
 
                         // check if the missile exits from boundaries
                         if (bomb.position.y > W_HEIGHT) {
                             bomb.position.x = NOT_ON_FIELD;
                             bomb.position.y = NOT_ON_FIELD;
+                            fleet.bombs_in_play--;
                         }
                     }
                 }
             }
         }
     }
+
+    pause_shoot_attack++;
+    if (pause_shoot_attack > 5) pause_shoot_attack = 0;
 }
