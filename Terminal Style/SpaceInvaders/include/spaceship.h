@@ -36,7 +36,7 @@
 #define FLEET_ADVANCE_STEP 1
 #define MAX_BOMBS_IN_PLAY 3
 const std::string ALIEN_EXPLOSION_SPRITE[] {"\\\\//", "//\\\\"};
-const std::string ALIEN_BOMB_SPRITE[] {"<", ">"};
+const std::string ALIEN_BOMB_SPRITE[] {"/", "\\"};
 
 // Hero
 #define HERO_NAME "Player1"
