@@ -8,7 +8,6 @@
 
 #include <array>
 #include <iostream>
-#include <random>
 #include "spaceship.h"
 
 
@@ -125,7 +124,7 @@ void init_alien(Alien &a, alien_type type, int x_offset, int y_offset, const coo
         case FIRST_CLASS:
             a.type = FIRST_CLASS;
             a.position = {fleet_position.x + x_offset, fleet_position.y + y_offset};
-            a.sprite = {{{"/oo\\", "<  >"}, {"/oo\\", "/^^\\"}}};
+            a.sprite = {{{"/oo\\", "<  >"}, {"/oo\\", "/^^\\"}}};  // todo make sprite as other elements
             a.points = FIRST_CLASS_PTS;
             break;
         case SECOND_CLASS:
@@ -320,7 +319,7 @@ bool is_alien_overflow(const AlienFleet &fleet) {
 void reset_fleet_speed(AlienFleet &fleet) {
     if (fleet.population >= 2) {
         int new_speed = INITIAL_FLEET_SPEED - (ALIEN_FLEET_N - fleet.population);
-        fleet.movement_speed = new_speed > 5 ? 15 : 5;
+        fleet.movement_speed = new_speed > 5 ? 30 : 5;
     } else {
         fleet.movement_speed = 1;
     }
@@ -347,24 +346,32 @@ bool no_alien_explosion(const std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN
  * make a shot.
  *
  * There are at most only 3 bombs at the same time in play.
+ * Only when
  *
  * @param fleet The alien Fleet.
  */
 void make_fleet_shoot(AlienFleet &fleet) {
-    // shoot only if the Fleet is not advancing and there is not too many bombs in play
-    if (!fleet.advancing and fleet.bombs_in_play < MAX_BOMBS_IN_PLAY) {
-        for (auto alien_line = fleet.aliens.rbegin(); alien_line != fleet.aliens.rend(); alien_line++) {
-            for(auto &alien : *alien_line)  {
-                if (alien.status == ALIVE and should_shoot(1)
-                    and alien.ammo != 0 and fleet.bombs_in_play < MAX_BOMBS_IN_PLAY) {
-                    // shoot bomb
-                    alien.bombs[alien.ammo-1] = {alien.position.x + 3,alien.position.y};  // set initial position for the bomb
-                    alien.ammo--;
-                    fleet.bombs_in_play++;
+    // pause fleet attack for a random time at each attack cycle
+    static int pause_fleet_attack = generate_number(70, 100);  // initial pause todo make defines
+
+    if (pause_fleet_attack == 0) {
+        // shoot only if the Fleet is not advancing and there is not too many bombs in play
+        if (!fleet.advancing and fleet.bombs_in_play < MAX_BOMBS_IN_PLAY) {
+            for (auto alien_line = fleet.aliens.rbegin(); alien_line != fleet.aliens.rend(); alien_line++) {
+                for(auto &alien : *alien_line)  {
+                    if (alien.status == ALIVE and should_shoot(1)
+                        and alien.ammo != 0 and fleet.bombs_in_play < MAX_BOMBS_IN_PLAY) {
+                        // shoot bomb
+                        alien.bombs[alien.ammo-1] = {alien.position.x,alien.position.y+2};  // set initial position for the bomb
+                        alien.ammo--;
+                        fleet.bombs_in_play++;
+                    }
                 }
             }
         }
+        pause_fleet_attack = generate_number(30, 50);  // reset pause counter todo make defines
     }
+    pause_fleet_attack--;
 }
 
 /**
@@ -372,16 +379,7 @@ void make_fleet_shoot(AlienFleet &fleet) {
  */
 bool should_shoot(int aliens_left) {
     // TODO
-    std::random_device rd;  // to obtain a random seed from hardware
-    std::mt19937 gen(rd());  // Standard Mersenne Twister engine seeded with rd()
-
-    // set the range
-    std::uniform_real_distribution<float> distribution(0.0, 1.0);
-
-    // get random float number
-    float random_num = distribution(gen);
-
-    return random_num > 0.85;  // todo make a define
+    return generate_number(0.0, 1.0) > 0.85;  // todo make a define
 }
 
 /**
@@ -390,13 +388,13 @@ bool should_shoot(int aliens_left) {
  * @param fleet The alien Fleet object.
  */
 void refresh_bombs_position(AlienFleet &fleet) {
-    static int pause_shoot_attack = 0;
+    static int delay_bombs_reposition = 1;
 
-    if (pause_shoot_attack == 0) {
+    if (delay_bombs_reposition == 0) {
         for (auto &aliens_line : fleet.aliens) {
             for (auto &a : aliens_line) {
                 for (auto &bomb : a.bombs) {
-                    if (bomb.position.x != NOT_ON_FIELD and pause_shoot_attack == 0) {
+                    if (bomb.position.x != NOT_ON_FIELD and delay_bombs_reposition == 0) {
 
                         bomb.position.y += 1;  // todo change this into a define
                         // change animation frame
@@ -413,7 +411,6 @@ void refresh_bombs_position(AlienFleet &fleet) {
             }
         }
     }
-
-    pause_shoot_attack++;
-    if (pause_shoot_attack > 5) pause_shoot_attack = 0;
+    delay_bombs_reposition++;
+    if (delay_bombs_reposition > 10) delay_bombs_reposition = 0;
 }

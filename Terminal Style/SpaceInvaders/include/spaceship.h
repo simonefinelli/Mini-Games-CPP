@@ -10,11 +10,12 @@
 #include <string>
 #include <vector>
 #include "common.h"
+#include "utils.h"
 
 #ifndef SPACEINVADERS_SPACESHIP_H
 #define SPACEINVADERS_SPACESHIP_H
 
-#define MAX_ALIEN_AMMO 3
+#define MAX_ALIEN_AMMO 5
 #define NO_COLLISION (-1)
 
 // ALIEN FLEET
