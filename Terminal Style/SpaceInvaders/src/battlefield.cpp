@@ -62,8 +62,9 @@ void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Mis
 void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, AlienFleet &fleet) {
     shield_collision c {};
     coords curr_position;
-    int x, y;
 
+    // check the Aliens' body and the shields
+    int x, y;
     for (const auto &aliens_line : fleet.aliens) {
         for (const auto &a : aliens_line) {
             // check a collision with the bottom row of the Alien
@@ -78,6 +79,9 @@ void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Ali
             }
         }
     }
+
+    // check the Aliens' bombs and the shields
+
 }
 
 /**
