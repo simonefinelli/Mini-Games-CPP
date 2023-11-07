@@ -352,7 +352,7 @@ bool no_alien_explosion(const std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN
  */
 void make_fleet_shoot(AlienFleet &fleet) {
     // pause fleet attack for a random time at each attack cycle
-    static int pause_fleet_attack = generate_number(70, 100);  // initial pause todo make defines
+    static int pause_fleet_attack = generate_number(70, 100);  // initial pause todo make consts
 
     if (pause_fleet_attack == 0) {
         // shoot only if the Fleet is not advancing and there is not too many bombs in play
@@ -369,7 +369,7 @@ void make_fleet_shoot(AlienFleet &fleet) {
                 }
             }
         }
-        pause_fleet_attack = generate_number(30, 50);  // reset pause counter todo make defines
+        pause_fleet_attack = generate_number(30, 50);  // reset pause counter todo make consts
     }
     pause_fleet_attack--;
 }
@@ -378,7 +378,7 @@ void make_fleet_shoot(AlienFleet &fleet) {
  * @brief Makes an Alien shot with a certain probability.
  */
 bool should_shoot(int aliens_left) {
-    return generate_number(0.0, 1.0) > (0.85 - (aliens_left / 1000.0));
+    return generate_number(0.0, 1.0) > (0.85 - (aliens_left / 1000.0));  // todo make defines or conts
 }
 
 /**
