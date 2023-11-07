@@ -81,7 +81,21 @@ void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Ali
     }
 
     // check the Aliens' bombs and the shields
-
+    for (auto &aliens_line : fleet.aliens) {
+        for (auto &a : aliens_line) {
+            // check a collision with the bottom row of the bomb
+            for (auto &bomb : a.bombs) {
+                if (bomb.position.y == NOT_ON_FIELD) continue;
+                if (is_shield_collision({bomb.position.x, bomb.position.y + 1}, shields, c)) {
+                    // remove hit part
+                    shields[c.shield_idx].sprite[c.shield_part_hit.y][c.shield_part_hit.x] = ' ';
+                    // remove the bomb from the playing field
+                    bomb.position = {NOT_ON_FIELD, NOT_ON_FIELD};
+                    fleet.bombs_in_play--;
+                }
+            }
+        }
+    }
 }
 
 /**
