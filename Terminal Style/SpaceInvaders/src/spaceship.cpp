@@ -359,7 +359,7 @@ void make_fleet_shoot(AlienFleet &fleet) {
         if (!fleet.advancing and fleet.bombs_in_play < MAX_BOMBS_IN_PLAY) {
             for (auto alien_line = fleet.aliens.rbegin(); alien_line != fleet.aliens.rend(); alien_line++) {
                 for(auto &alien : *alien_line) {
-                    if (alien.status == ALIVE and should_shoot(1)
+                    if (alien.status == ALIVE and should_shoot(fleet.population)
                         and alien.ammo != 0 and fleet.bombs_in_play < MAX_BOMBS_IN_PLAY) {
                         // shoot bomb
                         alien.bombs[alien.ammo-1] = {alien.position.x,alien.position.y+2};  // set initial position for the bomb
@@ -378,7 +378,7 @@ void make_fleet_shoot(AlienFleet &fleet) {
  * @brief Makes an Alien shot with a certain probability.
  */
 bool should_shoot(int aliens_left) {
-    return generate_number(0.0, 1.0) > (0.85 - (aliens_left / 100.0));
+    return generate_number(0.0, 1.0) > (0.85 - (aliens_left / 1000.0));
 }
 
 /**
