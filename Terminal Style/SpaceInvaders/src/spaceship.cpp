@@ -193,15 +193,15 @@ bool is_collision(const coords &shot_pos, const std::array<std::array<Alien, ALI
  * @param aliens Aliens objects in the Fleet.
  * @param m The hero missile.
  */
-void check_fleet_collision(AlienFleet &f, Hero &h) {
+void check_fleet_collision(AlienFleet &fleet, Hero &h) {
     alien_collision c {};
-    if (is_collision(h.missile.position, f.aliens, c)) {
+    if (is_collision(h.missile.position, fleet.aliens, c)) {
         // remove the alien spaceship
-        Alien &a = f.aliens[c.alien_idx.x][c.alien_idx.y];
+        Alien &a = fleet.aliens[c.alien_idx.x][c.alien_idx.y];
         // update alien status
         a.status = EXPLODING;
         // update fleet population
-        f.population--;
+        fleet.population--;
         // reset hero missile
         h.missile.position = {NOT_ON_FIELD, NOT_ON_FIELD};
         // update hero score
@@ -412,4 +412,30 @@ void refresh_bombs_position(AlienFleet &fleet) {
     }
     delay_bombs_reposition++;
     if (delay_bombs_reposition > 10) delay_bombs_reposition = 0;
+}
+
+/**
+ * @brief Checks the collision between the hero missile and the Aliens in the
+ * fleet.
+ *
+ * @param aliens Aliens objects in the Fleet.
+ * @param m The hero missile.
+ */
+void check_hero_collision(AlienFleet &fleet, Hero &h) {
+    // check the Aliens' bombs and the shields
+    for (auto &aliens_line : fleet.aliens) {
+        for (auto &a : aliens_line) {
+            // check a collision with the bottom row of the bomb
+            for (auto &bomb : a.bombs) {
+                if (bomb.position.y == NOT_ON_FIELD) continue;
+                if (is_shield_collision({bomb.position.x, bomb.position.y + 1}, shields, c)) {
+                    // remove hit part
+                    shields[c.shield_idx].sprite[c.shield_part_hit.y][c.shield_part_hit.x] = ' ';
+                    // remove the bomb from the playing field
+                    bomb.position = {NOT_ON_FIELD, NOT_ON_FIELD};
+                    fleet.bombs_in_play--;
+                }
+            }
+        }
+    }
 }
