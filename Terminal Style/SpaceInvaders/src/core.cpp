@@ -107,7 +107,7 @@ void update_game_data(GameData &gd, key user_choice) {
     // update bombs position
     refresh_bombs_position(gd.alien_fleet);
 
-    // check shield collision with Fleet
+    // check shield collision with bombs' Fleet
     check_shield_collision(gd.field_game.shields, gd.alien_fleet);
 
 }
