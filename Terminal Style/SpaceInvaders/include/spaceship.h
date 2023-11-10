@@ -56,6 +56,12 @@ typedef enum AnimationFrame {
     FRAME_2
 } frame;
 
+typedef enum SpaceshipStatus {
+    ALIVE = 0,
+    DEAD,
+    EXPLODING
+} spaceship_status;
+
 /// Hero Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 typedef struct HeroMissile {
     coords position {NOT_ON_FIELD, NOT_ON_FIELD};
@@ -75,12 +81,6 @@ typedef enum AlienType {
     SECOND_CLASS, // 20 points type
     THIRD_CLASS   // 10 points type
 } alien_type;
-
-typedef enum AlienStatus {
-    ALIVE = 0,
-    DEAD,
-    EXPLODING
-} alien_status;
 
 typedef struct AlienBomb {
     coords position {NOT_ON_FIELD, NOT_ON_FIELD};
@@ -115,6 +115,7 @@ struct Hero {
     coords position {0, 0};
     Missile missile {};
     HeroExplosionAnimation explosion {};
+    spaceship_status status {};
     int lives = 0;
     int score = 0;
 };
@@ -122,7 +123,7 @@ struct Hero {
 struct Alien {
     alien_type type = NONE;
     coords position {NOT_ON_FIELD, NOT_ON_FIELD};
-    alien_status status {};
+    spaceship_status status {};
     std::array<std::array<std::string, SPRITE_HEIGHT>, SPRITE_FRAME> sprite = {};
     AlienExplosionAnimation explosion {};
     std::array<Bomb, MAX_ALIEN_AMMO> bombs {};
@@ -164,5 +165,7 @@ void make_fleet_movement(AlienFleet &fleet);
 void make_fleet_shoot(AlienFleet &f);
 
 void refresh_bombs_position(AlienFleet &fleet);
+
+void check_hero_collision(AlienFleet &fleet, Hero &hero);
 
 #endif //SPACEINVADERS_SPACESHIP_H

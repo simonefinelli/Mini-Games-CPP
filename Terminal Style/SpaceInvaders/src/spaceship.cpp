@@ -23,6 +23,7 @@ bool should_shoot(int aliens_left);
  */
 void init_hero(Hero &h) {
     h.name = HERO_NAME;
+    h.status = ALIVE;
     h.lives = HERO_LIVES;
     h.score = 0;
     h.position = {INITIAL_HERO_X_POSITION,INITIAL_HERO_Y_POSITION};
@@ -392,6 +393,7 @@ void refresh_bombs_position(AlienFleet &fleet) {
     if (delay_bombs_reposition == 0) {
         for (auto &aliens_line : fleet.aliens) {
             for (auto &a : aliens_line) {
+                if (a.status == DEAD) continue;
                 for (auto &bomb : a.bombs) {
                     if (bomb.position.x != NOT_ON_FIELD and delay_bombs_reposition == 0) {
 
@@ -418,19 +420,27 @@ void refresh_bombs_position(AlienFleet &fleet) {
  * @brief Checks the collision between the hero missile and the Aliens in the
  * fleet.
  *
- * @param aliens Aliens objects in the Fleet.
- * @param m The hero missile.
+ * @param fleet The Fleet object.
+ * @param hero The Hero object.
  */
-void check_hero_collision(AlienFleet &fleet, Hero &h) {
-    // check the Aliens' bombs and the shields
+void check_hero_collision(AlienFleet &fleet, Hero &hero) {
+    // check the Aliens' bombs and the Hero spaceship
     for (auto &aliens_line : fleet.aliens) {
         for (auto &a : aliens_line) {
+            if (a.status == DEAD) continue;
             // check a collision with the bottom row of the bomb
             for (auto &bomb : a.bombs) {
                 if (bomb.position.y == NOT_ON_FIELD) continue;
-                if (is_shield_collision({bomb.position.x, bomb.position.y + 1}, shields, c)) {
-                    // remove hit part
-                    shields[c.shield_idx].sprite[c.shield_part_hit.y][c.shield_part_hit.x] = ' ';
+
+                // check if the bomb hits the boundaries of the spaceship
+                // check boardaries and check if the sprite is not ' '
+                if ((bomb.position.x >= hero.position.x and bomb.position.x <= hero.position.x + HERO_SPRITE_WIDTH)
+                    and (bomb.position.y + 1 >= hero.position.y and bomb.position.y + 1 <= hero.position.y + 1)
+                    and (hero.sprite[bomb.position.x][bomb.position.y + 1] != ' ')) {
+
+                    hero.status = EXPLODING;
+                    hero.lives--;
+                    // hero repositioning
                     // remove the bomb from the playing field
                     bomb.position = {NOT_ON_FIELD, NOT_ON_FIELD};
                     fleet.bombs_in_play--;

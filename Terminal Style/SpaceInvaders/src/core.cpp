@@ -110,6 +110,10 @@ void update_game_data(GameData &gd, key user_choice) {
     // check shield collision with bombs' Fleet
     check_shield_collision(gd.field_game.shields, gd.alien_fleet);
 
+    // check collision between bombs' Fleet and Hero
+    check_hero_collision(gd.alien_fleet, gd.hero);
+
+
 }
 
 /**

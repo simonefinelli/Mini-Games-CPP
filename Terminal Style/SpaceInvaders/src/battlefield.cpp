@@ -119,10 +119,10 @@ bool is_shield_collision(const coords &pos, const std::array<FieldShield, SHIELD
     // if the missile/bomb is in the field check there is a shield_collision with a shield
     for (const FieldShield &s : shields) {
         if (
-                (pos.x >= s.position.x and pos.x < (s.position.x + SHIELD_SPRITE_WIDTH)) and  // shot in shield width
-                (pos.y >= s.position.y and pos.y < (s.position.y + SHIELD_SPRITE_HEIGHT)) and  // shot in shield height
-                (s.sprite[pos.y - s.position.y][pos.x - s.position.x] != ' ')  // shield_collision with a shield part
-                ) {
+            (pos.x >= s.position.x and pos.x < (s.position.x + SHIELD_SPRITE_WIDTH)) and  // shot in shield width
+            (pos.y >= s.position.y and pos.y < (s.position.y + SHIELD_SPRITE_HEIGHT)) and  // shot in shield height
+            (s.sprite[pos.y - s.position.y][pos.x - s.position.x] != ' ')  // shield_collision with a shield part
+            ) {
             // shield collision
             c.shield_idx = s.id;
             c.shield_part_hit = {pos.x - s.position.x, pos.y - s.position.y};  // get part index using row,column tuple
