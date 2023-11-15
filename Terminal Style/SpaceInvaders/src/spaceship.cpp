@@ -433,10 +433,11 @@ void check_hero_collision(AlienFleet &fleet, Hero &hero) {
                 if (bomb.position.y == NOT_ON_FIELD) continue;
 
                 // check if the bomb hits the boundaries of the spaceship
-                // check boardaries and check if the sprite is not ' '
+                // check boundaries and check if the sprite is not ' '
                 if ((bomb.position.x >= hero.position.x and bomb.position.x <= hero.position.x + HERO_SPRITE_WIDTH)
                     and (bomb.position.y + 1 >= hero.position.y and bomb.position.y + 1 <= hero.position.y + 1)
-                    and (hero.sprite[bomb.position.x][bomb.position.y + 1] != ' ')) {
+                    and (hero.sprite[bomb.position.x - hero.position.x][(bomb.position.y + 1) - hero.position.y] != ' ')
+                    ) {
 
                     hero.status = EXPLODING;
                     hero.lives--;
