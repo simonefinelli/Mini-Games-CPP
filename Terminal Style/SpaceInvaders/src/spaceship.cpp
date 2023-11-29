@@ -393,7 +393,6 @@ void refresh_bombs_position(AlienFleet &fleet) {
     if (delay_bombs_reposition == 0) {
         for (auto &aliens_line : fleet.aliens) {
             for (auto &a : aliens_line) {
-                if (a.status == DEAD) continue;
                 for (auto &bomb : a.bombs) {
                     if (bomb.position.x != NOT_ON_FIELD and delay_bombs_reposition == 0) {
 
@@ -434,17 +433,15 @@ void check_hero_collision(AlienFleet &fleet, Hero &hero) {
 
                 // check if the bomb hits the boundaries of the spaceship
                 // check boundaries and check if the sprite is not ' '
-                if ((bomb.position.x >= hero.position.x and bomb.position.x <= hero.position.x + HERO_SPRITE_WIDTH)
-                    and (bomb.position.y + 1 >= hero.position.y and bomb.position.y + 1 <= hero.position.y + 1)
-                    and (hero.sprite[bomb.position.x - hero.position.x][(bomb.position.y + 1) - hero.position.y] != ' ')
-                    ) {
-
+                if ((bomb.position.x >= hero.position.x) and (bomb.position.x <= (hero.position.x + HERO_SPRITE_WIDTH - 1))
+                    and ((bomb.position.y + 1 >= hero.position.y) and (bomb.position.y + 1 <= hero.position.y + 1))) {
                     hero.status = EXPLODING;
                     hero.lives--;
-                    // hero repositioning
                     // remove the bomb from the playing field
                     bomb.position = {NOT_ON_FIELD, NOT_ON_FIELD};
                     fleet.bombs_in_play--;
+
+                    std::cout << hero.sprite[bomb.position.x - hero.position.x][(bomb.position.y + 2) - hero.position.y];
                 }
             }
         }
