@@ -68,6 +68,9 @@ int get_user_input() {
  * @param gm Game data.
  */
 void update_game_data(GameData &gd, key user_choice) {
+    // if the Hero is dead, the game will not update
+    if (gd.hero.status != ALIVE) return;
+
     // TODO make a function
     switch (user_choice) {
         case LEFT:
@@ -79,7 +82,8 @@ void update_game_data(GameData &gd, key user_choice) {
             move_hero(gd.hero, HER0_MOVEMENT_OFFSET);
             break;
         case SPACE:
-            hero_init_shoot(gd.hero);  // set initial position of the missile
+            // set initial position of the missile
+            hero_init_shoot(gd.hero);
             break;
         default:
             // ignore input
@@ -112,8 +116,6 @@ void update_game_data(GameData &gd, key user_choice) {
 
     // check collision between bombs' Fleet and Hero
     check_hero_collision(gd.alien_fleet, gd.hero);
-
-
 }
 
 /**
