@@ -52,7 +52,7 @@ namespace gui {
      * @param s Sprite to draw.
      */
     template <typename T, size_t N>
-    void draw_sprite(int x, int y,const std::array<T, N> &s) {
+    void draw_sprite(int x, int y, const std::array<T, N> &s) {
         int height_offset = 0;
         for (const auto &sprite_part : s) {
             mvprintw(y + height_offset, x, "%s", sprite_part.c_str());

@@ -8,6 +8,7 @@
 
 #include <array>
 #include <iostream>
+#include <thread>
 #include "spaceship.h"
 
 
@@ -159,7 +160,6 @@ bool is_collision(const coords &shot_pos, const std::array<std::array<Alien, ALI
     c.alien_idx = {NO_COLLISION, NO_COLLISION};
 
     if (shot_pos.y == NOT_ON_FIELD) {
-        // c.ship_part_hit = {NO_COLLISION, NO_COLLISION};
         return false;
     }
 
@@ -440,10 +440,37 @@ void check_hero_collision(AlienFleet &fleet, Hero &hero) {
                     // remove the bomb from the playing field
                     bomb.position = {NOT_ON_FIELD, NOT_ON_FIELD};
                     fleet.bombs_in_play--;
-
-                    std::cout << hero.sprite[bomb.position.x - hero.position.x][(bomb.position.y + 2) - hero.position.y];
                 }
             }
         }
+    }
+}
+
+
+/**
+ * Updates the explosion animation of the Hero object.
+ * Because the sprite is changed at every frame, to slow the animation we use a
+ * sleep of 0.3 seconds. This approach is good in this case because the entire
+ * game is stopped.
+ *
+ * @param hero The Hero object.
+ */
+void refresh_hero_explosion(Hero &hero) {
+    if (hero.status == EXPLODING and hero.explosion.timer > 0) {
+        // update exploding frame of the Hero
+        if (hero.explosion.curr_frame_idx == 0) {
+            hero.explosion.curr_frame = hero.explosion.frame0;
+            hero.explosion.curr_frame_idx = 1;
+        } else {
+            hero.explosion.curr_frame = hero.explosion.frame1;
+            hero.explosion.curr_frame_idx = 0;
+        }
+        // update timer
+        hero.explosion.timer--;
+        if (hero.explosion.timer <= 0) {
+            hero.status = DEAD;
+        }
+        // pause animation
+        std::this_thread::sleep_for(std::chrono::milliseconds(300));
     }
 }

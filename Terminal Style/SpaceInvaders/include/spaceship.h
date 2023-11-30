@@ -36,8 +36,8 @@
 #define INITIAL_FLEET_SPEED 35
 #define FLEET_ADVANCE_STEP 1
 #define MAX_BOMBS_IN_PLAY 3
-const std::string ALIEN_EXPLOSION_SPRITE[] {"\\\\//", "//\\\\"};
-const std::string ALIEN_BOMB_SPRITE[] {"/", "\\"};
+const std::string ALIEN_EXPLOSION_SPRITE[] {R"(\\//)", R"(//\\)"};
+const std::string ALIEN_BOMB_SPRITE[] {R"(/)", R"(\)"};
 
 // Hero
 #define HERO_NAME "Player1"
@@ -47,6 +47,8 @@ const std::string ALIEN_BOMB_SPRITE[] {"/", "\\"};
 #define HERO_LIVES 3
 #define NOT_ON_FIELD (-1)
 #define MISSILE_PACE 1
+#define HERO_EXPLOSION_DURATION 0.2
+const std::string HERO_EXPLOSION_SPRITE[][2] {{R"(.^-_.)", R"(=====)"}, {R"(._-^.)", R"(=====)"}};
 const std::string HERO_SPRITE[] {R"(  ^  )", R"(|-V-|)"};
 
 
@@ -69,9 +71,17 @@ typedef struct HeroMissile {
 } Missile;
 
 struct HeroExplosionAnimation {
-    const std::string frame0 = ".^-_.\n=====";  // TODO modify
-    const std::string frame1 = "._-^.\n=====";  // TODO modify
-    int active_frame = 0;  // frame0: 0 - frame2: 1  // TODO make sense?
+    const std::array<std::string, SPRITE_HEIGHT> frame0 = {
+            HERO_EXPLOSION_SPRITE[0][0],
+            HERO_EXPLOSION_SPRITE[0][1]
+    };
+    const std::array<std::string, SPRITE_HEIGHT> frame1 = {
+            HERO_EXPLOSION_SPRITE[1][0],
+            HERO_EXPLOSION_SPRITE[1][1]
+    };
+    std::array<std::string, SPRITE_HEIGHT> curr_frame {};
+    int curr_frame_idx = 0;
+    float timer = FPS * HERO_EXPLOSION_DURATION;
 };
 
 /// Aliens Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -167,5 +177,7 @@ void make_fleet_shoot(AlienFleet &f);
 void refresh_bombs_position(AlienFleet &fleet);
 
 void check_hero_collision(AlienFleet &fleet, Hero &hero);
+
+void refresh_hero_explosion(Hero &hero);
 
 #endif //SPACEINVADERS_SPACESHIP_H

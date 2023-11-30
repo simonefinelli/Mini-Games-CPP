@@ -6,7 +6,6 @@
  * @date 2023-09-18
  */
 
-#include <iostream>
 #include "core.h"
 
 void draw_hero_on_field(const Hero &h);
@@ -68,54 +67,57 @@ int get_user_input() {
  * @param gm Game data.
  */
 void update_game_data(GameData &gd, key user_choice) {
-    // if the Hero is dead, the game will not update
-    if (gd.hero.status != ALIVE) return;
+    if (gd.hero.status == ALIVE) {
+        // TODO make a function
+        switch (user_choice) {
+            case LEFT:
+                // move hero to left
+                move_hero(gd.hero, -HER0_MOVEMENT_OFFSET);
+                break;
+            case RIGHT:
+                // move hero to right
+                move_hero(gd.hero, HER0_MOVEMENT_OFFSET);
+                break;
+            case SPACE:
+                // set initial position of the missile
+                hero_init_shoot(gd.hero);
+                break;
+            default:
+                // ignore input
+                break;
+        }
 
-    // TODO make a function
-    switch (user_choice) {
-        case LEFT:
-            // move hero to left
-            move_hero(gd.hero, -HER0_MOVEMENT_OFFSET);
-            break;
-        case RIGHT:
-            // move hero to right
-            move_hero(gd.hero, HER0_MOVEMENT_OFFSET);
-            break;
-        case SPACE:
-            // set initial position of the missile
-            hero_init_shoot(gd.hero);
-            break;
-        default:
-            // ignore input
-            break;
+        // update hero missile position
+        refresh_missile_position(gd.hero);
+
+        // check shield collision with Hero
+        check_shield_collision(gd.field_game.shields, gd.hero.missile);
+
+        // check aliens collision in fleet
+        check_fleet_collision(gd.alien_fleet, gd.hero);
+
+        // handle alien explosion
+        check_alien_explosion(gd.alien_fleet.aliens);
+
+        // move fleet
+        make_fleet_movement(gd.alien_fleet);
+
+        // shot bomb from aliens
+        make_fleet_shoot(gd.alien_fleet);
+
+        // update bombs position
+        refresh_bombs_position(gd.alien_fleet);
+
+        // check shield collision with bombs' Fleet
+        check_shield_collision(gd.field_game.shields, gd.alien_fleet);
+
+        // check collision between bombs' Fleet and Hero
+        check_hero_collision(gd.alien_fleet, gd.hero);
+
+    } else {
+        // update exploding frame of the Hero
+        refresh_hero_explosion(gd.hero);
     }
-
-    // update hero missile position
-    refresh_missile_position(gd.hero);
-
-    // check shield collision with Hero
-    check_shield_collision(gd.field_game.shields, gd.hero.missile);
-
-    // check aliens collision in fleet
-    check_fleet_collision(gd.alien_fleet, gd.hero);
-
-    // handle alien explosion
-    check_alien_explosion(gd.alien_fleet.aliens);
-
-    // move fleet
-    make_fleet_movement(gd.alien_fleet);
-
-    // shot bomb from aliens
-    make_fleet_shoot(gd.alien_fleet);
-
-    // update bombs position
-    refresh_bombs_position(gd.alien_fleet);
-
-    // check shield collision with bombs' Fleet
-    check_shield_collision(gd.field_game.shields, gd.alien_fleet);
-
-    // check collision between bombs' Fleet and Hero
-    check_hero_collision(gd.alien_fleet, gd.hero);
 }
 
 /**
@@ -147,7 +149,14 @@ void draw_screen_game(GameData &gd) {
  */
 void draw_hero_on_field(const Hero &h) {
     // hero spaceship
-    gui::draw_sprite(h.position.x, h.position.y, h.sprite);
+
+    if (h.status == ALIVE) {
+        gui::draw_sprite(h.position.x, h.position.y, h.sprite);
+    }
+    if (h.status == EXPLODING) {
+        gui::draw_sprite(h.position.x, h.position.y, h.explosion.curr_frame);
+    }
+
     // hero missile
     if (h.missile.position.x != NOT_ON_FIELD) {
         gui::draw_char(h.missile.position.x, h.missile.position.y, h.missile.frame0);
