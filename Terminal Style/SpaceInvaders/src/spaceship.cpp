@@ -426,13 +426,11 @@ void check_hero_collision(AlienFleet &fleet, Hero &hero) {
     // check the Aliens' bombs and the Hero spaceship
     for (auto &aliens_line : fleet.aliens) {
         for (auto &a : aliens_line) {
-            if (a.status == DEAD) continue;
             // check a collision with the bottom row of the bomb
             for (auto &bomb : a.bombs) {
                 if (bomb.position.y == NOT_ON_FIELD) continue;
 
                 // check if the bomb hits the boundaries of the spaceship
-                // check boundaries and check if the sprite is not ' '
                 if ((bomb.position.x >= hero.position.x) and (bomb.position.x <= (hero.position.x + HERO_SPRITE_WIDTH - 1))
                     and ((bomb.position.y + 1 >= hero.position.y) and (bomb.position.y + 1 <= hero.position.y + 1))) {
                     hero.status = EXPLODING;
@@ -444,6 +442,8 @@ void check_hero_collision(AlienFleet &fleet, Hero &hero) {
             }
         }
     }
+
+    // check the collision between Aliens and Hero spaceship
 }
 
 
