@@ -7,7 +7,6 @@
  */
 
 #include <array>
-#include <iostream>
 #include <thread>
 #include "spaceship.h"
 
@@ -485,7 +484,7 @@ bool is_hero_collision(const coords &pos, Hero &h) {
  *
  * @param hero The Hero object.
  */
-void refresh_hero_explosion(Hero &hero) {
+bool is_hero_exploding(Hero &hero) {
     if (hero.status == EXPLODING and hero.explosion.timer > 0) {
         // update exploding frame of the Hero
         if (hero.explosion.curr_frame_idx == 0) {
@@ -500,7 +499,8 @@ void refresh_hero_explosion(Hero &hero) {
         if (hero.explosion.timer <= 0) {
             hero.status = DEAD;
         }
-        // pause animation
-        std::this_thread::sleep_for(std::chrono::milliseconds(300));
+        return true;
+    } else {
+        return false;
     }
 }

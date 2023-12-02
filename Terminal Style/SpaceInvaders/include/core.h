@@ -7,22 +7,31 @@
  */
 
 
+
+#ifndef SPACEINVADERS_CORE_H
+#define SPACEINVADERS_CORE_H
+
 #include "battlefield.h"
 #include "spaceship.h"
 #include "gui.h"
 
-#ifndef SPACEINVADERS_CORE_H
-#define SPACEINVADERS_CORE_H
 #define IS_QUIT_CHAR(x) ((x == QUIT_CHAR_UPPER) || (x == QUIT_CHAR_LOWER))
 
 const char QUIT_CHAR_LOWER = 'q';
 const char QUIT_CHAR_UPPER = 'Q';
 
+struct FieldGame {
+    size window_size{0, 0};
+    game_state state{WELCOME_SCREEN};
+    int level{0};
+    std::array<FieldShield, SHIELD_NUMBER> shields {};
+    int wait_time{0}; // milliseconds
+};
 
 struct GameData {
-    FieldGame field_game {};
-    Hero hero {};
-    AlienFleet alien_fleet {};
+    FieldGame field_game{};
+    Hero hero{};
+    AlienFleet alien_fleet{};
 };
 
 GameData initialize_game();

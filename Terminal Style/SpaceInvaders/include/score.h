@@ -5,11 +5,11 @@
  * @date 2023-09-17
  */
 
-#include <string>
-#include <vector>
-
 #ifndef SPACEINVADERS_SCORE_H
 #define SPACEINVADERS_SCORE_H
+
+#include <string>
+#include <vector>
 
 /**
  * @brief Current Score in a single match.

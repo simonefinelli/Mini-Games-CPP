@@ -6,14 +6,14 @@
  * @date 2023-09-16
  */
 
+#ifndef SPACEINVADERS_SPACESHIP_H
+#define SPACEINVADERS_SPACESHIP_H
+
 #include <array>
 #include <string>
 #include <vector>
 #include "common.h"
 #include "utils.h"
-
-#ifndef SPACEINVADERS_SPACESHIP_H
-#define SPACEINVADERS_SPACESHIP_H
 
 #define MAX_ALIEN_AMMO 5
 #define NO_COLLISION (-1)
@@ -178,6 +178,6 @@ void refresh_bombs_position(AlienFleet &fleet);
 
 void check_hero_collision(AlienFleet &fleet, Hero &hero);
 
-void refresh_hero_explosion(Hero &hero);
+bool is_hero_exploding(Hero &hero);
 
 #endif //SPACEINVADERS_SPACESHIP_H

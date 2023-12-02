@@ -5,12 +5,14 @@
  * @date 2023-09-09
  */
 
-#include <array>
-#include <ncurses.h>
-#include "common.h"
+
 
 #ifndef SPACEINVADERS_GUI_H
 #define SPACEINVADERS_GUI_H
+
+#include <array>
+#include <ncurses.h>
+#include "common.h"
 
 #define HER0_MOVEMENT_OFFSET 1
 

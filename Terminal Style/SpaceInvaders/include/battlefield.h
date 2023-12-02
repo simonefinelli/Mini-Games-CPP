@@ -5,14 +5,15 @@
  * @date 2023-09-09
  */
 
+
+#ifndef SPACEINVADERS_BATTLEFIELD_H
+#define SPACEINVADERS_BATTLEFIELD_H
+
 #include <array>
 #include <string>
 #include <vector>
 #include "gui.h"
 #include "spaceship.h"
-
-#ifndef SPACEINVADERS_BATTLEFIELD_H
-#define SPACEINVADERS_BATTLEFIELD_H
 
 #define SHIELD_NUMBER 4
 #define SHIELD_PADDING 10
@@ -45,13 +46,6 @@ struct FieldShield {
             "#######",
             "#/   \\#"
     };
-};
-
-struct FieldGame {
-    size window_size {0, 0};
-    game_state state {WELCOME_SCREEN};
-    int level = 0;
-    std::array<FieldShield, SHIELD_NUMBER> shields {};
 };
 
 /// Prototypes - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

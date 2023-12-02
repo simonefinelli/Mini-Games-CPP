@@ -6,12 +6,16 @@
  * @date 2023-09-18
  */
 
+#include <thread>
 #include "core.h"
 
 void draw_hero_on_field(const Hero &h);
 void move_hero(Hero &h, int peace);
 void hero_init_shoot(Hero &h);
 void draw_alien_fleet(AlienFleet &f);
+void check_game_status(GameData &gd);
+void update_hero_explosion_status(GameData &gd);
+void pause_game(GameData &gd);
 
 /**
  * @brief Creates the two Players.
@@ -19,7 +23,7 @@ void draw_alien_fleet(AlienFleet &f);
  * @return the game data of the two Players.
  */
 GameData initialize_game() {
-    GameData gd {};
+    GameData gd{};
 
     // define game field characteristics TODO make a function in appropriate object
     gd.field_game.window_size = {W_WIDTH, W_HEIGHT};
@@ -103,7 +107,7 @@ void update_game_data(GameData &gd, key user_choice) {
         make_fleet_movement(gd.alien_fleet);
 
         // shot bomb from aliens
-        // make_fleet_shoot(gd.alien_fleet);
+        make_fleet_shoot(gd.alien_fleet);
 
         // update bombs position
         refresh_bombs_position(gd.alien_fleet);
@@ -114,10 +118,16 @@ void update_game_data(GameData &gd, key user_choice) {
         // check collision between bombs' Fleet and Hero
         check_hero_collision(gd.alien_fleet, gd.hero);
 
+        // check game status
+        check_game_status(gd);
+
     } else {
         // update exploding frame of the Hero
-        refresh_hero_explosion(gd.hero);
+        update_hero_explosion_status(gd);
     }
+
+    // check if we have to pause the game
+    pause_game(gd);
 }
 
 /**
@@ -132,10 +142,10 @@ void draw_screen_game(GameData &gd) {
     draw_shields_on_field(gd.field_game.shields);
 
     // draw hero data
-    draw_hero_on_field(gd.hero);
+    draw_hero_on_field(gd.hero); // todo check if possible to move to spaceship
 
     // draw alien fleet
-    draw_alien_fleet(gd.alien_fleet);
+    draw_alien_fleet(gd.alien_fleet); // todo check if possible to move to spaceship
 
     // refresh the terminal screen
     gui::refresh_screen();
@@ -190,5 +200,43 @@ void draw_alien_fleet(AlienFleet &f) {
                 }
             }
         }
+    }
+}
+
+/**
+ * todo
+ * @param gd
+ */
+void update_hero_explosion_status(GameData &gd) {
+    if (is_hero_exploding(gd.hero)) {
+        // pause animation setting the entire field pause
+        gd.field_game.wait_time = 300;  // milliseconds
+    }
+}
+
+/**
+ * todo
+ *
+ * interval in milliseconds
+ */
+void pause_game(GameData &gd) {
+    if (gd.field_game.wait_time == 0) return;
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(gd.field_game.wait_time));
+    // reset waiting time
+    gd.field_game.wait_time = 0;
+}
+
+/**
+ * @brief This function handles all the conditions to restart and reset the game,
+ * make a new level etc.
+ *
+ * @param gd The Game Data.
+ */
+void check_game_status(GameData &gd) {
+    if (gd.alien_fleet.population == 0) {
+        gd.field_game.level++;
+        gd.field_game.state = PAUSE_SCREEN;
+        gd.field_game.wait_time = 10;
     }
 }
