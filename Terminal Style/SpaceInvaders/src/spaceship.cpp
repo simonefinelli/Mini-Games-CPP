@@ -429,25 +429,13 @@ void check_hero_collision(AlienFleet &fleet, Hero &hero) {
         for (auto &a : aliens_line) {
             // check a collision with the bottom row of the bomb
             for (auto &bomb : a.bombs) {
-                if (bomb.position.y == NOT_ON_FIELD) continue;
-
-                if (is_hero_collision({bomb.position.x, bomb.position.y}, hero)) {
+                if (bomb.position.y != NOT_ON_FIELD and is_hero_collision({bomb.position.x, bomb.position.y}, hero)) {
                     hero.status = EXPLODING;
                     hero.lives--;
                     // remove the bomb from the playing field
                     bomb.position = {NOT_ON_FIELD, NOT_ON_FIELD};
                     fleet.bombs_in_play--;
                 }
-
-//                // check if the bomb hits the boundaries of the spaceship
-//                if ((bomb.position.x >= hero.position.x) and (bomb.position.x <= (hero.position.x + HERO_SPRITE_WIDTH - 1))
-//                    and ((bomb.position.y + 1 >= hero.position.y) and (bomb.position.y + 1 <= hero.position.y + 1))) {
-//                    hero.status = EXPLODING;
-//                    hero.lives--;
-//                    // remove the bomb from the playing field
-//                    bomb.position = {NOT_ON_FIELD, NOT_ON_FIELD};
-//                    fleet.bombs_in_play--;
-//                }
             }
         }
     }
