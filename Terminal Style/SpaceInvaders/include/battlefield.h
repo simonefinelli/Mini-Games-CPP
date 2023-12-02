@@ -35,7 +35,7 @@ typedef enum FieldGameState {
     PLAYER_DEAD_SCREEN,
     GAME_OVER_SCREEN,
     HIGH_SCORES_SCREEN,
-    PAUSE_SCREEN
+    INTERVAL_LEVEL_SCREEN
 } game_state;
 
 struct FieldShield {

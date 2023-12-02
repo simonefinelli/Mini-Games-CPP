@@ -118,13 +118,13 @@ void update_game_data(GameData &gd, key user_choice) {
         // check collision between bombs' Fleet and Hero
         check_hero_collision(gd.alien_fleet, gd.hero);
 
-        // check game status
-        check_game_status(gd);
-
     } else {
         // update exploding frame of the Hero
         update_hero_explosion_status(gd);
     }
+
+    // check game status
+    check_game_status(gd);
 
     // check if we have to pause the game
     pause_game(gd);
@@ -234,9 +234,13 @@ void pause_game(GameData &gd) {
  * @param gd The Game Data.
  */
 void check_game_status(GameData &gd) {
-    if (gd.alien_fleet.population == 0) {
+    // all aliens eliminated
+    if (gd.alien_fleet.population == 0) {  //todo no aliens are exploding (all dead)
+        // reset game
+        gd.field_game.state = PLAY_SCREEN;
         gd.field_game.level++;
-        gd.field_game.state = PAUSE_SCREEN;
-        gd.field_game.wait_time = 10;
+        gd.alien_fleet.population = ALIEN_FLEET_N;
+        gd.field_game.state = INTERVAL_LEVEL_SCREEN;
+        gd.field_game.wait_time = 5000;
     }
 }

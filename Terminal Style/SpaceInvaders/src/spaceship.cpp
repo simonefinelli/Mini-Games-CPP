@@ -320,7 +320,7 @@ bool is_alien_overflow(const AlienFleet &fleet) {
 void reset_fleet_speed(AlienFleet &fleet) {
     if (fleet.population >= 2) {
         int new_speed = INITIAL_FLEET_SPEED - (ALIEN_FLEET_N - fleet.population);
-        fleet.movement_speed = new_speed > 5 ? 2 : 5;  // todo make consts
+        fleet.movement_speed = new_speed > 5 ? 30 : 5;  // todo make consts
     } else {
         fleet.movement_speed = 1;
     }
