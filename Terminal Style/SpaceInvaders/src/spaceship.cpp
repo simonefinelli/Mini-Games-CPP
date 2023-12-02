@@ -321,7 +321,7 @@ bool is_alien_overflow(const AlienFleet &fleet) {
 void reset_fleet_speed(AlienFleet &fleet) {
     if (fleet.population >= 2) {
         int new_speed = INITIAL_FLEET_SPEED - (ALIEN_FLEET_N - fleet.population);
-        fleet.movement_speed = new_speed > 5 ? 30 : 5;
+        fleet.movement_speed = new_speed > 5 ? 2 : 5;  // todo make consts
     } else {
         fleet.movement_speed = 1;
     }
@@ -429,7 +429,7 @@ void check_hero_collision(AlienFleet &fleet, Hero &hero) {
         for (auto &a : aliens_line) {
             // check a collision with the bottom row of the bomb
             for (auto &bomb : a.bombs) {
-                if (bomb.position.y != NOT_ON_FIELD and is_hero_collision({bomb.position.x, bomb.position.y}, hero)) {
+                if (bomb.position.y != NOT_ON_FIELD and is_hero_collision({bomb.position.x, bomb.position.y + 1}, hero)) {
                     hero.status = EXPLODING;
                     hero.lives--;
                     // remove the bomb from the playing field
@@ -440,22 +440,26 @@ void check_hero_collision(AlienFleet &fleet, Hero &hero) {
         }
     }
 
-//    // check the collision between Aliens and Hero spaceship
-//    coords curr_position;
-//    int x, y;
-//    for (const auto &aliens_line : fleet.aliens) {
-//        for (const auto &a : aliens_line) {
-//            for (int i = 0; i < HERO_SPRITE_WIDTH; i++) {
-//                x = a.position.x + i;
-//                y = a.position.y + 1;
-//                curr_position = {x, y};
-//                if (a.status == ALIVE and is_shield_collision(curr_position, shields, c)) {
-//                    // remove hit part
-//                    shields[c.shield_idx].sprite[c.shield_part_hit.y][c.shield_part_hit.x] = ' ';
-//                }
-//            }
-//        }
-//    }
+    // check the collision between Aliens and Hero spaceship
+    coords curr_position;
+    int x, y;
+    for (const auto &aliens_line : fleet.aliens) {
+        for (const auto &a : aliens_line) {
+            // check all the alien sprite
+            for (int i = 0; i < SPRITE_HEIGHT; i++) {
+                for (int j = 0; j < HERO_SPRITE_WIDTH; j++) {
+                    x = a.position.x + j;
+                    y = a.position.y + i;
+                    curr_position = {x, y};
+                    if (a.status == ALIVE and is_hero_collision(curr_position, hero)) {
+                        hero.status = EXPLODING;
+                        hero.lives--;
+                        return;
+                    }
+                }
+            }
+        }
+    }
 }
 
 
@@ -465,7 +469,7 @@ void check_hero_collision(AlienFleet &fleet, Hero &hero) {
 bool is_hero_collision(const coords &pos, Hero &h) {
     // check if the bomb hits the boundaries of the spaceship
     if ((pos.x >= h.position.x) and (pos.x <= (h.position.x + HERO_SPRITE_WIDTH - 1))
-        and ((pos.y + 1 >= h.position.y) and (pos.y + 1 <= h.position.y + 1))) {
+        and ((pos.y >= h.position.y) and (pos.y <= h.position.y + 1))) {
         return true;
     } else {
         return false;

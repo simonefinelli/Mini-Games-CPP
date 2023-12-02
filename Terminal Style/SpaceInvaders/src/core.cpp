@@ -103,7 +103,7 @@ void update_game_data(GameData &gd, key user_choice) {
         make_fleet_movement(gd.alien_fleet);
 
         // shot bomb from aliens
-        make_fleet_shoot(gd.alien_fleet);
+        // make_fleet_shoot(gd.alien_fleet);
 
         // update bombs position
         refresh_bombs_position(gd.alien_fleet);
