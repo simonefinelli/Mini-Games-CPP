@@ -15,7 +15,6 @@ void init_alien(Alien &a, alien_type type, int x_offset, int y_offset, const coo
 bool is_collision(const coords &shot_pos, const std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens, alien_collision &c);
 void reset_fleet_speed(AlienFleet &fleet);
 bool is_alien_overflow(const AlienFleet &fleet);
-bool no_alien_explosion(const std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens);
 bool should_shoot(int aliens_left);
 bool is_hero_collision(const coords &pos, Hero &h);
 

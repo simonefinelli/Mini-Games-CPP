@@ -215,6 +215,39 @@ void update_hero_explosion_status(GameData &gd) {
 }
 
 /**
+ * @brief This function handles all the conditions to restart and reset the game,
+ * make a new level etc.
+ *
+ * @param gd The Game Data.
+ */
+void check_game_status(GameData &gd) {
+    // after level cleaning
+    if (gd.field_game.state == INTERVAL_LEVEL_SCREEN and gd.field_game.wait_time == 0) {
+        // reset game todo make a function
+        gd.field_game.state = PLAY_SCREEN;
+        gd.field_game.level++;
+        gd.alien_fleet.population = ALIEN_FLEET_N;
+        // define fleet
+        init_fleet(gd.alien_fleet);
+        // init shields
+        init_shields(gd.field_game.shields);
+        // define Hero
+        init_hero(gd.hero);
+
+    }
+
+    // all aliens eliminated
+    if (gd.alien_fleet.population == 0 and no_alien_explosion(gd.alien_fleet.aliens)) {  //todo no aliens are exploding (all dead)
+        gd.field_game.state = INTERVAL_LEVEL_SCREEN;
+        gd.field_game.wait_time = 5000;
+    }
+}
+
+void reset_game() {
+
+}
+
+/**
  * todo
  *
  * interval in milliseconds
@@ -225,22 +258,4 @@ void pause_game(GameData &gd) {
     std::this_thread::sleep_for(std::chrono::milliseconds(gd.field_game.wait_time));
     // reset waiting time
     gd.field_game.wait_time = 0;
-}
-
-/**
- * @brief This function handles all the conditions to restart and reset the game,
- * make a new level etc.
- *
- * @param gd The Game Data.
- */
-void check_game_status(GameData &gd) {
-    // all aliens eliminated
-    if (gd.alien_fleet.population == 0) {  //todo no aliens are exploding (all dead)
-        // reset game
-        gd.field_game.state = PLAY_SCREEN;
-        gd.field_game.level++;
-        gd.alien_fleet.population = ALIEN_FLEET_N;
-        gd.field_game.state = INTERVAL_LEVEL_SCREEN;
-        gd.field_game.wait_time = 5000;
-    }
 }

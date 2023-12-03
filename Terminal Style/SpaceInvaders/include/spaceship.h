@@ -180,4 +180,6 @@ void check_hero_collision(AlienFleet &fleet, Hero &hero);
 
 bool is_hero_exploding(Hero &hero);
 
+bool no_alien_explosion(const std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens);
+
 #endif //SPACEINVADERS_SPACESHIP_H
