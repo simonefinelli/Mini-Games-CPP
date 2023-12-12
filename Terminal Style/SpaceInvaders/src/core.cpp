@@ -227,12 +227,20 @@ void check_game_status(GameData &gd) {
         gd.field_game.state = PLAY_SCREEN;
         gd.field_game.level++;
         gd.alien_fleet.population = ALIEN_FLEET_N;
-        // define fleet
+        // re-define fleet
         init_fleet(gd.alien_fleet);
-        // init shields
+        // re-init shields
         init_shields(gd.field_game.shields);
-        // define Hero
+        // re-define Hero
         init_hero(gd.hero);
+        // clear all bomb on screen todo make a function in spaceship.cpp
+        for (auto &aliens_line : gd.alien_fleet.aliens) {
+            for (auto &a : aliens_line) {
+                for (auto &bomb : a.bombs) {
+                    bomb.position = {NOT_ON_FIELD, NOT_ON_FIELD};
+                }
+            }
+        }
 
     }
 
