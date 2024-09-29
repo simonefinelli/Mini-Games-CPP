@@ -28,7 +28,7 @@ typedef struct GameCoordinates {
 } coords;
 
 /**
- * @brief Game objects sizes are define ad width and height units.
+ * @brief Game objects sizes are defined as width and height units.
  */
 typedef struct ObjectSize {
     int width = 0;

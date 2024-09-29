@@ -25,7 +25,7 @@ void pause_game(GameData &gd);
 GameData initialize_game() {
     GameData gd{};
 
-    // define game field characteristics TODO make a function in appropriate object
+    // define game field characteristics
     gd.field_game.window_size = {W_WIDTH, W_HEIGHT};
     gd.field_game.state = PLAY_SCREEN; // TODO after change with WELCOME_SCREEN
     gd.field_game.level = 1;  // first level
