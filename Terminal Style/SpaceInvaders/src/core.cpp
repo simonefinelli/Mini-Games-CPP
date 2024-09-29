@@ -70,7 +70,7 @@ int get_user_input() {
  *
  * @param gm Game data.
  */
-void update_gamedata(GameData &gd, key user_choice) {
+void update_game_data(GameData &gd, key user_choice) {
     if (gd.hero.status == ALIVE) {
         // TODO make a function
         switch (user_choice) {

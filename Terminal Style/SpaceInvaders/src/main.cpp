@@ -20,6 +20,8 @@ bool play_again();
 int main() {
     // initialize graphics
     gui::initialize_curses();
+    
+    // game procedure
     do {
         game_loop();
     } while (play_again());
@@ -44,6 +46,7 @@ void game_loop() {
     auto game_data = initialize_game();
 
     // show welcome screen
+    // TODO
 
     // refresh on screen game data
     draw_screen_game(game_data);
