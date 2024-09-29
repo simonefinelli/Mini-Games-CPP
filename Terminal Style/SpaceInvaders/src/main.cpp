@@ -14,9 +14,25 @@
 
 const std::chrono::duration<double> FRAME_DURATION(1.0 / FPS); // get first time interval
 
+// prototypes
 void game_loop();
 bool play_again();
 
+/**
+ * @brief Main entry point of the Space Invaders game.
+ * 
+ * This function initializes the graphical interface using curses library, 
+ * runs the game loop repeatedly until the player chooses to stop, 
+ * and then shuts down the graphical interface.
+ * 
+ * Workflow:
+ * - Initializes the terminal graphics mode using `gui::initialize_curses()`.
+ * - Repeatedly runs the `game_loop()` until the user decides not to play again.
+ * - Calls `play_again()` to check if the player wants to continue after each game loop iteration.
+ * - Shuts down the terminal graphics mode using `gui::shutdown_curses()` before exiting.
+ * 
+ * @return int Returns 0 to indicate successful execution.
+ */
 int main() {
     // initialize graphics
     gui::initialize_curses();
@@ -28,6 +44,7 @@ int main() {
 
     // shutdown graphics
     gui::shutdown_curses();
+    
     return 0;
 
 }
