@@ -4,7 +4,6 @@ project(SpaceInvaders)
 set(CMAKE_CXX_STANDARD 17)
 
 # create the executable with all the source files
-
 add_executable(SpaceInvaders
         src/main.cpp
         src/gui.cpp
