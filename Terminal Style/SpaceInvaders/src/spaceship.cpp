@@ -80,14 +80,32 @@ void refresh_missile_position(Hero &h) {
 }
 
 /**
- * @brief Creates the Alien Fleet.
- * The Fleet is created by placing the highest ranking aliens in the first
- * positions and then the lowest ranking aliens in order to emphasize the way in
- * which they are displayed on the playing field.
- *
- * @param f
+ * @brief Initializes the alien fleet for the Space Invaders game.
+ * 
+ * This function sets up the starting properties of the alien fleet, 
+ * including its position, speed, direction, population, and animation frame.
+ * It then iterates over the fleet's rows of aliens, assigning each alien its 
+ * class and position based on its row and column within the fleet.
+ * 
+ * Workflow:
+ * - Sets the fleet's starting position to `INITIAL_FLEET_X_POSITION` and 
+ *    `INITIAL_FLEET_Y_POSITION`.
+ * - Resets the number of bombs in play (`bombs_in_play`) to 0.
+ * - Initializes the movement speed to `INITIAL_FLEET_SPEED` and sets the attack
+ *    direction to `RIGHT_DIRECTION`.
+ * - Defines the fleet population size as `ALIEN_FLEET_N` and sets the initial
+ *    animation frame.
+ * - Iterates through the rows of the fleet, initializing each alien:
+ *   - Aliens in row 5 are initialized as `FIRST_CLASS` aliens.
+ *   - Aliens in rows 3 and 4 are initialized as `SECOND_CLASS` aliens.
+ *   - Aliens in rows 1 and 2 are initialized as `THIRD_CLASS` aliens.
+ * - Positions each alien in the fleet based on its row and column using
+ *    `init_alien()`, with offsets calculated by `X_OFFSET_BETWEEN_ALIEN` and 
+ *    `Y_OFFSET_BETWEEN_ALIEN`.
+ * 
+ * @param f Reference to the `AlienFleet` object to be initialized.
  */
-void init_fleet(AlienFleet &f) {
+void init_fleet(AlienFleet& f) {
     f.start_position = {INITIAL_FLEET_X_POSITION, INITIAL_FLEET_Y_POSITION};
     f.bombs_in_play = 0;
     f.movement_speed = INITIAL_FLEET_SPEED;
@@ -125,19 +143,28 @@ void init_alien(Alien &a, alien_type type, int x_offset, int y_offset, const coo
         case FIRST_CLASS:
             a.type = FIRST_CLASS;
             a.position = {fleet_position.x + x_offset, fleet_position.y + y_offset};
-            a.sprite = {{{"/oo\\", "<  >"}, {"/oo\\", "/^^\\"}}};  // todo make sprite as other elements
+            a.sprite = {FIRST_CLASS_ALIEN_SPRITE[0],
+                        FIRST_CLASS_ALIEN_SPRITE[1],
+                        FIRST_CLASS_ALIEN_SPRITE[2],
+                        FIRST_CLASS_ALIEN_SPRITE[3]};
             a.points = FIRST_CLASS_PTS;
             break;
         case SECOND_CLASS:
             a.type = SECOND_CLASS;
             a.position = {fleet_position.x + x_offset, fleet_position.y + y_offset};
-            a.sprite = {{{" 66 ", "|\\/|"}, {"|66|", "/  \\"}}};
+            a.sprite = {SECOND_CLASS_ALIEN_SPRITE[0],
+                        SECOND_CLASS_ALIEN_SPRITE[1],
+                        SECOND_CLASS_ALIEN_SPRITE[2],
+                        SECOND_CLASS_ALIEN_SPRITE[3]};
             a.points = SECOND_CLASS_PTS;
             break;
         case THIRD_CLASS:
             a.type = THIRD_CLASS;
             a.position = {fleet_position.x + x_offset, fleet_position.y + y_offset};
-            a.sprite = {{{"(--)", "/  \\"}, {"(--)", " <> "}}};
+            a.sprite = {THIRD_CLASS_ALIEN_SPRITE[0],
+                        THIRD_CLASS_ALIEN_SPRITE[1],
+                        THIRD_CLASS_ALIEN_SPRITE[2],
+                        THIRD_CLASS_ALIEN_SPRITE[3]};
             a.points = THIRD_CLASS_PTS;
             break;
         default: ;

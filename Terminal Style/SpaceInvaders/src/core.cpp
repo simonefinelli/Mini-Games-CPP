@@ -9,19 +9,34 @@
 #include <thread>
 #include "core.h"
 
-void draw_hero_on_field(const Hero &h);
-void move_hero(Hero &h, int peace);
-void hero_init_shoot(Hero &h);
-void draw_alien_fleet(AlienFleet &f);
-void check_game_status(GameData &gd);
-void update_hero_explosion_status(GameData &gd);
-void pause_game(GameData &gd);
+// prototypes
+void draw_hero_on_field(const Hero& h);
+void move_hero(Hero& h, int peace);
+void hero_init_shoot(Hero& h);
+void draw_alien_fleet(AlienFleet& f);
+void check_game_status(GameData& gd);
+void update_hero_explosion_status(GameData& gd);
+void pause_game(GameData& gd);
 
 /**
- * @brief Creates the two Players.
- *
- * @return the game data of the two Players.
+ * @brief Initializes the game state for a new session of Space Invaders.
+ * 
+ * This function sets up the initial game data, including the game field, 
+ * alien fleet, shields, and player (hero) for the first level of the game. 
+ * It prepares all necessary components before the game loop starts.
+ * 
+ * Workflow:
+ * - Initializes the game field dimensions (`window_size`) and starting state.
+ *   - Currently sets the state to `PLAY_SCREEN` (TODO: change to `WELCOME_SCREEN`).
+ * - Sets the starting level to 1.
+ * - Initializes the alien fleet by calling `init_fleet()`.
+ * - Sets up the game shields by calling `init_shields()`.
+ * - Initializes the player's hero character by calling `init_hero()`.
+ * 
+ * @return GameData Returns a fully initialized `GameData` object containing 
+ *                  the starting state of the game.
  */
+
 GameData initialize_game() {
     GameData gd{};
 

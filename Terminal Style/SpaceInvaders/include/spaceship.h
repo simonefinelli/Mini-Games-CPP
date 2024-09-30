@@ -38,6 +38,9 @@
 #define MAX_BOMBS_IN_PLAY 3
 const std::string ALIEN_EXPLOSION_SPRITE[] {R"(\\//)", R"(//\\)"};
 const std::string ALIEN_BOMB_SPRITE[] {R"(/)", R"(\)"};
+const std::string FIRST_CLASS_ALIEN_SPRITE[]  {R"(/oo\)", R"(<  >)", R"(/oo\)", R"(/^^\)"};
+const std::string SECOND_CLASS_ALIEN_SPRITE[] {R"( 66 )", R"(|\/|)", R"(|66|)", R"(/  \)"};
+const std::string THIRD_CLASS_ALIEN_SPRITE[]  {R"((--))", R"(/  \)", R"((--))", R"( <> )"};
 
 // Hero
 #define HERO_NAME "Player1"
@@ -120,8 +123,7 @@ typedef struct AlienFleetCollisionInfo {
 /// Gameplay Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 struct Hero {
     std::string name {};
-    const std::array<std::string, SPRITE_HEIGHT> sprite = {
-            HERO_SPRITE[0], HERO_SPRITE[1]};
+    const std::array<std::string, SPRITE_HEIGHT> sprite {HERO_SPRITE[0], HERO_SPRITE[1]};
     coords position {0, 0};
     Missile missile {};
     HeroExplosionAnimation explosion {};
@@ -134,7 +136,7 @@ struct Alien {
     alien_type type = NONE;
     coords position {NOT_ON_FIELD, NOT_ON_FIELD};
     spaceship_status status {};
-    std::array<std::array<std::string, SPRITE_HEIGHT>, SPRITE_FRAME> sprite = {};
+    std::array<std::array<std::string, SPRITE_HEIGHT>, SPRITE_FRAME> sprite {};
     AlienExplosionAnimation explosion {};
     std::array<Bomb, MAX_ALIEN_AMMO> bombs {};
     int ammo = MAX_ALIEN_AMMO;

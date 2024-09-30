@@ -24,7 +24,7 @@ struct FieldGame {
     size window_size{0, 0};
     game_state state{WELCOME_SCREEN};
     int level{0};
-    std::array<FieldShield, SHIELD_NUMBER> shields {};
+    std::array<FieldShield, SHIELD_NUMBER> shields{};
     int wait_time{0}; // milliseconds
 };
 
