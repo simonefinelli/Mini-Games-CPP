@@ -58,6 +58,37 @@ GameData initialize_game() {
 }
 
 /**
+ * @brief Renders the current state of the game on the terminal screen using the
+ *        ncurses-based graphical library (gui.h).
+ * 
+ * This function clears the terminal and draws the game's shields, hero, and 
+ * alien fleets based on the current game state stored in the `GameData` object.
+ * After drawing all elements, it refreshes the screen to display the updated 
+ * game state.
+ * 
+ * Workflow:
+ * - Clears the terminal screen using `gui::clear_screen()`.
+ * - Draws the defensive shields using `draw_shields_on_field()`.
+ * - Draws the hero's spaceship using`draw_hero_on_field()` 
+ * - Draws the alien fleet using `draw_alien_fleet()` 
+ * - Refreshes the terminal screen with `gui::refresh_screen()` to update the
+ *    terminal.
+ * 
+ * @param gd A reference to `GameData` that contains the current game state to 
+ *           be drawn.
+ */
+void draw_screen_game(GameData& gd) {
+    gui::clear_screen(); // clear the terminal screen
+
+    // draw elements on terminal screen
+    draw_shields_on_field(gd.field_game.shields);
+    draw_hero_on_field(gd.hero);
+    draw_alien_fleet(gd.alien_fleet);
+
+    gui::refresh_screen();  // refresh the terminalbut when  screen
+}
+
+/**
  * @brief Gets the user input to move the Hero left or right.
  * The user is allowed to go only in the left or right position during the game,
  * so the input is a arrow keys. In ncurses arrow keys are treated with integer
@@ -146,27 +177,6 @@ void update_game_data(GameData &gd, key user_choice) {
 }
 
 /**
- * @brief Uses the graphical library (ncurses - gui.h) to draw the game on
- * terminal screen.
- */
-void draw_screen_game(GameData &gd) {
-    // clear the terminal screen
-    gui::clear_screen();
-
-    // draw shields
-    draw_shields_on_field(gd.field_game.shields);
-
-    // draw hero data
-    draw_hero_on_field(gd.hero); // todo check if possible to move to spaceship
-
-    // draw alien fleet
-    draw_alien_fleet(gd.alien_fleet); // todo check if possible to move to spaceship
-
-    // refresh the terminal screen
-    gui::refresh_screen();
-}
-
-/**
  * @brief Shows the Hero player components on the playing field. Also the
  * missile is shown using this function.
  *
@@ -174,7 +184,6 @@ void draw_screen_game(GameData &gd) {
  */
 void draw_hero_on_field(const Hero &h) {
     // hero spaceship
-
     if (h.status == ALIVE) {
         gui::draw_sprite(h.position.x, h.position.y, h.sprite);
     }

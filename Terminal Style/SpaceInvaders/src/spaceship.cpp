@@ -10,7 +10,7 @@
 #include <thread>
 #include "spaceship.h"
 
-
+// prototypes
 void init_alien(Alien &a, alien_type type, int x_offset, int y_offset, const coords &fleet_position);
 bool is_collision(const coords &shot_pos, const std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens, alien_collision &c);
 void reset_fleet_speed(AlienFleet &fleet);
@@ -19,14 +19,30 @@ bool should_shoot(int aliens_left);
 bool is_hero_collision(const coords &pos, Hero &h);
 
 /**
- * @brief Populates the Hero structure.
+ * @brief Initializes the player's hero character for the Space Invaders game.
+ * 
+ * This function sets up the initial properties of the hero, including 
+ * the hero's name, status, lives, score, and starting position. It also 
+ * initializes the hero's missile to be off the field at the start of the game.
+ * 
+ * Workflow:
+ * - Sets the hero's name to `HERO_NAME`.
+ * - Initializes the hero's status to `ALIVE`.
+ * - Assigns the hero the starting number of lives (`HERO_LIVES`).
+ * - Resets the hero's score to 0.
+ * - Sets the hero's starting position on the game field using 
+ *   `INITIAL_HERO_X_POSITION` and `INITIAL_HERO_Y_POSITION`.
+ * - Places the hero's missile off the field by initializing its position to 
+ *   `{NOT_ON_FIELD, NOT_ON_FIELD}`.
+ * 
+ * @param h Reference to the `Hero` object to be initialized.
  */
 void init_hero(Hero &h) {
     h.name = HERO_NAME;
     h.status = ALIVE;
     h.lives = HERO_LIVES;
     h.score = 0;
-    h.position = {INITIAL_HERO_X_POSITION,INITIAL_HERO_Y_POSITION};
+    h.position = {INITIAL_HERO_X_POSITION, INITIAL_HERO_Y_POSITION};
     h.missile.position = {NOT_ON_FIELD, NOT_ON_FIELD};
 }
 
