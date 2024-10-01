@@ -99,7 +99,7 @@ void gui::draw_char(int x, int y, char c) {
 }
 
 
-void move_cursor(int x, int y) {
+void gui::move_cursor(int x, int y) {
     move(y, x);
 }
 
