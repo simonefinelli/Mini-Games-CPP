@@ -40,7 +40,7 @@ typedef enum FieldGameState {
 
 struct FieldShield {
     int id = 0;
-    coords position = {0, 0};
+    coords position {0, 0};
     std::array<std::string, SHIELD_SPRITE_HEIGHT> sprite = {
             "/#####\\",
             "#######",

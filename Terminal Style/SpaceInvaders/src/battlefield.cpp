@@ -7,21 +7,36 @@
 
 #include "battlefield.h"
 
+// prototypes
 bool is_shield_collision(const coords &pos, const std::array<FieldShield, SHIELD_NUMBER> &shields, shield_collision &c);
 
 /**
- * @brief Calculates the right position of each 4 shields in the game.
- *
- * @param shields
+ * @brief Initializes the defensive shields on the game field.
+ * 
+ * This function sets up the initial positions and IDs for each shield 
+ * in the game. It places the shields at a specific distance from the 
+ * game boundaries and spaces them evenly across the field.
+ * 
+ * Workflow:
+ * - Starts by setting the initial x-coordinate (`x`) to `SHIELD_INITIAL_PADDING`, 
+ *   representing the padding between the first shield and the game boundary.
+ * - Defines the spacing between shields using `SHIELD_SPACING`.
+ * - Iterates over the array of shields:
+ *   - Assigns each shield a unique ID based on its index within the array.
+ *   - Sets the position of each shield using the current x-coordinate and 
+ *     the constant horizontal distance `SHIELD_DISTANCE`.
+ *   - Increments the x-coordinate by the spacing value to position the next shield.
+ * 
+ * @param shields A reference to an array of `FieldShield` objects that will be initialized.
  */
 void init_shields(std::array<FieldShield, SHIELD_NUMBER> &shields) {
-    int x = SHIELD_INITIAL_PADDING;  // distance between shields and game boundaries
+    int p = SHIELD_INITIAL_PADDING;  // distance between shields and game boundaries
     int offset = SHIELD_SPACING;  // distance between shields
 
     for (auto &s : shields) {
-        s.id = int(&s  - &shields[0]);  // to retrieve the index
-        s.position = {x, SHIELD_DISTANCE};
-        x += offset;
+        s.id = int(&s - &shields[0]);  // to retrieve the index
+        s.position = {p, SHIELD_DISTANCE};
+        p += offset;
     }
 }
 
