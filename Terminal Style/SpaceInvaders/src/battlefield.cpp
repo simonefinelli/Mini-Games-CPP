@@ -43,9 +43,15 @@ void init_shields(std::array<FieldShield, SHIELD_NUMBER> &shields) {
 }
 
 /**
- * @brief Draws all 4 shields on the field.
- *
- * @param field_game Playing field.
+ * @brief Renders all 4 shields on the playing field.
+ * 
+ * This function iterates over the array of shields and draws each shield 
+ * at its respective position on the field using the `gui::draw_sprite()`
+ * function.
+ * 
+ * @param shields A constant reference to an array of `FieldShield` objects 
+ *        representing the defensive shields in the game. Each shield's position
+ *        and sprite are used to render it on the screen.
  */
 void draw_shields_on_field(const std::array<FieldShield, SHIELD_NUMBER> &shields) {
     for (const auto &s: shields) {

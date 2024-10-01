@@ -177,11 +177,18 @@ void update_game_data(GameData &gd, key user_choice) {
 }
 
 /**
- * @brief Shows the Hero player components on the playing field. Also the
- * missile is shown using this function.
- *
- * @param h The Hero object.
+ * @brief Renders the Hero and their missile on the playing field.
+ * 
+ * This function displays the hero's spaceship on the field, depending on the 
+ * hero's current status (alive or exploding). If the hero is alive, it draws 
+ * the spaceship sprite. If the hero is exploding, it displays the current frame 
+ * of the explosion animation. Additionally, the function renders the hero's missile 
+ * if it is currently on the field.
+ * 
+ * @param h A constant reference to the `Hero` object containing the hero's 
+ *          position, status, sprites, and missile data.
  */
+
 void draw_hero_on_field(const Hero &h) {
     // hero spaceship
     if (h.status == ALIVE) {

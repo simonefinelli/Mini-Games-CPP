@@ -125,7 +125,7 @@ struct Hero {
     std::string name {};
     const std::array<std::string, SPRITE_HEIGHT> sprite {HERO_SPRITE[0], HERO_SPRITE[1]};
     coords position {0, 0};
-    Missile missile {};
+    Missile missile;
     HeroExplosionAnimation explosion {};
     spaceship_status status {};
     int lives = 0;
