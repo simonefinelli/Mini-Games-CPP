@@ -205,24 +205,38 @@ void draw_hero_on_field(const Hero &h) {
 }
 
 /**
- * @brief Draws the alien fleet according to their position in the playing field.
- *
- * @param fleet The Fleet object.
+ * @brief Renders the alien fleet and their bombs on the playing field.
+ * 
+ * This function iterates through the alien fleet and draws each alien based on 
+ * its current status. Aliens that are alive have their current animation frame 
+ * rendered, while exploding aliens display the current explosion frame. Additionally, 
+ * the function renders any bombs that the aliens have dropped, displaying their 
+ * current animation frame if they are on the field.
+ * 
+ * Workflow:
+ * - Draws each alien in the fleet:
+ *   - If the alien's status is `ALIVE`, it renders the alien's spaceship using the 
+ *      current animation frame from `alien.sprite[]`.
+ *   - If the alien's status is `EXPLODING`, it draws the explosion animation frame.
+ * - Iterates through each alien's bombs:
+ *   - If a bomb's position is valid (not `NOT_ON_FIELD`), it draws the bomb with 
+ *      its current animation frame.
+ * 
+ * @param f A reference to the `AlienFleet` object containing all the aliens and
+ *          their bombs.
  */
 void draw_alien_fleet(AlienFleet &f) {
     // draw fleet
     for (const auto &aliens_line : f.aliens) {
         for (const auto &alien : aliens_line) {
-            // fleet spaceships
             if (alien.status == EXPLODING)
                 gui::draw_sprite(alien.position.x, alien.position.y, alien.explosion.frame0);  // explosion animation
-
             if (alien.status == ALIVE)
                 gui::draw_sprite(alien.position.x, alien.position.y, alien.sprite[f.animation_frame]);
         }
     }
 
-    // draw aliens' bombs
+    // draw alien bombs
     for (const auto &aliens_line : f.aliens) {
         for (const auto &alien : aliens_line) {
             for (const auto &bomb : alien.bombs) {
