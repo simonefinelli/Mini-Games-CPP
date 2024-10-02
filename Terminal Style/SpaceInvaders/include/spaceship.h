@@ -164,6 +164,8 @@ struct SpecialAlien {
 /// Prototypes - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 void init_hero(Hero &h);
 
+void refresh_hero_on_playfield(Hero& h, key user_choice);
+
 void refresh_missile_position(Hero &h);
 
 void init_fleet(AlienFleet &f);

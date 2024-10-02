@@ -9,6 +9,7 @@
 #include <array>
 #include <thread>
 #include "spaceship.h"
+#include "gui.h"
 
 // prototypes
 void init_alien(Alien &a, alien_type type, int x_offset, int y_offset, const coords &fleet_position);
@@ -60,6 +61,36 @@ void hero_init_shoot(Hero &h) {
         // set initial position if the missile is not on field
         h.missile.position.y = h.position.y;  // same position of hero spaceship head
         h.missile.position.x = h.position.x + (HERO_SPRITE_WIDTH / 2);  // center of the hero
+    }
+}
+
+/**
+ * @brief Updates the Hero's position and actions based on user input.
+ * 
+ * This function processes the user's input to move the Hero or fire a missile. 
+ * It moves the Hero left or right on the playfield, or launches a missile if 
+ * the spacebar is pressed. Any other input is ignored.
+ * 
+ * @param h A reference to the `Hero` object whose position and actions will be updated.
+ * @param user_choice The key input from the user, indicating which action to take (move left, 
+ *                    right, or fire a missile).
+ */
+
+void refresh_hero_on_playfield(Hero& h, key user_choice) {
+    switch (user_choice) {
+        case LEFT:
+            move_hero(h, -HER0_MOVEMENT_OFFSET); // to left
+            break;
+        case RIGHT:
+            move_hero(h, HER0_MOVEMENT_OFFSET);  // to right
+            break;
+        case SPACE:
+            // set initial position of the missile
+            hero_init_shoot(h);
+            break;
+        default:
+            // ignore input
+            break;
     }
 }
 

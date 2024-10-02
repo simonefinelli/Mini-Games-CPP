@@ -91,9 +91,8 @@ void game_loop() {
         // get current time
         auto curr_time = std::chrono::high_resolution_clock::now();
 
-        // get user movement
+        // get user choice
         user_choice = get_user_input();
-        // check for user input
         if (IS_QUIT_CHAR(user_choice)) { quit = true; continue; }
         // update game data
         update_game_data(game_data, static_cast<key>(user_choice));

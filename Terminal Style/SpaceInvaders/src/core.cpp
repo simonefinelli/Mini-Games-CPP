@@ -127,24 +127,8 @@ int get_user_input() {
  */
 void update_game_data(GameData &gd, key user_choice) {
     if (gd.hero.status == ALIVE) {
-        // TODO make a function
-        switch (user_choice) {
-            case LEFT:
-                // move hero to left
-                move_hero(gd.hero, -HER0_MOVEMENT_OFFSET);
-                break;
-            case RIGHT:
-                // move hero to right
-                move_hero(gd.hero, HER0_MOVEMENT_OFFSET);
-                break;
-            case SPACE:
-                // set initial position of the missile
-                hero_init_shoot(gd.hero);
-                break;
-            default:
-                // ignore input
-                break;
-        }
+        // update hero position in the game
+        refresh_hero_on_playfield(gd.hero, user_choice);
 
         // update hero missile position
         refresh_missile_position(gd.hero);
