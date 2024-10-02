@@ -89,15 +89,24 @@ void draw_screen_game(GameData& gd) {
 }
 
 /**
- * @brief Gets the user input to move the Hero left or right.
- * The user is allowed to go only in the left or right position during the game,
- * so the input is a arrow keys. In ncurses arrow keys are treated with integer
- * type.
- * @return the
+ * @brief Captures and returns user input to control the Hero's movement or actions.
+ * 
+ * This function listens for the user's key presses to move the Hero left, right, 
+ * or fire a missile. The valid inputs are the left and right arrow keys, spacebar 
+ * (for firing), and quit keys (both uppercase and lowercase). The arrow keys are 
+ * handled as integers by the ncurses library.
+ * 
+ * Valid inputs:
+ * - `LEFT`  (Move hero left)
+ * - `RIGHT` (Move hero right)
+ * - `SPACE` (Fire missile)
+ * - `QUIT_CHAR_UPPER` or `QUIT_CHAR_LOWER` (Quit game)
+ * 
+ * @return The integer value corresponding to a valid key press. Returns -1 if 
+ *         the input is invalid.
  */
 int get_user_input() {
     int input = gui::get_char();
-    // int input = ' ';
 
     switch (input) {
         case QUIT_CHAR_UPPER:
