@@ -126,18 +126,22 @@ int get_user_input() {
  * This function manages all the updates necessary for each frame of the game. 
  * It processes the Hero's movements, missile updates, collision detection, alien 
  * fleet movements, and bomb interactions. If the Hero is alive, it continuously 
- * updates the game state based on the user input. If the Hero is exploding, it updates 
- * the Hero's explosion status. It also checks the overall game status and handles 
- * game pausing when necessary.
+ * updates the game state based on the user input. If the Hero is exploding, it 
+ * updates the Hero's explosion status. It also checks the overall game status 
+ * and handles game pausing when necessary.
  * 
  * Workflow:
  * - If the Hero is `ALIVE`:
- *   - Moves the Hero based on the user's input (`LEFT`, `RIGHT`, or `SPACE` for shooting).
+ *   - Moves the Hero based on the user's input (`LEFT`, `RIGHT`, or `SPACE` for
+ *      shooting).
  *   - Updates the position of the Hero's missile.
- *   - Checks for collisions between the Hero's missile and shields, aliens, and bombs.
+ *   - Checks for collisions between the Hero's missile and shields, aliens, and
+ *      bombs.
  *   - Handles alien explosions and fleet movement.
  *   - Manages alien fleet bomb drops and updates their positions.
- *   - Checks for shield collisions with alien bombs and hero collisions with alien bombs.
+ *   - Checks for shield collisions with alien bombs and hero collisions with 
+ *      alien bombs.
+ * 
  * - If the Hero is in an `EXPLODING` state:
  *   - Updates the Hero's explosion animation frame.
  * 

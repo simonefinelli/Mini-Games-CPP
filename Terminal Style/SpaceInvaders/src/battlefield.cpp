@@ -76,14 +76,33 @@ void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Mis
 }
 
 /**
- * @brief The function checks if there was a collision Alien with shields.
- * To check fo a collision we only check for the second row of the sprite.
- *
- * @param shields Shields into the playing field.
- * @param fleet The Alien Fleet.
+ * @brief Detects and handles collisions between the Alien fleet and shields on 
+ *        the playing field.
+ * 
+ * This function checks for collisions between the aliens and shields, as well as 
+ * collisions between the aliens' bombs and shields. The collision detection is 
+ * done by examining only the second row of the alien sprite and the bottom row 
+ * of the bombs. When a collision is detected, the corresponding part of the 
+ * shield is removed, and in the case of a bomb collision, the bomb is also 
+ * removed from the field.
+ * 
+ * Workflow:
+ * - Iterates through each alien in the fleet:
+ *   - For each alien that is `ALIVE`, checks for collisions with the shields using 
+ *      the second row of the alien's sprite (y + 1).
+ *   - If a collision is detected, the relevant shield part is "damaged" (set to ' ').
+ * - Iterates through the bombs dropped by the aliens:
+ *   - For each bomb on the field, checks if it collides with the shields.
+ *   - If a bomb hits a shield, the shield part is removed, and the bomb is taken
+ *      off the field.
+ * 
+ * @param shields A reference to an array of `FieldShield` objects representing 
+ *        the shields on the playing field.
+ * @param fleet A reference to the `AlienFleet` object, which contains the aliens 
+ *        and their bombs.
  */
-void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, AlienFleet &fleet) {
-    shield_collision c {};
+void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER>& shields, AlienFleet& fleet) {
+    shield_collision c{};
     coords curr_position;
 
     // check the Aliens' body and the shields
@@ -122,15 +141,43 @@ void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Ali
 }
 
 /**
- * @brief Checks if there is a collision between a missile, a bomb or an Alien
- * and one of the shields.
- *
- * @param pos Position of the Hero missile, the Alien bomb or Alien spaceship.
- * @param shields Shields in the playing field.
- * @param c with a shield_collision the structure is filled using the index of the
- *          Shield hit, and the coordinates of the its hit part, -1 otherwise.
- * @return True if there was an hit, False otherwise.
+ * @brief Determines if a given position collides with any part of a shield on 
+ *        the field.
+ * 
+ * This function checks whether a specific position (e.g., a missile or bomb's 
+ * position) overlaps with any active part of a shield. If a collision is detected,
+ * the function records the index of the shield and the specific part that was 
+ * hit. If no collision occurs, it returns `false`.
+ * 
+ * Workflow:
+ * - Initializes the collision data (`shield_collision` object) with no collision
+ *    state.
+ * - If the position `pos` is off the field (`y == NOT_ON_FIELD`), the function 
+ *    immediately returns `false`.
+ * - Iterates over the shields to check if the given position is within the 
+ *    bounds of any shield:
+ *    - Checks if the position `pos` lies within the shield's width and height 
+ *       boundaries.
+ *    - Verifies that the corresponding shield part at that position is not 
+ *       empty (`' '`).
+ * - If a collision is detected:
+ *   - Sets the shield index (`shield_idx`) in the collision data.
+ *   - Records the exact part of the shield that was hit by storing its row and 
+ *      column.
+ *   - Returns `true`.
+ * - If no collision is found after checking all shields, returns `false`.
+ * 
+ * @param pos The coordinates (`coords`) representing the current position 
+ *            (e.g., of a missile or bomb) to be checked.
+ * @param shields A constant reference to an array of `FieldShield` objects 
+ *        representing the shields on the field.
+ * @param c A reference to a `shield_collision` object that will be updated with
+ *        the shield index and part hit if a collision occurs.
+ * 
+ * @return bool Returns `true` if a collision with a shield is detected, otherwise 
+ *         returns `false`.
  */
+
 bool is_shield_collision(const coords &pos, const std::array<FieldShield, SHIELD_NUMBER> &shields, shield_collision &c) {
     c.shield_idx = NO_SHIELD_COLLISION;
     c.shield_part_hit = {NO_SHIELD_COLLISION, NO_SHIELD_COLLISION};

@@ -48,23 +48,6 @@ void init_hero(Hero &h) {
 }
 
 /**
- * @brief Set the first position of the Hero missile.
- * Note that a missile can only be launched if there is no other missile
- * previously launched in the game screen.
- * A missile is destroyed when it hits an alien spaceship or when it reaches the
- * end of the playing field.
- *
- * @param h The Hero object.
- */
-void hero_init_shoot(Hero &h) {
-    if (h.missile.position.x == NOT_ON_FIELD or h.missile.position.y == NOT_ON_FIELD) {
-        // set initial position if the missile is not on field
-        h.missile.position.y = h.position.y;  // same position of hero spaceship head
-        h.missile.position.x = h.position.x + (HERO_SPRITE_WIDTH / 2);  // center of the hero
-    }
-}
-
-/**
  * @brief Updates the Hero's position and actions based on user input.
  * 
  * This function processes the user's input to move the Hero or fire a missile. 
@@ -75,7 +58,6 @@ void hero_init_shoot(Hero &h) {
  * @param user_choice The key input from the user, indicating which action to take (move left, 
  *                    right, or fire a missile).
  */
-
 void refresh_hero_on_playfield(Hero& h, key user_choice) {
     switch (user_choice) {
         case LEFT:
@@ -89,8 +71,7 @@ void refresh_hero_on_playfield(Hero& h, key user_choice) {
             hero_init_shoot(h);
             break;
         default:
-            // ignore input
-            break;
+            break; // ignore input
     }
 }
 
@@ -108,12 +89,38 @@ void move_hero(Hero &h, int peace) {
 }
 
 /**
- * @brief Updates the position of the Hero missile at each frame.
- * The missile will be launched towards upwards, until it reaches an alien or
- * the end of the playing field.
+ * @brief Set the first position of the Hero missile.
+ * Note that a missile can only be launched if there is no other missile
+ * previously launched in the game screen.
+ * A missile is destroyed when it hits an alien spaceship or when it reaches the
+ * end of the playing field.
  *
  * @param h The Hero object.
  */
+void hero_init_shoot(Hero& h) {
+    if (h.missile.position.x == NOT_ON_FIELD or h.missile.position.y == NOT_ON_FIELD) {
+        h.missile.position.y = h.position.y;  // same position of hero spaceship head
+        h.missile.position.x = h.position.x + (HERO_SPRITE_WIDTH / 2);  // center of the hero
+    }
+}
+
+
+/**
+ * @brief Updates the position of the Hero's missile during each frame.
+ * 
+ * This function moves the missile upwards at a constant speed (`MISSILE_PACE`) 
+ * on the playfield. If the missile reaches the top of the screen (out of bounds), 
+ * it is removed from the field. The missile will continue to move upwards until 
+ * it either hits an alien or goes beyond the playing boundaries.
+ * 
+ * Workflow:
+ * - If the missile is currently on the field, its y-position is decremented by `MISSILE_PACE`.
+ * - If the missile moves beyond the top boundary (y < 0), its position is reset 
+ *   to `{NOT_ON_FIELD, NOT_ON_FIELD}` to indicate that it is no longer active.
+ * 
+ * @param h A reference to the `Hero` object, whose missile's position is being updated.
+ */
+
 void refresh_missile_position(Hero &h) {
     if (h.missile.position.x != NOT_ON_FIELD) {
         h.missile.position.y -= MISSILE_PACE;
