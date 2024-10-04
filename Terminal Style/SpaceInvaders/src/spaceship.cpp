@@ -371,7 +371,6 @@ void make_fleet_movement(AlienFleet &fleet) {
     if (fleet.movement_speed == 0 and no_alien_explosion(fleet.aliens)) {
         if (is_alien_overflow(fleet) and clock_counter >= 1) {
             fleet.game_line++;
-            clock_counter--;
             // update vertical fleet position
             for (auto &aliens_line : fleet.aliens) {
                 for (auto &a : aliens_line) {
@@ -383,9 +382,7 @@ void make_fleet_movement(AlienFleet &fleet) {
             // change attack direction
             fleet.attack_direction = fleet.attack_direction ? LEFT_DIRECTION : RIGHT_DIRECTION;
 
-        } else {
-            // reset clock counter
-            clock_counter = FLEET_ADVANCE_STEP;
+        } else if (clock_counter >= 1) { // perform horizontal swipe if no overflow and clock allows
             // chose offset with regard the current fleet direction
             x_offset = fleet.attack_direction ? LATERAL_MOVEMENT_STEP : -LATERAL_MOVEMENT_STEP;
             // update horizontal fleet position
@@ -394,10 +391,11 @@ void make_fleet_movement(AlienFleet &fleet) {
                     a.position.x += x_offset;
                 }
             }
-            // update advancing flag
+            
+            // Change animation frame
+            fleet.animation_frame = (fleet.animation_frame == FRAME_1) ? FRAME_2 : FRAME_1;
+            clock_counter = FLEET_ADVANCE_STEP;
             fleet.advancing = false;
-            // change animation frame
-            fleet.animation_frame == FRAME_1 ? fleet.animation_frame = FRAME_2 : fleet.animation_frame = FRAME_1;
         }
     }
     // update and/or reset movement time
