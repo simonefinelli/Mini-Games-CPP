@@ -227,15 +227,25 @@ void init_alien(Alien &a, alien_type type, int x_offset, int y_offset, const coo
 }
 
 /**
- * @brief Checks if there is a collision between a missile and one of the
- * Alien in the fleet.
- *
- * @param shot_pos Position of the Hero missile or the Alien bomb.
- * @param shields Shields in the playing field.
- * @param c with a shield_collision the structure is filled using the index of the
- *          Shield hit, and the coordinates of the its hit part, -1 otherwise.
- * @return True if there was an hit, False otherwise.
+ * @brief Checks for a collision between a shot (missile or bomb) and any alien 
+ *        in the fleet.
+ * 
+ * This function determines if a shot, represented by its position (`shot_pos`),
+ * hits any alien in the fleet. It iterates over all the aliens and checks if 
+ * the shot's coordinates fall within the boundaries of an alien's sprite. If a 
+ * collision is detected, it updates the `alien_collision` object with the 
+ * alien's index and returns `true`. If no collision occurs, it returns `false`.
+ * 
+ * @param shot_pos The coordinates (`coords`) of the shot (missile or bomb) being 
+ *                 checked for collisions.
+ * @param aliens A constant reference to a 2D array of `Alien` objects representing
+ *               the alien fleet.
+ * @param c A reference to an `alien_collision` object, which will be updated 
+ *          with the alien's index if a collision occurs.
+ * 
+ * @return bool Returns `true` if a collision is detected, otherwise returns `false`.
  */
+
 bool is_collision(const coords &shot_pos, const std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens, alien_collision &c) {
     c.alien_idx = {NO_COLLISION, NO_COLLISION};
 
@@ -310,27 +320,23 @@ void check_fleet_collision(AlienFleet& fleet, Hero& h) {
 }
 
 /**
- * @brief Manages the explosion animation and status updates for aliens in the fleet.
+ * @brief Manages the explosion animation and status updates for aliens in the 
+ *        fleet.
  * 
- * This function iterates through the alien fleet and checks if any aliens are in the 
- * `EXPLODING` state. If an alien is exploding, the explosion timer is decremented to 
- * manage the duration of the explosion animation. Once the timer reaches zero, the alien's 
- * status is updated to `DEAD`, marking the end of the explosion.
+ * This function iterates through the alien fleet and checks if any aliens are 
+ * in the `EXPLODING` state. If an alien is exploding, the explosion timer is 
+ * decremented to manage the duration of the explosion animation. Once the timer
+ * reaches zero, the alien's status is updated to `DEAD`, marking the end of the 
+ * explosion.
  * 
- * Workflow:
- * - Iterates through each alien in the fleet.
- * - For each alien in the `EXPLODING` state:
- *   - Decreases the alien's explosion timer (`timer--`).
- *   - If the timer reaches 0, updates the alien's status to `DEAD` to indicate that 
- *     the explosion has completed and the alien is no longer active.
- * 
- * @param aliens A reference to a 2D array of `Alien` objects representing the alien fleet. 
- *               The function will check and update the status of each alien.
+ * @param aliens A reference to a 2D array of `Alien` objects representing the 
+ *               alien fleet. The function will check and update the status of 
+ *               each alien.
  */
 
 void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS>& aliens) {
-    for (auto &aliens_line : aliens) {
-        for (auto &a : aliens_line) {
+    for (auto& aliens_line : aliens) {
+        for (auto& a : aliens_line) {
             if (a.status == EXPLODING and a.explosion.timer > 0) {
                 a.explosion.timer--; // decrease explosion show time
                 if (a.explosion.timer <= 0) {
