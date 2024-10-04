@@ -9,7 +9,6 @@
 #include <array>
 #include <thread>
 #include "spaceship.h"
-#include "gui.h"
 
 // prototypes
 void init_alien(Alien &a, alien_type type, int x_offset, int y_offset, const coords &fleet_position);
@@ -18,6 +17,8 @@ void reset_fleet_speed(AlienFleet &fleet);
 bool is_alien_overflow(const AlienFleet &fleet);
 bool should_shoot(int aliens_left);
 bool is_hero_collision(const coords &pos, Hero &h);
+void move_hero(Hero& h, int peace);
+void hero_init_shoot(Hero& h);
 
 /**
  * @brief Initializes the player's hero character for the Space Invaders game.
@@ -82,7 +83,7 @@ void refresh_hero_on_playfield(Hero& h, key user_choice) {
  * @param h The Hero object.
  * @param peace The offset to apply to the current hero position.
  */
-void move_hero(Hero &h, int peace) {
+void move_hero(Hero& h, int peace) {
     if ((h.position.x + peace < 0) or ((h.position.x + peace + HERO_SPRITE_WIDTH) > W_WIDTH))
         return;
     h.position.x = h.position.x + peace;

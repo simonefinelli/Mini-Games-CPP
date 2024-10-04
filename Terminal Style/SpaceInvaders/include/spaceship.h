@@ -14,6 +14,7 @@
 #include <vector>
 #include "common.h"
 #include "utils.h"
+#include "gui.h"
 
 #define MAX_ALIEN_AMMO 5
 #define NO_COLLISION (-1)
