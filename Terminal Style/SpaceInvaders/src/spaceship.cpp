@@ -441,13 +441,23 @@ void reset_fleet_speed(AlienFleet &fleet) {
 }
 
 /**
- * @brief TODO
- *
- * @param aliens Aliens of the Fleet.
+ * @brief Checks if there are any ongoing alien explosions in the fleet.
+ * 
+ * This function iterates over the alien fleet and determines whether any aliens 
+ * are in the `EXPLODING` state. If at least one alien is currently exploding, 
+ * the function returns `false`. If no aliens are in the explosion state, it 
+ * returns `true`.
+ * 
+ * @param aliens A constant reference to a 2D array of `Alien` objects 
+ *               representing the alien fleet.
+ * 
+ * @return bool Returns `true` if no aliens are exploding, otherwise returns 
+ *         `false`.
  */
-bool no_alien_explosion(const std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens) {
-    for (auto &aliens_line : aliens) {
-        for (auto &a : aliens_line) {
+
+bool no_alien_explosion(const std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS>& aliens) {
+    for (auto& aliens_line : aliens) {
+        for (auto& a : aliens_line) {
             if (a.status == EXPLODING) {
                 return false;
             }
