@@ -271,10 +271,18 @@ void draw_alien_fleet(AlienFleet &f) {
 }
 
 /**
- * todo
- * @param gd
+ * @brief Updates the game state when the Hero is in the exploding state.
+ * 
+ * This function checks if the Hero is currently exploding and, if so, 
+ * sets a pause time for the game field to allow the explosion animation to play.
+ * The wait time effectively pauses the game for a brief period, 
+ * providing a visual pause to show the Hero's explosion.
+ * 
+ * @param gd A reference to the `GameData` object containing the Hero and field 
+ *           game data, which is used to set the game's pause duration during 
+ *           the explosion.
  */
-void update_hero_explosion_status(GameData &gd) {
+void update_hero_explosion_status(GameData& gd) {
     if (is_hero_exploding(gd.hero)) {
         // pause animation setting the entire field pause
         gd.field_game.wait_time = 300;  // milliseconds

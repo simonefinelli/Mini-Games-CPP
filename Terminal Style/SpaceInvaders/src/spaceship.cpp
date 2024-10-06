@@ -640,7 +640,7 @@ bool is_hero_collision(const coords& pos, Hero& h) {
  * sleep of 0.3 seconds. This approach is good in this case because the entire
  * game is stopped.
  *
- * @param hero The Hero object.
+ * @param hero A reference to the `Hero` object.
  */
 bool is_hero_exploding(Hero &hero) {
     if (hero.status == EXPLODING and hero.explosion.timer > 0) {
