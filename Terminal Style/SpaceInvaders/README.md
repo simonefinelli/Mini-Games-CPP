@@ -49,7 +49,7 @@ of the screen and award bonus points if destroyed.... [Continue on Wikipedia!](h
 
 ### TODO
 - Restart the same game when the Hero lost one life.
-- Restart the entire game whtn the Hero lost all lifes.
+- Restart the entire game whtn the Hero lost all lives.
 
 # Gameplay Demo
 ![Demo]()
