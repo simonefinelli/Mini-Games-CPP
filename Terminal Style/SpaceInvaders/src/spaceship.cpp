@@ -467,14 +467,18 @@ bool no_alien_explosion(const std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN
 }
 
 /**
- * @brief The functions checks for each Alien in the Fleet if it is allowed to
- * make a shot.
- *
- * There are at most only 3 bombs at the same time in play.
- * Only when
- *
- * @param fleet The alien Fleet.
+ * @brief Manages the alien fleet's shooting behavior by launching bombs from 
+ *        alive aliens.
+ * 
+ * This function handles the alien fleet's shooting cycle, introducing a pause 
+ * between attack cycles to simulate random firing intervals. When conditions 
+ * allow, bombs are launched from random aliens, with a maximum limit on active 
+ * bombs in play.
+ * 
+ * @param fleet A reference to the `AlienFleet` object, containing the aliens, bombs, 
+ *              and other attributes related to fleet behavior.
  */
+
 void make_fleet_shoot(AlienFleet &fleet) {
     // pause fleet attack for a random time at each attack cycle
     static int pause_fleet_attack = generate_number(70, 100);  // initial pause todo make consts
@@ -494,7 +498,7 @@ void make_fleet_shoot(AlienFleet &fleet) {
                 }
             }
         }
-        pause_fleet_attack = generate_number(30, 50);  // reset pause counter todo make consts
+        pause_fleet_attack = generate_number(30, 50);  // todo: reset pause counter todo make consts
     }
     pause_fleet_attack--;
 }
@@ -503,7 +507,7 @@ void make_fleet_shoot(AlienFleet &fleet) {
  * @brief Makes an Alien shot with a certain probability.
  */
 bool should_shoot(int aliens_left) {
-    return generate_number(0.0, 1.0) > (0.85 - (aliens_left / 1000.0));  // todo make defines or conts
+    return generate_number(0.0, 1.0) > (0.85 - (aliens_left / 1000.0));  // todo: make defines or conts
 }
 
 /**
@@ -520,7 +524,7 @@ void refresh_bombs_position(AlienFleet &fleet) {
                 for (auto &bomb : a.bombs) {
                     if (bomb.position.x != NOT_ON_FIELD and delay_bombs_reposition == 0) {
 
-                        bomb.position.y += 1;  // todo change this into a define
+                        bomb.position.y += 1;  // todo: change this into a define
                         // change animation frame
                         bomb.animation_frame = (bomb.animation_frame == FRAME_1) ? FRAME_2: FRAME_1;
 
