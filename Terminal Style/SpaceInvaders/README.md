@@ -31,7 +31,7 @@
 ```
 
 # Overview
-Space Invaders[b] is a 1978 shoot 'em up arcade video game developed by Tomohiro Nishikado. It was manufactured and sold 
+Space Invaders is a 1978 shoot 'em up arcade video game developed by Tomohiro Nishikado. It was manufactured and sold 
 by Taito in Japan, and licensed to the Midway division of Bally for overseas distribution. Space Invaders was the first 
 fixed shooter and set the template for the genre. The goal is to defeat wave after wave of descending aliens with a 
 horizontally moving laser to earn as many points as possible... [Continue on Wikipedia!](https://en.wikipedia.org/wiki/Space_Invaders)
@@ -47,67 +47,9 @@ As aliens are defeated, their movement and the game's music both speed up. Defea
 which starts lower, a loop which can continue endlessly. A special "mystery ship" will occasionally move across the top 
 of the screen and award bonus points if destroyed.... [Continue on Wikipedia!](https://en.wikipedia.org/wiki/Space_Invaders)
 
-# Game Sprites
-## First Level Alien
-```
-  (--)  (--)
-  /  \   <> 
-```
-
-## Second Level Alien
-```
-   66    |66|
-  |\/|   /  \
-```
-
-## Third Level Alien
-```
-  /oo\   /oo\
-  <  >   /^^\
-```
-
-## Special Alien
-```
-  _/---\_
-   \V^V/
-```
-
-## Alien Explosion
-```
-  \\//
-  //\\
-```
-
-## Alien Bomb
-```
-  <  >
-  >  <
-```
-
-## Hero Spaceship
-```
-    ^  
-  |-V-|
-```
-
-## Hero Spaceship Missile
-```
-  |
-```
-
-## Hero Explosion
-```
-  .^-_.  ._-^.
-  =====  =====
-```
-
-## Earth Shields
-```
-   /#####\
-   #######
-   #/   \#
-```
-
+### TODO
+- Restart the same game when the Hero lost one live.
+- Restart the entire game whtn the Hero lost all lives.
 
 # Gameplay Demo
 ![Demo]()
