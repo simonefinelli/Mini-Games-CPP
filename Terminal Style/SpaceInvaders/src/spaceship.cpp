@@ -349,30 +349,26 @@ void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_RO
 }
 
 /**
- * @brief Moves the alien Fleet right or left and refresh/reset the fleet speed.
- * The function at each clock game (frame) checks for the movement speed of the
- * fleet.
- *
- * When the movement time is finished (0), then the position is update. If an
- * Alien hit the playing field edge, then the Fleet is shifted vertically by one.
- * In this occasion also the clock counter is updated. The clock counter is used
- * to know how many steps the Fleet must advance forward. Finally the attack
- * direction is updated.
- *
- * If the movement time is not finished, then is decremented and when it turns
- * minor of zero the movement itself is updated.
- *
- * @param aliens Alien Fleet.
+ * @brief Controls the alien fleet's movement, alternating between vertical and 
+ *        horizontal steps.
+ * 
+ * This function manages the movement of the alien fleet based on its current 
+ * speed and position. It alternates between vertical steps (moving down) and 
+ * horizontal steps (swiping left or right) whenever the fleet reaches the 
+ * boundary of the game field. The function also updates the fleet's advancing 
+ * status, direction, and animation frame to create the fleet's movement pattern.
+ * 
+ * @param fleet A reference to the `AlienFleet` object, which contains the current 
+ *              state and position of the fleet.
  */
+
 void make_fleet_movement(AlienFleet &fleet) {
-    int x_offset;
-    static int clock_counter = FLEET_ADVANCE_STEP;
+    static bool make_a_step_forward = true;
 
     // update fleet position at the end of each movement time
     if (fleet.movement_speed == 0 and no_alien_explosion(fleet.aliens)) {
-        if (is_alien_overflow(fleet) and clock_counter >= 1) {
+        if (is_alien_overflow(fleet) and make_a_step_forward) {
             fleet.game_line++;
-            clock_counter--;
             // update vertical fleet position
             for (auto &aliens_line : fleet.aliens) {
                 for (auto &a : aliens_line) {
@@ -383,16 +379,15 @@ void make_fleet_movement(AlienFleet &fleet) {
             fleet.advancing = true;
             // change attack direction
             fleet.attack_direction = fleet.attack_direction ? LEFT_DIRECTION : RIGHT_DIRECTION;
-
+            //
+            make_a_step_forward = false;
         } else {
-            // reset clock counter
-            clock_counter = FLEET_ADVANCE_STEP;
+            make_a_step_forward = true;
             // chose offset with regard the current fleet direction
-            x_offset = fleet.attack_direction ? LATERAL_MOVEMENT_STEP : -LATERAL_MOVEMENT_STEP;
             // update horizontal fleet position
             for (auto &aliens_line : fleet.aliens) {
                 for (auto &a : aliens_line) {
-                    a.position.x += x_offset;
+                    a.position.x += fleet.attack_direction ? LATERAL_MOVEMENT_STEP : -LATERAL_MOVEMENT_STEP;
                 }
             }
             // update advancing flag
@@ -401,8 +396,9 @@ void make_fleet_movement(AlienFleet &fleet) {
             fleet.animation_frame == FRAME_1 ? fleet.animation_frame = FRAME_2 : fleet.animation_frame = FRAME_1;
         }
     }
+
     // update and/or reset movement time
-    fleet.movement_speed -= FLEET_ADVANCE_STEP;
+    fleet.movement_speed -= FLEET_ADVANCE_STEP;  // how fast the feet will move
     if (fleet.movement_speed < 0) reset_fleet_speed(fleet);
 }
 
