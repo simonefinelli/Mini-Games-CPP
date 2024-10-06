@@ -86,6 +86,19 @@ struct HeroExplosionAnimation {
     std::array<std::string, SPRITE_HEIGHT> curr_frame {};
     int curr_frame_idx = 0;
     float timer = FPS * HERO_EXPLOSION_DURATION;
+
+    // overload copy assignment operator
+    HeroExplosionAnimation& operator=(const HeroExplosionAnimation& other) {
+        if (this != &other) {  // self-assignment check
+            // copy only non-const members
+            this->curr_frame = other.curr_frame;
+            this->curr_frame_idx = other.curr_frame_idx;
+            this->timer = other.timer;
+            
+            // no assignment for const members frame0 and frame1
+        }
+        return *this;
+    }
 };
 
 /// Aliens Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -110,6 +123,15 @@ struct AlienExplosionAnimation {
             ALIEN_EXPLOSION_SPRITE[1]
     };
     float timer = FPS * ALIEN_EXPLOSION_DURATION;
+
+    // overload copy assignment operator
+    AlienExplosionAnimation& operator=(const AlienExplosionAnimation &other) {
+        if (this != &other) {  // Self-assignment check
+            // Assign non-const members
+            this->timer = other.timer;
+        }
+        return *this;
+    }
 };
 
 typedef enum FleetDirection {
@@ -131,6 +153,23 @@ struct Hero {
     spaceship_status status {};
     int lives = 0;
     int score = 0;
+
+    // overload copy assignment operator
+    Hero& operator=(const Hero &other) {
+        if (this != &other) {  // Self-assignment check
+            // Assign non-const members
+            this->name = other.name;
+            this->position = other.position;
+            this->missile = other.missile;
+            this->explosion = other.explosion;
+            this->status = other.status;
+            this->lives = other.lives;
+            this->score = other.score;
+            
+            // no need to assign `sprite` because it is const
+        }
+        return *this;
+    }
 };
 
 struct Alien {
@@ -142,6 +181,21 @@ struct Alien {
     std::array<Bomb, MAX_ALIEN_AMMO> bombs {};
     int ammo = MAX_ALIEN_AMMO;
     int points = 0;
+
+    // overload copy assignment operator
+    Alien& operator=(const Alien &other) {
+        if (this != &other) {  // self-assignment check
+            // assign non-const members
+            this->type = other.type;
+            this->position = other.position;
+            this->status = other.status;
+            this->sprite = other.sprite;
+            this->explosion = other.explosion;
+            this->ammo = other.ammo;
+            this->points = other.points;
+        }
+        return *this;
+    }
 };
 
 struct AlienFleet {
@@ -154,6 +208,25 @@ struct AlienFleet {
     int movement_speed = 0; // how fast Aliens should be move down against the Hero
     int game_line = 0; // current Fleet position in field vertically.
     bool advancing = false;  // flag that indicates if the Fleet is advancing or not during the game
+
+    // overload copy assignment operator
+    AlienFleet& operator=(const AlienFleet &other) {
+        if (this != &other) {  // self-assignment check
+            // assign non-const members
+            this->start_position = other.start_position;
+            this->aliens = other.aliens;
+            this->attack_direction = other.attack_direction;
+            this->bombs_in_play = other.bombs_in_play;
+            this->population = other.population;
+            this->animation_frame = other.animation_frame;
+            this->movement_speed = other.movement_speed;
+            this->game_line = other.game_line;
+            this->advancing = advancing;
+            
+            // no need to assign `aliens` because it is const
+        }
+        return *this;
+    }
 };
 
 struct SpecialAlien {

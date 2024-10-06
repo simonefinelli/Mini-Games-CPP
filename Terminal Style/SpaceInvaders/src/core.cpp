@@ -14,7 +14,7 @@ void draw_hero_on_field(const Hero& h);
 void move_hero(Hero& h, int peace);
 void hero_init_shoot(Hero& h);
 void draw_alien_fleet(AlienFleet& f);
-void check_game_status(GameData& gd);
+// void check_game_status(GameData& gd);
 void update_hero_explosion_status(GameData& gd);
 void pause_game(GameData& gd);
 
@@ -199,6 +199,74 @@ void update_game_data(GameData &gd, key user_choice) {
 }
 
 /**
+ * @brief This function handles all the conditions to restart and reset the game,
+ *        make a new level etc.
+ *
+ * @param gd The Game Data.
+ */
+void check_game_status(GameData& current_gd) {
+    /**************************************************************************
+     * Check game status conditions                                           *
+     **************************************************************************/
+    // all aliens eliminated: go to the next level
+    if (current_gd.alien_fleet.population == 0 and no_alien_explosion(current_gd.alien_fleet.aliens)) {
+        current_gd.field_game.state = INTERVAL_LEVEL_SCREEN;
+        current_gd.field_game.wait_time = 3000;  // TODO: make a constant
+    }
+    // the hero is dead: restart the game
+    if (current_gd.hero.lives == 0) {
+        current_gd.field_game.state = GAME_OVER_SCREEN;
+        current_gd.field_game.wait_time = 3000;  // TODO: make a constant
+    }
+
+
+    /**************************************************************************
+     * create a behaviour for each game status condition                      *
+     **************************************************************************/
+    // set the right game data to go to the next level
+    if (current_gd.field_game.state == INTERVAL_LEVEL_SCREEN and current_gd.field_game.wait_time == 0) {
+        // make sure that all the dropped bombs have been erased
+        // todo make a function in spaceship.cpp
+        for (auto& aliens_line : current_gd.alien_fleet.aliens) {
+            for (auto& a : aliens_line) {
+                for (auto& bomb : a.bombs) {
+                    bomb.position = {NOT_ON_FIELD, NOT_ON_FIELD};
+                }
+            }
+        }
+
+        // TODO: verify with the 
+        // game field
+        current_gd.field_game.state = PLAY_SCREEN;
+        current_gd.field_game.level++;
+        // re-define fleet
+        init_fleet(current_gd.alien_fleet);
+        // re-init shields
+        // init_shields(current_gd.field_game.shields);
+        // re-define Hero
+        current_gd.hero.lives--;
+        current_gd.hero.position = {0, 0};
+
+    }
+    // the hero has lost all the lives. reset the game from the beginning!
+    if (current_gd.field_game.state == GAME_OVER_SCREEN and current_gd.field_game.wait_time == 0) {
+        // make sure that all the dropped bombs have been erased
+        // todo make a function in spaceship.cpp
+        for (auto& aliens_line : current_gd.alien_fleet.aliens) {
+            for (auto& a : aliens_line) {
+                for (auto& bomb : a.bombs) {
+                    bomb.position = {NOT_ON_FIELD, NOT_ON_FIELD};
+                }
+            }
+        }
+
+        // create a new blank game data object
+        current_gd = initialize_game();
+    }
+}
+
+
+/**
  * @brief Renders the Hero and their missile on the playing field.
  * 
  * This function displays the hero's spaceship on the field, depending on the 
@@ -287,47 +355,6 @@ void update_hero_explosion_status(GameData& gd) {
         // pause animation setting the entire field pause
         gd.field_game.wait_time = 300;  // milliseconds
     }
-}
-
-/**
- * @brief This function handles all the conditions to restart and reset the game,
- * make a new level etc.
- *
- * @param gd The Game Data.
- */
-void check_game_status(GameData &gd) {
-    // after level cleaning
-    if (gd.field_game.state == INTERVAL_LEVEL_SCREEN and gd.field_game.wait_time == 0) {
-        // reset game todo make a function
-        gd.field_game.state = PLAY_SCREEN;
-        gd.field_game.level++;
-        gd.alien_fleet.population = ALIEN_FLEET_N;
-        // re-define fleet
-        init_fleet(gd.alien_fleet);
-        // re-init shields
-        init_shields(gd.field_game.shields);
-        // re-define Hero
-        init_hero(gd.hero);
-        // clear all bomb on screen todo make a function in spaceship.cpp
-        for (auto &aliens_line : gd.alien_fleet.aliens) {
-            for (auto &a : aliens_line) {
-                for (auto &bomb : a.bombs) {
-                    bomb.position = {NOT_ON_FIELD, NOT_ON_FIELD};
-                }
-            }
-        }
-
-    }
-
-    // all aliens eliminated
-    if (gd.alien_fleet.population == 0 and no_alien_explosion(gd.alien_fleet.aliens)) {  //todo no aliens are exploding (all dead)
-        gd.field_game.state = INTERVAL_LEVEL_SCREEN;
-        gd.field_game.wait_time = 5000;
-    }
-}
-
-void reset_game() {
-
 }
 
 /**

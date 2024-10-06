@@ -96,6 +96,8 @@ void game_loop() {
         if (IS_QUIT_CHAR(user_choice)) { quit = true; continue; }
         // update game data
         update_game_data(game_data, static_cast<key>(user_choice));
+        // check game status
+        check_game_status(game_data);
         // refresh on screen game data
         draw_screen_game(game_data);
 

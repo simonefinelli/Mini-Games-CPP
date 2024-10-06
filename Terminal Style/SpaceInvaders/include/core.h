@@ -32,14 +32,24 @@ struct GameData {
     FieldGame field_game{};
     Hero hero{};
     AlienFleet alien_fleet{};
+
+    // overload copy assignment operator
+    GameData& operator=(const GameData& other) {
+        if (this != &other) {  // Avoid self-assignment
+            this->field_game = other.field_game;
+            this->hero = other.hero;
+            this->alien_fleet = other.alien_fleet;
+        }
+        return *this;
+    }
 };
 
+
+// prototypes
 GameData initialize_game();
-
 int get_user_input();
-
 void update_game_data(GameData &gd, key user_choice);
-
 void draw_screen_game(GameData &gd);
+void check_game_status(GameData& current_gd);
 
 #endif //SPACEINVADERS_CORE_H
