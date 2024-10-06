@@ -507,13 +507,20 @@ void make_fleet_shoot(AlienFleet &fleet) {
  * @brief Makes an Alien shot with a certain probability.
  */
 bool should_shoot(int aliens_left) {
-    return generate_number(0.0, 1.0) > (0.85 - (aliens_left / 1000.0));  // todo: make defines or conts
+    return generate_number(0.0, 1.0) > (0.85 - (aliens_left / 1000.0));
 }
 
 /**
- * @brief TODO
- *
- * @param fleet The alien Fleet object.
+ * @brief Updates the positions of active bombs in the alien fleet, animating 
+ *        their movement down the screen.
+ * 
+ * This function moves each bomb in the alien fleet downward by one unit at 
+ * regular intervals controlled by a static delay counter. It also toggles the 
+ * animation frame for each bomb, creating an animated effect as they fall. If a
+ * bomb reaches the bottom of the screen, it is removed from play.
+ * 
+ * @param fleet A reference to the `AlienFleet` object, which contains the alien 
+ *              bombs and tracks the number of bombs currently in play.
  */
 void refresh_bombs_position(AlienFleet &fleet) {
     static int delay_bombs_reposition = 1;
