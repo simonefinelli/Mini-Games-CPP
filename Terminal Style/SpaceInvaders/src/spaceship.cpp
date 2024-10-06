@@ -551,12 +551,23 @@ void refresh_bombs_position(AlienFleet &fleet) {
 }
 
 /**
- * @brief Checks the collision between the hero missile and the Aliens in the
- * fleet.
- *
- * @param fleet The Fleet object.
- * @param hero The Hero object.
+ * @brief Detects and handles collisions between the Hero and both alien bombs 
+ *        and alien ships.
+ * 
+ * This function checks for two types of collisions that can affect the Hero:
+ * 1. Collisions between the Hero and bombs dropped by the aliens.
+ * 2. Direct collisions between the Hero and alien ships.
+ * 
+ * If a collision is detected in either case, the Hero's status is updated to 
+ * `EXPLODING`, their lives are decremented, and the respective bomb or alien is
+ * removed or flagged as collided with the Hero.
+ * 
+ * @param fleet A reference to the `AlienFleet` object, containing the aliens and 
+ *              bombs that are checked for collisions with the Hero.
+ * @param hero A reference to the `Hero` object, whose status and lives are 
+ *             updated in the event of a collision with an alien or a bomb.
  */
+
 void check_hero_collision(AlienFleet &fleet, Hero &hero) {
     // check the Aliens' bombs and the Hero spaceship
     for (auto &aliens_line : fleet.aliens) {
@@ -598,9 +609,21 @@ void check_hero_collision(AlienFleet &fleet, Hero &hero) {
 
 
 /**
- * todo
+ * @brief Checks if a given position collides with the Hero's spaceship.
+ * 
+ * This function determines whether a specified position (e.g., a bomb or alien) 
+ * intersects with the boundaries of the Hero's spaceship. It checks if the 
+ * position falls within the horizontal and vertical limits of the Hero's sprite.
+ * 
+ * @param pos The coordinates (`coords`) of the position to be checked for 
+ *            collision with the Hero.
+ * @param h A reference to the `Hero` object, whose position and sprite width 
+ *          are used for collision detection.
+ * 
+ * @return bool Returns `true` if the position collides with the Hero's spaceship,
+ *         otherwise returns `false`.
  */
-bool is_hero_collision(const coords &pos, Hero &h) {
+bool is_hero_collision(const coords& pos, Hero& h) {
     // check if the bomb hits the boundaries of the spaceship
     if ((pos.x >= h.position.x) and (pos.x <= (h.position.x + HERO_SPRITE_WIDTH - 1))
         and ((pos.y >= h.position.y) and (pos.y <= h.position.y + 1))) {

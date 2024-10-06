@@ -86,16 +86,6 @@ void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Mis
  * shield is removed, and in the case of a bomb collision, the bomb is also 
  * removed from the field.
  * 
- * Workflow:
- * - Iterates through each alien in the fleet:
- *   - For each alien that is `ALIVE`, checks for collisions with the shields using 
- *      the second row of the alien's sprite (y + 1).
- *   - If a collision is detected, the relevant shield part is "damaged" (set to ' ').
- * - Iterates through the bombs dropped by the aliens:
- *   - For each bomb on the field, checks if it collides with the shields.
- *   - If a bomb hits a shield, the shield part is removed, and the bomb is taken
- *      off the field.
- * 
  * @param shields A reference to an array of `FieldShield` objects representing 
  *        the shields on the playing field.
  * @param fleet A reference to the `AlienFleet` object, which contains the aliens 
