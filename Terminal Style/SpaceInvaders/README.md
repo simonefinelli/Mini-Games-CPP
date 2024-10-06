@@ -48,8 +48,8 @@ which starts lower, a loop which can continue endlessly. A special "mystery ship
 of the screen and award bonus points if destroyed.... [Continue on Wikipedia!](https://en.wikipedia.org/wiki/Space_Invaders)
 
 ### TODO
-- Restart the same game when the Hero lost one live.
-- Restart the entire game whtn the Hero lost all lives.
+- Restart the same game when the Hero lost one life.
+- Restart the entire game whtn the Hero lost all lifes.
 
 # Gameplay Demo
 ![Demo]()
