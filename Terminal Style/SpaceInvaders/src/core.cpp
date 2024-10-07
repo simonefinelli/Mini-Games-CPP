@@ -194,8 +194,8 @@ void update_game_data(GameData &gd, key user_choice) {
     // // check game status
     // check_game_status(gd);
 
-    // check if we have to pause the game
-    pause_game(gd);
+    // // check if we have to pause the game
+    // pause_game(gd);
 }
 
 /**
@@ -211,7 +211,6 @@ void check_game_status(GameData& current_gd) {
     // all aliens eliminated: go to the next level
     if (current_gd.alien_fleet.population == 0 and no_alien_explosion(current_gd.alien_fleet.aliens)) {
         current_gd.field_game.state = INTERVAL_LEVEL_SCREEN;
-        current_gd.field_game.wait_time = 3000;  // TODO: make a constant
     }
     // the hero is dead: restart the game
     if (current_gd.hero.lives == 0) {
@@ -224,7 +223,10 @@ void check_game_status(GameData& current_gd) {
      * create a behaviour for each game status condition                      *
      **************************************************************************/
     // set the right game data to go to the next level
-    if (current_gd.field_game.state == INTERVAL_LEVEL_SCREEN and current_gd.field_game.wait_time == 0) {
+    if (current_gd.field_game.state == INTERVAL_LEVEL_SCREEN) {
+        // pause game
+        current_gd.field_game.wait_time = 3000;  // todo: make a constant
+        pause_game(current_gd);
         // make sure that all the dropped bombs have been erased
         // todo make a function in spaceship.cpp
         for (auto& aliens_line : current_gd.alien_fleet.aliens) {
@@ -235,10 +237,11 @@ void check_game_status(GameData& current_gd) {
             }
         }
 
-        // TODO: verify with the 
+        // resume game
         // game field
         current_gd.field_game.state = PLAY_SCREEN; // TODO after change with WELCOME_SCREEN
         current_gd.field_game.level++; // set next level
+        current_gd.field_game.wait_time = 0; // reset waiting time
         // re-define fleet
         init_fleet(current_gd.alien_fleet);
         // re-init shields
@@ -357,12 +360,12 @@ void update_hero_explosion_status(GameData& gd) {
     }
 }
 
+// todo: complete docstring
 /**
- * todo
  *
  * interval in milliseconds
  */
-void pause_game(GameData &gd) {
+void pause_game(GameData& gd) {
     if (gd.field_game.wait_time == 0) return;
 
     std::this_thread::sleep_for(std::chrono::milliseconds(gd.field_game.wait_time));

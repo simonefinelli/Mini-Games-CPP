@@ -48,8 +48,9 @@ struct GameData {
 // prototypes
 GameData initialize_game();
 int get_user_input();
-void update_game_data(GameData &gd, key user_choice);
-void draw_screen_game(GameData &gd);
+void update_game_data(GameData& gd, key user_choice);
+void draw_screen_game(GameData& gd);
 void check_game_status(GameData& current_gd);
+void pause_game(GameData& gd);
 
 #endif //SPACEINVADERS_CORE_H
