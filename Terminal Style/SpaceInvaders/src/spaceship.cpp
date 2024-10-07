@@ -196,6 +196,7 @@ void init_fleet(AlienFleet& f) {
 void init_alien(Alien &a, alien_type type, int x_offset, int y_offset, const coords &fleet_position) {
     switch (type) {
         case FIRST_CLASS:
+            a.status = ALIVE;
             a.type = FIRST_CLASS;
             a.position = {fleet_position.x + x_offset, fleet_position.y + y_offset};
             a.sprite = {FIRST_CLASS_ALIEN_SPRITE[0],
@@ -205,6 +206,7 @@ void init_alien(Alien &a, alien_type type, int x_offset, int y_offset, const coo
             a.points = FIRST_CLASS_PTS;
             break;
         case SECOND_CLASS:
+            a.status = ALIVE;
             a.type = SECOND_CLASS;
             a.position = {fleet_position.x + x_offset, fleet_position.y + y_offset};
             a.sprite = {SECOND_CLASS_ALIEN_SPRITE[0],
@@ -214,6 +216,7 @@ void init_alien(Alien &a, alien_type type, int x_offset, int y_offset, const coo
             a.points = SECOND_CLASS_PTS;
             break;
         case THIRD_CLASS:
+            a.status = ALIVE;
             a.type = THIRD_CLASS;
             a.position = {fleet_position.x + x_offset, fleet_position.y + y_offset};
             a.sprite = {THIRD_CLASS_ALIEN_SPRITE[0],

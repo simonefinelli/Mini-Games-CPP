@@ -191,8 +191,8 @@ void update_game_data(GameData &gd, key user_choice) {
         update_hero_explosion_status(gd);
     }
 
-    // check game status
-    check_game_status(gd);
+    // // check game status
+    // check_game_status(gd);
 
     // check if we have to pause the game
     pause_game(gd);
@@ -237,16 +237,16 @@ void check_game_status(GameData& current_gd) {
 
         // TODO: verify with the 
         // game field
-        current_gd.field_game.state = PLAY_SCREEN;
-        current_gd.field_game.level++;
+        current_gd.field_game.state = PLAY_SCREEN; // TODO after change with WELCOME_SCREEN
+        current_gd.field_game.level++; // set next level
         // re-define fleet
         init_fleet(current_gd.alien_fleet);
         // re-init shields
         // init_shields(current_gd.field_game.shields);
         // re-define Hero
         current_gd.hero.lives--;
-        current_gd.hero.position = {0, 0};
-
+        current_gd.hero.position = {INITIAL_HERO_X_POSITION, INITIAL_HERO_Y_POSITION};
+        current_gd.hero.missile.position = {NOT_ON_FIELD, NOT_ON_FIELD};
     }
     // the hero has lost all the lives. reset the game from the beginning!
     if (current_gd.field_game.state == GAME_OVER_SCREEN and current_gd.field_game.wait_time == 0) {
