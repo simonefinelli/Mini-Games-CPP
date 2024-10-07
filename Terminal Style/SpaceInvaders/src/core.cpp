@@ -215,7 +215,6 @@ void check_game_status(GameData& current_gd) {
     // the hero is dead: restart the game
     if (current_gd.hero.lives == 0) {
         current_gd.field_game.state = GAME_OVER_SCREEN;
-        current_gd.field_game.wait_time = 3000;  // TODO: make a constant
     }
 
 
@@ -253,6 +252,10 @@ void check_game_status(GameData& current_gd) {
     }
     // the hero has lost all the lives. reset the game from the beginning!
     if (current_gd.field_game.state == GAME_OVER_SCREEN and current_gd.field_game.wait_time == 0) {
+        // pause game
+        current_gd.field_game.wait_time = 3000;  // todo: make a constant
+        pause_game(current_gd);
+        
         // make sure that all the dropped bombs have been erased
         // todo make a function in spaceship.cpp
         for (auto& aliens_line : current_gd.alien_fleet.aliens) {
