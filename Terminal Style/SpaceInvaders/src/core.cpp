@@ -223,52 +223,39 @@ void check_game_status(GameData& current_gd) {
      * create a behaviour for each game status condition                      *
      **************************************************************************/
     // set the right game data to go to the next level
-    if (current_gd.field_game.state == INTERVAL_LEVEL_SCREEN) {
-        // pause game
-        current_gd.field_game.wait_time = 3000;  // todo: make a constant
-        pause_game(current_gd);
-        // make sure that all the dropped bombs have been erased
-        // todo make a function in spaceship.cpp
-        for (auto& aliens_line : current_gd.alien_fleet.aliens) {
-            for (auto& a : aliens_line) {
-                for (auto& bomb : a.bombs) {
-                    bomb.position = {NOT_ON_FIELD, NOT_ON_FIELD};
-                }
-            }
-        }
-
-        // resume game
-        // game field
-        current_gd.field_game.state = PLAY_SCREEN; // TODO after change with WELCOME_SCREEN
-        current_gd.field_game.level++; // set next level
-        current_gd.field_game.wait_time = 0; // reset waiting time
-        // re-define fleet
-        init_fleet(current_gd.alien_fleet);
-        // re-init shields
-        // init_shields(current_gd.field_game.shields);
-        // re-define Hero
-        current_gd.hero.lives--;
-        current_gd.hero.position = {INITIAL_HERO_X_POSITION, INITIAL_HERO_Y_POSITION};
-        current_gd.hero.missile.position = {NOT_ON_FIELD, NOT_ON_FIELD};
-    }
-    // the hero has lost all the lives. reset the game from the beginning!
-    if (current_gd.field_game.state == GAME_OVER_SCREEN and current_gd.field_game.wait_time == 0) {
-        // pause game
-        current_gd.field_game.wait_time = 3000;  // todo: make a constant
-        pause_game(current_gd);
+    switch (current_gd.field_game.state) {
+        case INTERVAL_LEVEL_SCREEN:
+            // pause game
+            current_gd.field_game.wait_time = 3000;  // todo: make a constant
+            pause_game(current_gd);
+            // make sure that all the dropped bombs have been erased
+            reset_all_alien_bombs(current_gd.alien_fleet);
+            // resume game and go to next level
+            current_gd.field_game.state = PLAY_SCREEN; // TODO after change with WELCOME_SCREEN
+            current_gd.field_game.level++; // set next level
+            current_gd.field_game.wait_time = 0; // reset waiting time
+            // re-define fleet
+            init_fleet(current_gd.alien_fleet);
+            // re-init shields
+            // init_shields(current_gd.field_game.shields);
+            // re-define Hero
+            current_gd.hero.lives--;
+            current_gd.hero.position = {INITIAL_HERO_X_POSITION, INITIAL_HERO_Y_POSITION};
+            current_gd.hero.missile.position = {NOT_ON_FIELD, NOT_ON_FIELD};
+            break;
         
-        // make sure that all the dropped bombs have been erased
-        // todo make a function in spaceship.cpp
-        for (auto& aliens_line : current_gd.alien_fleet.aliens) {
-            for (auto& a : aliens_line) {
-                for (auto& bomb : a.bombs) {
-                    bomb.position = {NOT_ON_FIELD, NOT_ON_FIELD};
-                }
-            }
-        }
-
-        // create a new blank game data object
-        current_gd = initialize_game();
+        case GAME_OVER_SCREEN:
+            // the hero has lost all the lives. reset the game from the beginning!
+            // pause game
+            current_gd.field_game.wait_time = 3000;  // todo: make a constant
+            pause_game(current_gd);
+            // make sure that all the dropped bombs have been erased
+            reset_all_alien_bombs(current_gd.alien_fleet);
+            // create a new blank game data object
+            current_gd = initialize_game();
+            break;
+    
+        default: break;
     }
 }
 

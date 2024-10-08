@@ -665,3 +665,26 @@ bool is_hero_exploding(Hero &hero) {
         return false;
     }
 }
+
+/**
+ * @brief Resets the positions of all bombs in the alien fleet, removing them 
+ *        from the field.
+ * 
+ * This function iterates over each alien in the fleet and sets the position of 
+ * every bomb to `{NOT_ON_FIELD, NOT_ON_FIELD}`, effectively clearing all active 
+ * bombs from the playing field. It ensures that no bombs remain in play after 
+ * calling this function.
+ * 
+ * @param alien_fleet A reference to the `AlienFleet` object, containing all 
+ *                    aliens and their bombs.
+ */
+
+void reset_all_alien_bombs(AlienFleet& alien_fleet) {
+    for (auto& aliens_line : alien_fleet.aliens) {
+        for (auto& a : aliens_line) {
+            for (auto& bomb : a.bombs) {
+                bomb.position = {NOT_ON_FIELD, NOT_ON_FIELD};
+            }
+        }
+    }
+}
