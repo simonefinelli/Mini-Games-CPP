@@ -44,6 +44,7 @@ GameData initialize_game() {
     gd.field_game.window_size = {W_WIDTH, W_HEIGHT};
     gd.field_game.state = PLAY_SCREEN; // TODO after change with WELCOME_SCREEN
     gd.field_game.level = 1;  // first level
+    gd.field_game.wait_time = 0;
 
     // define fleet
     init_fleet(gd.alien_fleet);
