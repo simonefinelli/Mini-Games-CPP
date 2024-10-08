@@ -121,7 +121,6 @@ void hero_init_shoot(Hero& h) {
  * 
  * @param h A reference to the `Hero` object, whose missile's position is being updated.
  */
-
 void refresh_missile_position(Hero &h) {
     if (h.missile.position.x != NOT_ON_FIELD) {
         h.missile.position.y -= MISSILE_PACE;
@@ -249,7 +248,6 @@ void init_alien(Alien &a, alien_type type, int x_offset, int y_offset, const coo
  * 
  * @return bool Returns `true` if a collision is detected, otherwise returns `false`.
  */
-
 bool is_collision(const coords &shot_pos, const std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens, alien_collision &c) {
     c.alien_idx = {NO_COLLISION, NO_COLLISION};
 
@@ -306,7 +304,6 @@ bool is_collision(const coords &shot_pos, const std::array<std::array<Alien, ALI
  * @param h A reference to the `Hero` object, used to check the missile position 
  *        and update the score.
  */
-
 void check_fleet_collision(AlienFleet& fleet, Hero& h) {
     alien_collision c {};
     if (is_collision(h.missile.position, fleet.aliens, c)) {
@@ -337,7 +334,6 @@ void check_fleet_collision(AlienFleet& fleet, Hero& h) {
  *               alien fleet. The function will check and update the status of 
  *               each alien.
  */
-
 void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS>& aliens) {
     for (auto& aliens_line : aliens) {
         for (auto& a : aliens_line) {
@@ -364,7 +360,6 @@ void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_RO
  * @param fleet A reference to the `AlienFleet` object, which contains the current 
  *              state and position of the fleet.
  */
-
 void make_fleet_movement(AlienFleet &fleet) {
     static bool make_a_step_forward = true;
 
@@ -457,7 +452,6 @@ void reset_fleet_speed(AlienFleet &fleet) {
  * @return bool Returns `true` if no aliens are exploding, otherwise returns 
  *         `false`.
  */
-
 bool no_alien_explosion(const std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS>& aliens) {
     for (auto& aliens_line : aliens) {
         for (auto& a : aliens_line) {
@@ -481,7 +475,6 @@ bool no_alien_explosion(const std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN
  * @param fleet A reference to the `AlienFleet` object, containing the aliens, bombs, 
  *              and other attributes related to fleet behavior.
  */
-
 void make_fleet_shoot(AlienFleet &fleet) {
     // pause fleet attack for a random time at each attack cycle
     static int pause_fleet_attack = generate_number(70, 100);  // initial pause todo make consts
@@ -570,7 +563,6 @@ void refresh_bombs_position(AlienFleet &fleet) {
  * @param hero A reference to the `Hero` object, whose status and lives are 
  *             updated in the event of a collision with an alien or a bomb.
  */
-
 void check_hero_collision(AlienFleet &fleet, Hero &hero) {
     // check the Aliens' bombs and the Hero spaceship
     for (auto &aliens_line : fleet.aliens) {
@@ -678,7 +670,6 @@ bool is_hero_exploding(Hero &hero) {
  * @param alien_fleet A reference to the `AlienFleet` object, containing all 
  *                    aliens and their bombs.
  */
-
 void reset_all_alien_bombs(AlienFleet& alien_fleet) {
     for (auto& aliens_line : alien_fleet.aliens) {
         for (auto& a : aliens_line) {
