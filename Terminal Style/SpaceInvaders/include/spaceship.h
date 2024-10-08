@@ -122,7 +122,7 @@ struct AlienExplosionAnimation {
             ALIEN_EXPLOSION_SPRITE[0],
             ALIEN_EXPLOSION_SPRITE[1]
     };
-    float timer = FPS * ALIEN_EXPLOSION_DURATION;
+    float timer{0};
 
     // overload copy assignment operator
     AlienExplosionAnimation& operator=(const AlienExplosionAnimation &other) {

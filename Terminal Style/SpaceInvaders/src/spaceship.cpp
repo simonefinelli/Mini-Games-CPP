@@ -227,6 +227,7 @@ void init_alien(Alien &a, alien_type type, int x_offset, int y_offset, const coo
         default: ;
     }
     a.status = ALIVE;
+    a.explosion.timer = FPS * ALIEN_EXPLOSION_DURATION;
 }
 
 /**
