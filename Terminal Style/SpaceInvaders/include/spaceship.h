@@ -237,29 +237,17 @@ struct SpecialAlien {
 
 /// Prototypes - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 void init_hero(Hero& h);
-
 void refresh_hero_on_playfield(Hero& h, key user_choice);
-
 void refresh_missile_position(Hero& h);
-
 void init_fleet(AlienFleet& f);
-
 void check_fleet_collision(AlienFleet& f, Hero &h);
-
 void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS>& aliens);
-
 void make_fleet_movement(AlienFleet& fleet);
-
 void make_fleet_shoot(AlienFleet& f);
-
 void refresh_bombs_position(AlienFleet& fleet);
-
 void check_hero_collision(AlienFleet& fleet, Hero& hero);
-
 bool is_hero_exploding(Hero& hero);
-
 bool no_alien_explosion(const std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS>& aliens);
-
 void reset_all_alien_bombs(AlienFleet& f);
 
 #endif //SPACEINVADERS_SPACESHIP_H
