@@ -213,18 +213,20 @@ void check_game_status(GameData& current_gd) {
     if (current_gd.alien_fleet.population == 0 and no_alien_explosion(current_gd.alien_fleet.aliens)) {
         current_gd.field_game.state = INTERVAL_LEVEL_SCREEN;
     }
+    // the have lost a live
+    if (current_gd.hero.status == DEAD and current_gd.hero.lives != 0 and current_gd.hero.explosion.timer == 0) {
+        current_gd.field_game.state = PLAYER_DEAD_SCREEN;
+    }
     // the hero is dead: restart the game
     if (current_gd.hero.lives == 0) {
         current_gd.field_game.state = GAME_OVER_SCREEN;
     }
 
-
     /**************************************************************************
      * create a behaviour for each game status condition                      *
      **************************************************************************/
-    // set the right game data to go to the next level
     switch (current_gd.field_game.state) {
-        case INTERVAL_LEVEL_SCREEN:
+        case INTERVAL_LEVEL_SCREEN:  // set the right game data to go to the next level
             // pause game
             current_gd.field_game.wait_time = 3000;  // todo: make a constant
             pause_game(current_gd);
@@ -236,16 +238,22 @@ void check_game_status(GameData& current_gd) {
             current_gd.field_game.wait_time = 0; // reset waiting time
             // re-define fleet
             init_fleet(current_gd.alien_fleet);
-            // re-init shields
-            // init_shields(current_gd.field_game.shields);
             // re-define Hero
             current_gd.hero.lives--;
             current_gd.hero.position = {INITIAL_HERO_X_POSITION, INITIAL_HERO_Y_POSITION};
             current_gd.hero.missile.position = {NOT_ON_FIELD, NOT_ON_FIELD};
             break;
         
-        case GAME_OVER_SCREEN:
-            // the hero has lost all the lives. reset the game from the beginning!
+        case PLAYER_DEAD_SCREEN:  // the hero has lost all the lives.
+            // resume game
+            current_gd.field_game.state = PLAY_SCREEN;
+            //reposition the hero at center
+            current_gd.hero.status = ALIVE;
+            current_gd.hero.position = {INITIAL_HERO_X_POSITION, INITIAL_HERO_Y_POSITION};
+            current_gd.hero.missile.position = {NOT_ON_FIELD, NOT_ON_FIELD};
+            break;
+        
+        case GAME_OVER_SCREEN: // the hero has lost all the lives. reset the game from the beginning!
             // pause game
             current_gd.field_game.wait_time = 3000;  // todo: make a constant
             pause_game(current_gd);

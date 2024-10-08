@@ -652,6 +652,7 @@ bool is_hero_exploding(Hero &hero) {
         hero.explosion.timer--;
         if (hero.explosion.timer <= 0) {
             hero.status = DEAD;
+            hero.explosion.timer = 0;
         }
         return true;
     } else {
