@@ -214,11 +214,11 @@ void check_game_status(GameData& current_gd) {
         current_gd.field_game.state = INTERVAL_LEVEL_SCREEN;
     }
     // the have lost a live
-    if (current_gd.hero.status == DEAD and current_gd.hero.lives != 0 and current_gd.hero.explosion.timer == 0) {
+    if (current_gd.hero.status == DEAD and current_gd.hero.lives != 0) {
         current_gd.field_game.state = PLAYER_DEAD_SCREEN;
     }
     // the hero is dead: restart the game
-    if (current_gd.hero.lives == 0) {
+    if (current_gd.hero.status == DEAD and current_gd.hero.lives == 0) {
         current_gd.field_game.state = GAME_OVER_SCREEN;
     }
 
@@ -251,6 +251,7 @@ void check_game_status(GameData& current_gd) {
             current_gd.hero.status = ALIVE;
             current_gd.hero.position = {INITIAL_HERO_X_POSITION, INITIAL_HERO_Y_POSITION};
             current_gd.hero.missile.position = {NOT_ON_FIELD, NOT_ON_FIELD};
+            current_gd.hero.explosion.timer = FPS * ALIEN_EXPLOSION_DURATION;
             break;
         
         case GAME_OVER_SCREEN: // the hero has lost all the lives. reset the game from the beginning!

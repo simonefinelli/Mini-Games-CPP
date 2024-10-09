@@ -639,7 +639,8 @@ bool is_hero_collision(const coords& pos, Hero& h) {
  * @param hero A reference to the `Hero` object.
  */
 bool is_hero_exploding(Hero &hero) {
-    if (hero.status == EXPLODING and hero.explosion.timer > 0) {
+    // if (hero.status == EXPLODING and hero.explosion.timer > 0) {
+    if (hero.status == EXPLODING) {
         // update exploding frame of the Hero
         if (hero.explosion.curr_frame_idx == 0) {
             hero.explosion.curr_frame = hero.explosion.frame0;
@@ -655,6 +656,9 @@ bool is_hero_exploding(Hero &hero) {
             hero.explosion.timer = 0;
         }
         return true;
+    } else if (hero.explosion.timer == 0) {
+        // hero.status = ALIVE;
+        return false;
     } else {
         return false;
     }
