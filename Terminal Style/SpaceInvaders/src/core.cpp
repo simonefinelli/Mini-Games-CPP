@@ -9,7 +9,7 @@
 #include <thread>
 #include "core.h"
 
-// prototypes
+// prototypes - internal access between the core file
 void draw_hero_on_field(const Hero& h);
 void move_hero(Hero& h, int peace);
 void hero_init_shoot(Hero& h);
@@ -17,6 +17,8 @@ void draw_alien_fleet(AlienFleet& f);
 // void check_game_status(GameData& gd);
 void update_hero_explosion_status(GameData& gd);
 void pause_game(GameData& gd);
+void draw_level_change_screen(GameData& gd);
+void draw_game_over_screen(GameData& gd);
 
 /**
  * @brief Initializes the game state for a new session of Space Invaders.
@@ -227,9 +229,13 @@ void check_game_status(GameData& current_gd) {
      **************************************************************************/
     switch (current_gd.field_game.state) {
         case INTERVAL_LEVEL_SCREEN:  // set the right game data to go to the next level
+            // Todo: move this into draw_screen_game function
+            // drow level change screen
+            draw_level_change_screen(current_gd);
             // pause game
             current_gd.field_game.wait_time = 3000;  // todo: make a constant
             pause_game(current_gd);
+            // Todo: move this into draw_screen_game function - end
             // make sure that all the dropped bombs have been erased
             reset_all_alien_bombs(current_gd.alien_fleet);
             // resume game and go to next level
@@ -255,9 +261,13 @@ void check_game_status(GameData& current_gd) {
             break;
         
         case GAME_OVER_SCREEN: // the hero has lost all the lives. reset the game from the beginning!
+            // Todo: move this into draw_screen_game function
+            // drow level change screen
+            draw_game_over_screen(current_gd);
             // pause game
             current_gd.field_game.wait_time = 3000;  // todo: make a constant
             pause_game(current_gd);
+            // Todo: move this into draw_screen_game function - end
             // make sure that all the dropped bombs have been erased
             reset_all_alien_bombs(current_gd.alien_fleet);
             // create a new blank game data object
@@ -360,9 +370,8 @@ void update_hero_explosion_status(GameData& gd) {
     }
 }
 
-// todo: complete docstring
 /**
- *
+ * // todo: complete docstring
  * interval in milliseconds
  */
 void pause_game(GameData& gd) {
@@ -371,4 +380,18 @@ void pause_game(GameData& gd) {
     std::this_thread::sleep_for(std::chrono::milliseconds(gd.field_game.wait_time));
     // reset waiting time
     gd.field_game.wait_time = 0;
+}
+
+/**
+ * //todo
+ */
+void draw_level_change_screen(GameData& gd) {
+
+}
+
+/**
+ * //todo
+ */
+void draw_game_over_screen(GameData& gd) {
+
 }
