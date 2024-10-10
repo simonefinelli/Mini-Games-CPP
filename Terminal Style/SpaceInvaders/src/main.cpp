@@ -99,10 +99,10 @@ void game_loop() {
         update_game_data(game_data, static_cast<key>(user_choice));
         // check game status
         check_game_status(game_data);
-        // check if we have to pause the game
-        pause_game(game_data);
         // refresh on screen game data
         draw_screen_game(game_data);
+        // check if we have to pause the game
+        pause_game(game_data);
 
         // calculate how long to sleep to achieve the desired FPS
         auto end_time = std::chrono::high_resolution_clock::now();

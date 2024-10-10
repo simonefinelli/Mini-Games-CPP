@@ -83,10 +83,27 @@ GameData initialize_game() {
 void draw_screen_game(GameData& gd) {
     gui::clear_screen(); // clear the terminal screen
 
-    // draw elements on terminal screen
-    draw_shields_on_field(gd.field_game.shields);
-    draw_hero_on_field(gd.hero);
-    draw_alien_fleet(gd.alien_fleet);
+    // draw elements
+    switch (gd.field_game.state) {
+        case WELCOME_SCREEN:
+            break;
+        case PLAY_SCREEN:
+            draw_shields_on_field(gd.field_game.shields);
+            draw_hero_on_field(gd.hero);
+            draw_alien_fleet(gd.alien_fleet);
+            break;
+        case PLAYER_DEAD_SCREEN:
+        case HIGH_SCORES_SCREEN:
+        case INTERVAL_LEVEL_SCREEN:
+            draw_level_change_screen(gd);
+            gd.field_game.wait_time = 3000;  // todo: make a constant
+            break;
+        case GAME_OVER_SCREEN:
+            draw_game_over_screen(gd);
+            gd.field_game.wait_time = 3000;  // todo: make a constant
+            break;
+        default: break;
+    }
 
     gui::refresh_screen();  // refresh the terminalbut when  screen
 }
@@ -229,13 +246,6 @@ void check_game_status(GameData& current_gd) {
      **************************************************************************/
     switch (current_gd.field_game.state) {
         case INTERVAL_LEVEL_SCREEN:  // set the right game data to go to the next level
-            // Todo: move this into draw_screen_game function
-            // drow level change screen
-            draw_level_change_screen(current_gd);
-            // pause game
-            current_gd.field_game.wait_time = 3000;  // todo: make a constant
-            pause_game(current_gd);
-            // Todo: move this into draw_screen_game function - end
             // make sure that all the dropped bombs have been erased
             reset_all_alien_bombs(current_gd.alien_fleet);
             // resume game and go to next level
@@ -261,13 +271,6 @@ void check_game_status(GameData& current_gd) {
             break;
         
         case GAME_OVER_SCREEN: // the hero has lost all the lives. reset the game from the beginning!
-            // Todo: move this into draw_screen_game function
-            // drow level change screen
-            draw_game_over_screen(current_gd);
-            // pause game
-            current_gd.field_game.wait_time = 3000;  // todo: make a constant
-            pause_game(current_gd);
-            // Todo: move this into draw_screen_game function - end
             // make sure that all the dropped bombs have been erased
             reset_all_alien_bombs(current_gd.alien_fleet);
             // create a new blank game data object
