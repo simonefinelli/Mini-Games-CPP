@@ -103,6 +103,10 @@ void gui::move_cursor(int x, int y) {
     move(y, x);
 }
 
+void gui::draw_string(int x, int y, const std::string& s) {
+    mvprintw(x, y, "%s", s.c_str());
+}
+
 /**
  * @brief Retrieves inputs from keyboard one character at a time and return
  * they as integers.

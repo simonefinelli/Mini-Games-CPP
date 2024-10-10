@@ -16,9 +16,12 @@
 #include "gui.h"
 
 #define IS_QUIT_CHAR(x) ((x == QUIT_CHAR_UPPER) || (x == QUIT_CHAR_LOWER))
+#define IS_NEW_GAME_CHAR(x) ((x == NEW_GAME_CHAR_UPPER) || (x == NEW_GAME_CHAR_LOWER))
 
 const char QUIT_CHAR_LOWER = 'q';
 const char QUIT_CHAR_UPPER = 'Q';
+const char NEW_GAME_CHAR_LOWER = 's';
+const char NEW_GAME_CHAR_UPPER = 'S';
 
 struct FieldGame {
     size window_size{0, 0};

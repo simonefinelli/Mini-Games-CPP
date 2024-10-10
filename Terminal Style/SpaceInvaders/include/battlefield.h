@@ -24,6 +24,10 @@
 #define NO_SHIELD_COLLISION (-1)
 #define SHIELD_DISTANCE (INITIAL_HERO_Y_POSITION - SHIELD_SPRITE_HEIGHT - 1)
 
+const std::string WELCOME_STRING{"Welcome to ASCII Space Invaders"};
+const std::string GAME_OVER_STRING{"- Game Over -"};
+const std::string START_NEW_GAME_STRING{"Press 'S' to start..."};
+
 typedef struct ShieldCollisionInfo {
     int shield_idx = NO_SHIELD_COLLISION;
     coords shield_part_hit = {NO_SHIELD_COLLISION, NO_SHIELD_COLLISION};

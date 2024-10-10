@@ -19,6 +19,7 @@ void update_hero_explosion_status(GameData& gd);
 void pause_game(GameData& gd);
 void draw_level_change_screen(GameData& gd);
 void draw_game_over_screen(GameData& gd);
+void draw_welcome_screen(GameData& gd);
 
 /**
  * @brief Initializes the game state for a new session of Space Invaders.
@@ -44,7 +45,7 @@ GameData initialize_game() {
 
     // define game field characteristics
     gd.field_game.window_size = {W_WIDTH, W_HEIGHT};
-    gd.field_game.state = PLAY_SCREEN; // TODO after change with WELCOME_SCREEN
+    gd.field_game.state = WELCOME_SCREEN; // TODO after change with WELCOME_SCREEN
     gd.field_game.level = 1;  // first level
     gd.field_game.wait_time = 0;
 
@@ -86,6 +87,7 @@ void draw_screen_game(GameData& gd) {
     // draw elements
     switch (gd.field_game.state) {
         case WELCOME_SCREEN:
+            draw_welcome_screen(gd);
             break;
         case PLAY_SCREEN:
             draw_shields_on_field(gd.field_game.shields);
@@ -96,11 +98,11 @@ void draw_screen_game(GameData& gd) {
         case HIGH_SCORES_SCREEN:
         case INTERVAL_LEVEL_SCREEN:
             draw_level_change_screen(gd);
-            gd.field_game.wait_time = 3000;  // todo: make a constant
+            // gd.field_game.wait_time = 3000;  // todo: make a constant
             break;
         case GAME_OVER_SCREEN:
             draw_game_over_screen(gd);
-            gd.field_game.wait_time = 3000;  // todo: make a constant
+            //gd.field_game.wait_time = 3000;  // todo: make a constant
             break;
         default: break;
     }
@@ -134,12 +136,15 @@ int get_user_input() {
         case LEFT:
         case RIGHT:
         case SPACE:
+        case NEW_GAME_CHAR_LOWER:
+        case NEW_GAME_CHAR_UPPER:
             return input;
         default:
             return -1;
     }
 }
 
+// todo update docstring
 /**
  * @brief Updates the game state based on user input and game logic.
  * 
@@ -173,9 +178,12 @@ int get_user_input() {
  * @param gd A reference to the `GameData` object that contains the current game state.
  * @param user_choice The key input from the user, used to control the Hero's actions.
  */
-
 void update_game_data(GameData &gd, key user_choice) {
-    if (gd.hero.status == ALIVE) {
+    if (gd.field_game.state == WELCOME_SCREEN and IS_NEW_GAME_CHAR(user_choice))  { 
+        gd.field_game.state = PLAY_SCREEN; 
+    }
+
+    if (gd.hero.status == ALIVE and gd.field_game.state == PLAY_SCREEN) {
         // update hero position in the game
         refresh_hero_on_playfield(gd.hero, user_choice);
 
@@ -251,13 +259,14 @@ void check_game_status(GameData& current_gd) {
             // resume game and go to next level
             current_gd.field_game.state = PLAY_SCREEN; // TODO after change with WELCOME_SCREEN
             current_gd.field_game.level++; // set next level
-            current_gd.field_game.wait_time = 0; // reset waiting time
+            /// current_gd.field_game.wait_time = 0; // reset waiting time
             // re-define fleet
             init_fleet(current_gd.alien_fleet);
             // re-define Hero
             current_gd.hero.lives--;
             current_gd.hero.position = {INITIAL_HERO_X_POSITION, INITIAL_HERO_Y_POSITION};
             current_gd.hero.missile.position = {NOT_ON_FIELD, NOT_ON_FIELD};
+            current_gd.field_game.wait_time = 3000;  // todo: make a constant
             break;
         
         case PLAYER_DEAD_SCREEN:  // the hero has lost all the lives.
@@ -275,6 +284,8 @@ void check_game_status(GameData& current_gd) {
             reset_all_alien_bombs(current_gd.alien_fleet);
             // create a new blank game data object
             current_gd = initialize_game();
+            // pause the game
+            current_gd.field_game.wait_time = 3000; // todo: make a constant
             break;
     
         default: break;
@@ -388,6 +399,19 @@ void pause_game(GameData& gd) {
 /**
  * //todo
  */
+void draw_welcome_screen(GameData& gd) {
+    // calculate positions
+    const int welcome_y_pos = gd.field_game.window_size.width/2 - WELCOME_STRING.length()/2;
+    const int new_game_y_pos = gd.field_game.window_size.width/2 - START_NEW_GAME_STRING.length()/2;
+    const int x_pos = gd.field_game.window_size.height/2;
+    // view sentences on screen
+    gui::draw_string(x_pos - 5, welcome_y_pos, WELCOME_STRING);
+    gui::draw_string(x_pos - 3, new_game_y_pos, START_NEW_GAME_STRING);
+}
+
+/**
+ * //todo
+ */
 void draw_level_change_screen(GameData& gd) {
 
 }
@@ -396,5 +420,11 @@ void draw_level_change_screen(GameData& gd) {
  * //todo
  */
 void draw_game_over_screen(GameData& gd) {
-
+    // calculate positions
+    const int y_pos = gd.field_game.window_size.height/2;
+    const int game_over_x_pos = gd.field_game.window_size.width/2 - GAME_OVER_STRING.length()/2;
+    const int new_game_x_pos = gd.field_game.window_size.width/2 - START_NEW_GAME_STRING.length()/2;
+    // view sentences on screen
+    gui::draw_string(game_over_x_pos, y_pos, GAME_OVER_STRING);
+    gui::draw_string(new_game_x_pos, y_pos, START_NEW_GAME_STRING);
 }

@@ -46,6 +46,7 @@ namespace gui {
     void refresh_screen();
     void draw_char(int x, int y, char c);
     void move_cursor(int x, int y);
+    void draw_string(int x, int y, const std::string& s);
     /**
      * @brief Draws on the ncurses terminal a generic sprite.
      *
