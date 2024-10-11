@@ -594,7 +594,7 @@ void check_hero_collision(AlienFleet &fleet, Hero &hero) {
                     curr_position = {x, y};
                     if (a.status == ALIVE and is_hero_collision(curr_position, hero)) {
                         hero.status = EXPLODING;
-                        hero.lives--;
+                        hero.lives = 0;  // game over when an alien hit the hero 
                         return;
                     }
                 }
