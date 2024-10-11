@@ -25,6 +25,7 @@
 #define SHIELD_DISTANCE (INITIAL_HERO_Y_POSITION - SHIELD_SPRITE_HEIGHT - 1)
 
 const std::string WELCOME_STRING{"Welcome to ASCII Space Invaders"};
+const std::string LEVEL_STRING{"LEVEL"};
 const std::string GAME_OVER_STRING{"- Game Over -"};
 const std::string START_NEW_GAME_STRING{"Press 'S' to start..."};
 
@@ -38,7 +39,7 @@ typedef enum FieldGameState {
     PLAY_SCREEN,
     PLAYER_DEAD_SCREEN,
     GAME_OVER_SCREEN,
-    HIGH_SCORES_SCREEN,
+    HIGH_SCORES_SCREEN,  // todo remove this
     INTERVAL_LEVEL_SCREEN
 } game_state;
 

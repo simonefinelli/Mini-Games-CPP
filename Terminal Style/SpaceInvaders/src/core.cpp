@@ -94,15 +94,11 @@ void draw_screen_game(GameData& gd) {
             draw_hero_on_field(gd.hero);
             draw_alien_fleet(gd.alien_fleet);
             break;
-        case PLAYER_DEAD_SCREEN:
-        case HIGH_SCORES_SCREEN:
         case INTERVAL_LEVEL_SCREEN:
             draw_level_change_screen(gd);
-            // gd.field_game.wait_time = 3000;  // todo: make a constant
             break;
         case GAME_OVER_SCREEN:
             draw_game_over_screen(gd);
-            //gd.field_game.wait_time = 3000;  // todo: make a constant
             break;
         default: break;
     }
@@ -236,6 +232,10 @@ void check_game_status(GameData& current_gd) {
     /**************************************************************************
      * Check game status conditions                                           *
      **************************************************************************/
+    // continue the game after clear a level
+    if (current_gd.hero.status == ALIVE and current_gd.field_game.state == INTERVAL_LEVEL_SCREEN) {
+        current_gd.field_game.state = PLAY_SCREEN;
+    }
     // all aliens eliminated: go to the next level
     if (current_gd.alien_fleet.population == 0 and no_alien_explosion(current_gd.alien_fleet.aliens)) {
         current_gd.field_game.state = INTERVAL_LEVEL_SCREEN;
@@ -257,7 +257,6 @@ void check_game_status(GameData& current_gd) {
             // make sure that all the dropped bombs have been erased
             reset_all_alien_bombs(current_gd.alien_fleet);
             // resume game and go to next level
-            current_gd.field_game.state = PLAY_SCREEN; // TODO after change with WELCOME_SCREEN
             current_gd.field_game.level++; // set next level
             /// current_gd.field_game.wait_time = 0; // reset waiting time
             // re-define fleet
@@ -413,7 +412,14 @@ void draw_welcome_screen(GameData& gd) {
  * //todo
  */
 void draw_level_change_screen(GameData& gd) {
-
+    std::string level = std::to_string(gd.field_game.level);
+    // calculate positions
+    const int level_y_pos = gd.field_game.window_size.width/2 - LEVEL_STRING.length()/2;
+    const int level_num_y_pos = gd.field_game.window_size.width/2;
+    const int x_pos = gd.field_game.window_size.height/2;
+    // view sentences on screen
+    gui::draw_string(x_pos - 5, level_y_pos, LEVEL_STRING);
+    gui::draw_string(x_pos - 3, level_num_y_pos, level);
 }
 
 /**
@@ -421,10 +427,10 @@ void draw_level_change_screen(GameData& gd) {
  */
 void draw_game_over_screen(GameData& gd) {
     // calculate positions
-    const int y_pos = gd.field_game.window_size.height/2;
-    const int game_over_x_pos = gd.field_game.window_size.width/2 - GAME_OVER_STRING.length()/2;
-    const int new_game_x_pos = gd.field_game.window_size.width/2 - START_NEW_GAME_STRING.length()/2;
+    const int x_pos = gd.field_game.window_size.height/2;
+    const int game_over_y_pos = gd.field_game.window_size.width/2 - GAME_OVER_STRING.length()/2;
+    const int new_game_y_pos = gd.field_game.window_size.width/2 - START_NEW_GAME_STRING.length()/2;
     // view sentences on screen
-    gui::draw_string(game_over_x_pos, y_pos, GAME_OVER_STRING);
-    gui::draw_string(new_game_x_pos, y_pos, START_NEW_GAME_STRING);
+    gui::draw_string(x_pos - 5, game_over_y_pos, GAME_OVER_STRING);
+    gui::draw_string(x_pos - 3, new_game_y_pos, START_NEW_GAME_STRING);
 }
