@@ -401,16 +401,24 @@ void pause_game(GameData& gd) {
  * // todo
  */
 void draw_player_info(GameData& gd) {
+    const char* lives;
+    if (gd.hero.lives == HERO_LIVES) {
+        lives = "|-V-|  |-V-|";
+    } else if (gd.hero.lives == 2) {
+        lives = "  X    |-V-|";
+    } else {
+        lives = "  X      X  ";
+    }
     char player_info[W_WIDTH];
     std::sprintf(
         player_info,
-        "    LEVEL %3d                      SCORE %6d                      LIVES %1d   ",
+        "    LEVEL %3d                     SCORE %5d                  %s    ",
         gd.field_game.level,
         gd.hero.score,
-        gd.hero.lives
+        lives
     );
 
-    gui::draw_string(2, 0, player_info);
+    gui::draw_string(1, 0, player_info);
 }
 
 /**
