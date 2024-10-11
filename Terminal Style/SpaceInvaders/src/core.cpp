@@ -20,6 +20,7 @@ void pause_game(GameData& gd);
 void draw_level_change_screen(GameData& gd);
 void draw_game_over_screen(GameData& gd);
 void draw_welcome_screen(GameData& gd);
+void draw_player_info(GameData& gd);
 
 /**
  * @brief Initializes the game state for a new session of Space Invaders.
@@ -90,6 +91,7 @@ void draw_screen_game(GameData& gd) {
             draw_welcome_screen(gd);
             break;
         case PLAY_SCREEN:
+            draw_player_info(gd);
             draw_shields_on_field(gd.field_game.shields);
             draw_hero_on_field(gd.hero);
             draw_alien_fleet(gd.alien_fleet);
@@ -393,6 +395,22 @@ void pause_game(GameData& gd) {
     std::this_thread::sleep_for(std::chrono::milliseconds(gd.field_game.wait_time));
     // reset waiting time
     gd.field_game.wait_time = 0;
+}
+
+/**
+ * // todo
+ */
+void draw_player_info(GameData& gd) {
+    char player_info[W_WIDTH];
+    std::sprintf(
+        player_info,
+        "    LEVEL %3d                      SCORE %6d                      LIVES %1d   ",
+        gd.field_game.level,
+        gd.hero.score,
+        gd.hero.lives
+    );
+
+    gui::draw_string(2, 0, player_info);
 }
 
 /**
