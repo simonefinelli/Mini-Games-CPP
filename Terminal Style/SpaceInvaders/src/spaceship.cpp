@@ -126,7 +126,7 @@ void refresh_missile_position(Hero& h) {
         h.missile.position.y -= MISSILE_PACE;
 
         // check if the missile exits from boundaries
-        if (h.missile.position.y < 0) {
+        if (h.missile.position.y < FIELD_TOP_BOUNDARY_OFFSET) {
             h.missile.position.x = NOT_ON_FIELD;
             h.missile.position.y = NOT_ON_FIELD;
         }
