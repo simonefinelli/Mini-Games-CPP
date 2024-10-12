@@ -16,6 +16,8 @@ Mini-games written in C++.
     <td style="border-color: black; background-color: black;">
       <img src="./Terminal Style/Battleship/assets/battleship_demo.gif" alt="Number Guesser Demo">
     </td>
-    <td style="border-color: black; background-color: black;"></td>
+    <td style="border-color: black; background-color: black;">
+      <img src="./Terminal Style/SpaceInvaders/assets/ascii_invaders_demo.gif" alt="ASCII Invaders Demo"> 
+    </td>
   </tr>
 </table>
