@@ -5,7 +5,6 @@
  * @author SimoX
  * @date 2023-09-18
  */
-
 #include <thread>
 #include "core.h"
 
@@ -29,14 +28,6 @@ void draw_player_info(GameData& gd);
  * alien fleet, shields, and player (hero) for the first level of the game. 
  * It prepares all necessary components before the game loop starts.
  * 
- * Workflow:
- * - Initializes the game field dimensions (`window_size`) and starting state.
- *   - Currently sets the state to `PLAY_SCREEN` (TODO: change to `WELCOME_SCREEN`).
- * - Sets the starting level to 1.
- * - Initializes the alien fleet by calling `init_fleet()`.
- * - Sets up the game shields by calling `init_shields()`.
- * - Initializes the player's hero character by calling `init_hero()`.
- * 
  * @return GameData Returns a fully initialized `GameData` object containing 
  *                  the starting state of the game.
  */
@@ -46,19 +37,16 @@ GameData initialize_game() {
 
     // define game field characteristics
     gd.field_game.window_size = {W_WIDTH, W_HEIGHT};
-    gd.field_game.state = WELCOME_SCREEN; // TODO after change with WELCOME_SCREEN
+    gd.field_game.state = WELCOME_SCREEN;
     gd.field_game.level = 1;  // first level
     gd.field_game.wait_time = 0;
 
     // define fleet
     init_fleet(gd.alien_fleet);
-
     // define UFO (special alien spaceship)
     init_alien(gd.ufo, INITIAL_UFO_X_POSITION, INITIAL_UFO_Y_POSITION);
-
     // init shields
     init_shields(gd.field_game.shields);
-
     // define Hero
     init_hero(gd.hero);
 
@@ -73,14 +61,6 @@ GameData initialize_game() {
  * alien fleets based on the current game state stored in the `GameData` object.
  * After drawing all elements, it refreshes the screen to display the updated 
  * game state.
- * 
- * Workflow:
- * - Clears the terminal screen using `gui::clear_screen()`.
- * - Draws the defensive shields using `draw_shields_on_field()`.
- * - Draws the hero's spaceship using`draw_hero_on_field()` 
- * - Draws the alien fleet using `draw_alien_fleet()` 
- * - Refreshes the terminal screen with `gui::refresh_screen()` to update the
- *    terminal.
  * 
  * @param gd A reference to `GameData` that contains the current game state to 
  *           be drawn.
@@ -125,6 +105,7 @@ void draw_screen_game(GameData& gd) {
  * - `RIGHT` (Move hero right)
  * - `SPACE` (Fire missile)
  * - `QUIT_CHAR_UPPER` or `QUIT_CHAR_LOWER` (Quit game)
+ * - `NEW_GAME_CHAR_UPPER` or `NEW_GAME_CHAR_LOWER` (Start game)
  * 
  * @return The integer value corresponding to a valid key press. Returns -1 if 
  *         the input is invalid.
@@ -138,47 +119,27 @@ int get_user_input() {
         case LEFT:
         case RIGHT:
         case SPACE:
-        case NEW_GAME_CHAR_LOWER:
         case NEW_GAME_CHAR_UPPER:
+        case NEW_GAME_CHAR_LOWER:
             return input;
         default:
             return -1;
     }
 }
 
-// todo update docstring
 /**
- * @brief Updates the game state based on user input and game logic.
+ * @brief Updates the game state based on user input and ongoing events.
  * 
- * This function manages all the updates necessary for each frame of the game. 
- * It processes the Hero's movements, missile updates, collision detection, alien 
- * fleet movements, and bomb interactions. If the Hero is alive, it continuously 
- * updates the game state based on the user input. If the Hero is exploding, it 
- * updates the Hero's explosion status. It also checks the overall game status 
- * and handles game pausing when necessary.
+ * This function handles game state transitions and updates all relevant 
+ * elements within the game based on the current state and user input. It 
+ * manages the hero's actions, interactions with enemies, and environmental 
+ * effects like collisions with shields, aliens, and UFOs.
  * 
- * Workflow:
- * - If the Hero is `ALIVE`:
- *   - Moves the Hero based on the user's input (`LEFT`, `RIGHT`, or `SPACE` for
- *      shooting).
- *   - Updates the position of the Hero's missile.
- *   - Checks for collisions between the Hero's missile and shields, aliens, and
- *      bombs.
- *   - Handles alien explosions and fleet movement.
- *   - Manages alien fleet bomb drops and updates their positions.
- *   - Checks for shield collisions with alien bombs and hero collisions with 
- *      alien bombs.
+ * @param gd Reference to the `GameData` object containing the game's current state 
+ *           and elements (e.g., hero, alien fleet, UFO, shields).
+ * @param user_choice The `key` input from the user which determines the hero's action.
  * 
- * - If the Hero is in an `EXPLODING` state:
- *   - Updates the Hero's explosion animation frame.
- * 
- * Additional game checks:
- * - `check_game_status()`: Determines if the game is over or if the level is complete.
- * - `pause_game()`: Checks if the game needs to be paused based on internal state or 
- *     player actions.
- * 
- * @param gd A reference to the `GameData` object that contains the current game state.
- * @param user_choice The key input from the user, used to control the Hero's actions.
+ * @note This function does not return a value but modifies the `GameData` object in-place.
  */
 void update_game_data(GameData &gd, key user_choice) {
     if (gd.field_game.state == WELCOME_SCREEN and IS_NEW_GAME_CHAR(user_choice))  { 
@@ -203,15 +164,9 @@ void update_game_data(GameData &gd, key user_choice) {
         check_hero_collision(gd.alien_fleet, gd.hero);
 
     } else {
-        // update exploding frame of the Hero
+        // update exploding frame of the hero
         update_hero_explosion_status(gd);
     }
-
-    // // check game status
-    // check_game_status(gd);
-
-    // // check if we have to pause the game
-    // pause_game(gd);
 }
 
 /**
@@ -258,7 +213,7 @@ void check_game_status(GameData& current_gd) {
             // re-define Hero
             current_gd.hero.position = {INITIAL_HERO_X_POSITION, INITIAL_HERO_Y_POSITION};
             current_gd.hero.missile.position = {NOT_ON_FIELD, NOT_ON_FIELD};
-            current_gd.field_game.wait_time = 3000;  // todo: make a constant
+            current_gd.field_game.wait_time = INTERVAL_TIME;
             // re-initialize ufo
             init_alien(current_gd.ufo, INITIAL_UFO_X_POSITION, INITIAL_UFO_Y_POSITION);
             break;
@@ -279,7 +234,7 @@ void check_game_status(GameData& current_gd) {
             // create a new blank game data object
             current_gd = initialize_game();
             // pause the game
-            current_gd.field_game.wait_time = 3000; // todo: make a constant
+            current_gd.field_game.wait_time = INTERVAL_TIME;
             break;
     
         default: break;
@@ -324,15 +279,6 @@ void draw_hero_on_field(const Hero &h) {
  * the function renders any bombs that the aliens have dropped, displaying their 
  * current animation frame if they are on the field.
  * 
- * Workflow:
- * - Draws each alien in the fleet:
- *   - If the alien's status is `ALIVE`, it renders the alien's spaceship using the 
- *      current animation frame from `alien.sprite[]`.
- *   - If the alien's status is `EXPLODING`, it draws the explosion animation frame.
- * - Iterates through each alien's bombs:
- *   - If a bomb's position is valid (not `NOT_ON_FIELD`), it draws the bomb with 
- *      its current animation frame.
- * 
  * @param f A reference to the `AlienFleet` object containing all the aliens and
  *          their bombs.
  */
@@ -360,7 +306,18 @@ void draw_alien_fleet(const AlienFleet &f) {
 }
 
 /**
- * //todo
+ * @brief Renders the UFO on the screen based on its current status.
+ * 
+ * This function draws the UFO at its current position using the appropriate 
+ * sprite. If the UFO is in the `EXPLODING` state, it renders an explosion 
+ * frame to simulate the explosion animation. Otherwise, it displays the 
+ * standard UFO sprite when the UFO is `ALIVE`.
+ * 
+ * @param ufo A constant reference to the `UFO` object containing the current 
+ *            status, position, and sprite information for the UFO.
+ * 
+ * @note This function uses `gui::draw_sprite()` to render sprites based on 
+ *       the UFO's current state and location.
  */
 void draw_alien_ufo(const UFO& ufo) {
     if (ufo.status == EXPLODING)
@@ -384,13 +341,23 @@ void draw_alien_ufo(const UFO& ufo) {
 void update_hero_explosion_status(GameData& gd) {
     if (is_hero_exploding(gd.hero)) {
         // pause animation setting the entire field pause
-        gd.field_game.wait_time = 300;  // milliseconds  //todo make constant
+        gd.field_game.wait_time = INTERVAL_TIME_FOR_HERO;  // milliseconds
     }
 }
 
 /**
- * // todo: complete docstring
- * interval in milliseconds
+ * @brief Pauses the game for a specified duration if a wait time is set.
+ * 
+ * This function temporarily halts the game by pausing execution for the 
+ * duration specified in `gd.field_game.wait_time`. After the pause, it resets 
+ * `wait_time` to zero. If no wait time is set (`wait_time` equals zero), the 
+ * function returns immediately without pausing.
+ * 
+ * @param gd Reference to the `GameData` object containing the current wait time 
+ *           and other game state information.
+ * 
+ * @note This function uses `std::this_thread::sleep_for()` to pause execution 
+ *       based on the wait time specified in milliseconds.
  */
 void pause_game(GameData& gd) {
     if (gd.field_game.wait_time == 0) return;
@@ -401,7 +368,23 @@ void pause_game(GameData& gd) {
 }
 
 /**
- * // todo
+ * @brief Displays the player's current level, score, and remaining lives on the screen.
+ * 
+ * This function formats and draws a string that shows the player's game progress,
+ * including the current level, score, and a visual representation of remaining lives.
+ * The lives are represented by visual symbols ("|-V-|" for alive and "X" for lost).
+ * 
+ * Display Details:
+ * - The number of lives is represented as:
+ *   - `"|-V-|  |-V-|"` if the player has full lives.
+ *   - `"  X    |-V-|"` if the player has two lives remaining.
+ *   - `"  X      X  "` if the player has one life remaining.
+ * 
+ * @param gd Reference to the `GameData` object containing the player's level, score,
+ *           and remaining lives information.
+ * 
+ * @note The function assumes the screen width (`W_WIDTH`) is sufficient for the 
+ *       formatted player info string.
  */
 void draw_player_info(GameData& gd) {
     const char* lives;
@@ -425,7 +408,17 @@ void draw_player_info(GameData& gd) {
 }
 
 /**
- * //todo
+ * @brief Renders the welcome screen with introductory text at specified positions.
+ * 
+ * This function displays the welcome screen text and a prompt to start a new game, 
+ * centered on the screen. It calculates the horizontal positioning for each text 
+ * string based on the window dimensions, ensuring both messages are centered.
+ * 
+ * @param gd Reference to the `GameData` object containing the window size, 
+ *           which is used to determine the position of the text.
+ * 
+ * @note This function assumes that the screen dimensions in `window_size` are 
+ *       sufficient to display the messages centered within the window.
  */
 void draw_welcome_screen(GameData& gd) {
     // calculate positions
@@ -438,7 +431,17 @@ void draw_welcome_screen(GameData& gd) {
 }
 
 /**
- * //todo
+ * @brief Displays the level transition screen with the current level number.
+ * 
+ * This function renders a level change message and the current level number 
+ * centered on the screen. The level string is displayed just above the level 
+ * number, both horizontally centered within the window.
+ * 
+ * @param gd Reference to the `GameData` object containing the current level 
+ *           and window size, used for determining the display position.
+ * 
+ * @note This function assumes the screen dimensions are sufficient for 
+ *       centering the messages based on the calculated coordinates.
  */
 void draw_level_change_screen(GameData& gd) {
     std::string level = std::to_string(gd.field_game.level);
@@ -452,7 +455,17 @@ void draw_level_change_screen(GameData& gd) {
 }
 
 /**
- * //todo
+ * @brief Renders the game over screen with an option to start a new game.
+ * 
+ * This function displays a "Game Over" message and a prompt to start a new game,
+ * both centered on the screen. The messages are positioned relative to the 
+ * screen's width and height to ensure they are aligned in the middle.
+ * 
+ * @param gd Reference to the `GameData` object containing the window size, 
+ *           which is used to determine the positioning of the text.
+ * 
+ * @note This function assumes the screen has sufficient dimensions to display 
+ *       the messages centered within the window.
  */
 void draw_game_over_screen(GameData& gd) {
     // calculate positions

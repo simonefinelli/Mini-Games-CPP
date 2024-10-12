@@ -5,9 +5,6 @@
  * @author SimoX
  * @date 2023-09-18
  */
-
-
-
 #ifndef SPACEINVADERS_CORE_H
 #define SPACEINVADERS_CORE_H
 
