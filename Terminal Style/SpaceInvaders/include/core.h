@@ -35,6 +35,7 @@ struct GameData {
     FieldGame field_game{};
     Hero hero{};
     AlienFleet alien_fleet{};
+    UFO ufo{};
 
     // overload copy assignment operator
     GameData& operator=(const GameData& other) {

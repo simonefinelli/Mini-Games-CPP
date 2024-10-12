@@ -10,7 +10,7 @@
 #include <thread>
 #include "spaceship.h"
 
-// prototypes
+// prototypes - internal access
 void init_alien(Alien &a, alien_type type, int x_offset, int y_offset, const coords &fleet_position);
 bool is_collision(const coords &shot_pos, const std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS> &aliens, alien_collision &c);
 void reset_fleet_speed(AlienFleet &fleet);
@@ -162,7 +162,7 @@ void refresh_missile_position(Hero &h) {
 void init_fleet(AlienFleet& f) {
     f.start_position = {INITIAL_FLEET_X_POSITION, INITIAL_FLEET_Y_POSITION};
     f.bombs_in_play = 0;
-    f.movement_speed = INITIAL_FLEET_SPEED;
+    f.movement_speed = INITIAL_FLEET_SPEED;  // todo make this interactive as the game progress
     f.attack_direction = RIGHT_DIRECTION;
     f.population = ALIEN_FLEET_N;
     f.animation_frame = FRAME_1;
@@ -186,7 +186,7 @@ void init_fleet(AlienFleet& f) {
     }
 }
 
-/**
+/** // todo
  * @brief Initializes the single Alien taking into account its Class.
  *
  * @param a The Alien object.
@@ -228,6 +228,19 @@ void init_alien(Alien &a, alien_type type, int x_offset, int y_offset, const coo
     }
     a.status = ALIVE;
     a.explosion.timer = FPS * ALIEN_EXPLOSION_DURATION;
+}
+
+/**
+ * //todo
+ */
+void init_alien(UFO &u, int x_offset, int y_offset) {
+    u.status = DEAD;
+    u.type = SPECIAL_CLASS;
+    u.position = {x_offset, y_offset};
+    u.sprite = {UFO_SPRITE[0], UFO_SPRITE[1]};
+    u.points = UFO_CLASS_PTS;
+    u.spawn_delay = UFO_SPAWN_DELAY;
+    u.movement_speed = UFO_SPEED_DELAY;
 }
 
 /**
@@ -361,7 +374,7 @@ void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_RO
  * @param fleet A reference to the `AlienFleet` object, which contains the current 
  *              state and position of the fleet.
  */
-void make_fleet_movement(AlienFleet &fleet) {
+void make_fleet_movement(AlienFleet& fleet) {
     static bool make_a_step_forward = true;
 
     // update fleet position at the end of each movement time
@@ -399,6 +412,36 @@ void make_fleet_movement(AlienFleet &fleet) {
     // update and/or reset movement time
     fleet.movement_speed -= FLEET_ADVANCE_STEP;  // how fast the feet will move
     if (fleet.movement_speed < 0) reset_fleet_speed(fleet);
+}
+
+/**
+ *  //todo
+ */
+void check_ufo_spawn(UFO& ufo) {
+    // UFO status
+    if (ufo.spawn_delay <= 0) {
+        ufo.status = ALIVE;
+    } else {
+        ufo.spawn_delay--;
+    }
+
+    if (ufo.position.x + LATERAL_MOVEMENT_STEP > (W_WIDTH - UFO_SPRITE_WIDTH)) { // ufo out of boundaries
+        ufo.status = DEAD;
+        ufo.spawn_delay = UFO_SPAWN_DELAY;
+        ufo.position = {INITIAL_UFO_X_POSITION, INITIAL_UFO_Y_POSITION};
+    }
+}
+
+/**
+ * //todo
+ */
+void make_ufo_movement(UFO& ufo) {
+    if (ufo.movement_speed == 0 and ufo.status == ALIVE) {  // the UFO is spowned on field
+        ufo.position.x++;
+    }
+    // update and/or reset movement time
+    ufo.movement_speed -= FLEET_ADVANCE_STEP;  // how fast the feet will move
+    if (ufo.movement_speed < 0) ufo.movement_speed = UFO_SPEED_DELAY;
 }
 
 /**

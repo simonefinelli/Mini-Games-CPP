@@ -13,8 +13,8 @@
 void draw_hero_on_field(const Hero& h);
 void move_hero(Hero& h, int peace);
 void hero_init_shoot(Hero& h);
-void draw_alien_fleet(AlienFleet& f);
-// void check_game_status(GameData& gd);
+void draw_alien_fleet(const AlienFleet& f);
+void draw_alien_ufo(const UFO& ufo);
 void update_hero_explosion_status(GameData& gd);
 void pause_game(GameData& gd);
 void draw_level_change_screen(GameData& gd);
@@ -52,6 +52,9 @@ GameData initialize_game() {
 
     // define fleet
     init_fleet(gd.alien_fleet);
+
+    // define UFO (special alien spaceship)
+    init_alien(gd.ufo, INITIAL_UFO_X_POSITION, INITIAL_UFO_Y_POSITION);
 
     // init shields
     init_shields(gd.field_game.shields);
@@ -95,6 +98,7 @@ void draw_screen_game(GameData& gd) {
             draw_shields_on_field(gd.field_game.shields);
             draw_hero_on_field(gd.hero);
             draw_alien_fleet(gd.alien_fleet);
+            draw_alien_ufo(gd.ufo);
             break;
         case INTERVAL_LEVEL_SCREEN:
             draw_level_change_screen(gd);
@@ -182,34 +186,19 @@ void update_game_data(GameData &gd, key user_choice) {
     }
 
     if (gd.hero.status == ALIVE and gd.field_game.state == PLAY_SCREEN) {
-        // update hero position in the game
+        // update hero info
         refresh_hero_on_playfield(gd.hero, user_choice);
-
-        // update hero missile position
         refresh_missile_position(gd.hero);
-
-        // check shield collision with Hero
         check_shield_collision(gd.field_game.shields, gd.hero.missile);
-
-        // check aliens collision in fleet
         check_fleet_collision(gd.alien_fleet, gd.hero);
-
-        // handle alien explosion
+        // update alien info
         check_alien_explosion(gd.alien_fleet.aliens);
-
-        // move fleet
         make_fleet_movement(gd.alien_fleet);
-
-        // shot bomb from aliens
+        check_ufo_spawn(gd.ufo);
+        make_ufo_movement(gd.ufo);
         make_fleet_shoot(gd.alien_fleet);
-
-        // update bombs position
         refresh_bombs_position(gd.alien_fleet);
-
-        // check shield collision with bombs' Fleet
         check_shield_collision(gd.field_game.shields, gd.alien_fleet);
-
-        // check collision between bombs' Fleet and Hero
         check_hero_collision(gd.alien_fleet, gd.hero);
 
     } else {
@@ -268,6 +257,8 @@ void check_game_status(GameData& current_gd) {
             current_gd.hero.position = {INITIAL_HERO_X_POSITION, INITIAL_HERO_Y_POSITION};
             current_gd.hero.missile.position = {NOT_ON_FIELD, NOT_ON_FIELD};
             current_gd.field_game.wait_time = 3000;  // todo: make a constant
+            // re-initialize ufo
+            init_alien(current_gd.ufo, INITIAL_UFO_X_POSITION, INITIAL_UFO_Y_POSITION);
             break;
         
         case PLAYER_DEAD_SCREEN:  // the hero has lost all the lives.
@@ -343,7 +334,7 @@ void draw_hero_on_field(const Hero &h) {
  * @param f A reference to the `AlienFleet` object containing all the aliens and
  *          their bombs.
  */
-void draw_alien_fleet(AlienFleet &f) {
+void draw_alien_fleet(const AlienFleet &f) {
     // draw fleet
     for (const auto &aliens_line : f.aliens) {
         for (const auto &alien : aliens_line) {
@@ -364,6 +355,16 @@ void draw_alien_fleet(AlienFleet &f) {
             }
         }
     }
+}
+
+/**
+ * //todo
+ */
+void draw_alien_ufo(const UFO& ufo) {
+    if (ufo.status == EXPLODING)
+        gui::draw_sprite(ufo.position.x, ufo.position.y, ufo.explosion.frame0);  // explosion animation
+    if (ufo.status == ALIVE)
+        gui::draw_sprite(ufo.position.x, ufo.position.y, ufo.sprite);
 }
 
 /**

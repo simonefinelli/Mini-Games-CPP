@@ -16,7 +16,7 @@
 #include "utils.h"
 #include "gui.h"
 
-#define MAX_ALIEN_AMMO 5
+#define MAX_ALIEN_AMMO 10
 #define NO_COLLISION (-1)
 
 // ALIEN FLEET
@@ -24,9 +24,13 @@
 #define ALIEN_ROWS 5
 #define ALIEN_FLEET_N (ALIEN_PER_ROW * ALIEN_ROWS)
 #define SPRITE_FRAME 2
+#define UFO_CLASS_PTS 100
+#define UFO_SPAWN_DELAY 700
 #define FIRST_CLASS_PTS 30
 #define SECOND_CLASS_PTS 20
 #define THIRD_CLASS_PTS 10
+#define INITIAL_UFO_X_POSITION -7
+#define INITIAL_UFO_Y_POSITION 3
 #define INITIAL_FLEET_X_POSITION 8
 #define INITIAL_FLEET_Y_POSITION 10
 #define Y_OFFSET_BETWEEN_ALIEN (SPRITE_HEIGHT + 1)
@@ -34,14 +38,16 @@
 #define ALIEN_EXPLOSION_DURATION 0.2
 #define LATERAL_MOVEMENT_STEP 1
 #define VERTICAL_MOVEMENT_STEP 1
-#define INITIAL_FLEET_SPEED 35
+#define INITIAL_FLEET_SPEED 20
+#define UFO_SPEED_DELAY 1
 #define FLEET_ADVANCE_STEP 1
-#define MAX_BOMBS_IN_PLAY 3
+#define MAX_BOMBS_IN_PLAY 5
 const std::string ALIEN_EXPLOSION_SPRITE[] {R"(\\//)", R"(//\\)"};
 const std::string ALIEN_BOMB_SPRITE[] {R"(/)", R"(\)"};
 const std::string FIRST_CLASS_ALIEN_SPRITE[]  {R"(/oo\)", R"(<  >)", R"(/oo\)", R"(/^^\)"};
 const std::string SECOND_CLASS_ALIEN_SPRITE[] {R"( 66 )", R"(|\/|)", R"(|66|)", R"(/  \)"};
 const std::string THIRD_CLASS_ALIEN_SPRITE[]  {R"((--))", R"(/  \)", R"((--))", R"( <> )"};
+const std::string UFO_SPRITE[] {R"(_/---\_)", R"( \V^V/ )"};
 
 // Hero
 #define HERO_NAME "Player1"
@@ -104,9 +110,10 @@ struct HeroExplosionAnimation {
 /// Aliens Objects - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 typedef enum AlienType {
     NONE = 0,
-    FIRST_CLASS,  // 30 points type
-    SECOND_CLASS, // 20 points type
-    THIRD_CLASS   // 10 points type
+    SPECIAL_CLASS, // 100 points type
+    FIRST_CLASS,   //  30 points type
+    SECOND_CLASS,  //  20 points type
+    THIRD_CLASS    //  10 points type
 } alien_type;
 
 typedef struct AlienBomb {
@@ -181,6 +188,7 @@ struct Alien {
     std::array<Bomb, MAX_ALIEN_AMMO> bombs {};
     int ammo = MAX_ALIEN_AMMO;
     int points = 0;
+    unsigned spawn_delay = 0; // only for special alien (UFO) 
 
     // overload copy assignment operator
     Alien& operator=(const Alien &other) {
@@ -193,6 +201,35 @@ struct Alien {
             this->explosion = other.explosion;
             this->ammo = other.ammo;
             this->points = other.points;
+            this->spawn_delay = other.spawn_delay;
+        }
+        return *this;
+    }
+};
+
+
+struct UFO {
+    alien_type type = NONE;
+    coords position {NOT_ON_FIELD, NOT_ON_FIELD};
+    spaceship_status status {};
+    std::array<std::string, SPRITE_HEIGHT>sprite;
+    AlienExplosionAnimation explosion;
+    int points = 0;
+    int movement_speed = 0;
+    unsigned spawn_delay = 0; // only for special alien (UFO)
+
+    // overload copy assignment operator
+    UFO& operator=(const UFO &other) {
+        if (this != &other) {  // self-assignment check
+            // assign non-const members
+            this->type = other.type;
+            this->position = other.position;
+            this->status = other.status;
+            this->sprite = other.sprite;
+            this->explosion = other.explosion;
+            this->points = other.points;
+            this->movement_speed = other.movement_speed;
+            this->spawn_delay = other.spawn_delay;
         }
         return *this;
     }
@@ -235,14 +272,17 @@ struct SpecialAlien {
     int points = 0;  // 50 - 100 - 150 - 200 randomly
 };
 
-/// Prototypes - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// Prototypes  - external access - - - - - - - - - - - - - - - - - - - - - - -
 void init_hero(Hero& h);
+void init_alien(UFO &u, int x_offset, int y_offset);
 void refresh_hero_on_playfield(Hero& h, key user_choice);
 void refresh_missile_position(Hero& h);
 void init_fleet(AlienFleet& f);
 void check_fleet_collision(AlienFleet& f, Hero &h);
 void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS>& aliens);
 void make_fleet_movement(AlienFleet& fleet);
+void check_ufo_spawn(UFO& ufo);
+void make_ufo_movement(UFO& ufo);
 void make_fleet_shoot(AlienFleet& f);
 void refresh_bombs_position(AlienFleet& fleet);
 void check_hero_collision(AlienFleet& fleet, Hero& hero);
