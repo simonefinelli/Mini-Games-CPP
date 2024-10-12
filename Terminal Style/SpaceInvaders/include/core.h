@@ -43,6 +43,7 @@ struct GameData {
             this->field_game = other.field_game;
             this->hero = other.hero;
             this->alien_fleet = other.alien_fleet;
+            this->ufo = other.ufo;
         }
         return *this;
     }
