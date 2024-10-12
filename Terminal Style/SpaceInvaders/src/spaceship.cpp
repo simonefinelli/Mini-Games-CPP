@@ -539,22 +539,17 @@ bool is_alien_overflow(const AlienFleet &fleet) {
 }
 
 /**
- * @brief Every time the alien fleet speed is reset, the velocity of aliens will
- * increase, in according the field line and the number of Aliens left.
+ * @brief Resets the movement speed of an alien fleet based on its population.
  *
- * Note that in the Original Game the Aliens' speed only increase when an Alien
- * is hit, and not when the fleet advances. So we follow that approach.
+ * This function adjusts the speed of the alien fleet according to the 
+ * number of aliens remaining in the fleet. Different speed values are 
+ * assigned based on population thresholds. If the population matches 
+ * the total fleet size, it resets to the initial speed. Otherwise, it 
+ * assigns predefined speeds based on the current population.
  *
- * @param fleet The alien Fleet.
+ * @param fleet Reference to the AlienFleet object to reset its speed.
  */
 void reset_fleet_speed(AlienFleet &fleet) {
-    // if (fleet.population >= 2) {
-    //     int new_speed = INITIAL_FLEET_SPEED - (ALIEN_FLEET_N - fleet.population);
-    //     fleet.movement_speed = new_speed > 5 ? INITIAL_FLEET_SPEED : 5;  // todo make consts
-    // } else {
-    //     fleet.movement_speed = 1;
-    // }
-
     if (fleet.population == ALIEN_FLEET_N) {
         fleet.movement_speed = INITIAL_FLEET_SPEED;
     } else if (fleet.population > 45) {
@@ -613,7 +608,7 @@ bool no_alien_explosion(const std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN
  */
 void make_fleet_shoot(AlienFleet &fleet) {
     // pause fleet attack for a random time at each attack cycle
-    static int pause_fleet_attack = generate_number(70, 100);  // initial pause todo make consts
+    static int pause_fleet_attack = generate_number(FLEET_ATTACK_PAUSE_RANGE_MIN, FLEET_ATTACK_PAUSE_RANGE_MAX);
 
     if (pause_fleet_attack == 0) {
         // shoot only if the Fleet is not advancing and there is not too many bombs in play
@@ -630,7 +625,7 @@ void make_fleet_shoot(AlienFleet &fleet) {
                 }
             }
         }
-        pause_fleet_attack = generate_number(30, 50);  // todo: reset pause counter todo make consts
+        pause_fleet_attack = generate_number(ATTACK_TIME_RANGE_MIN, ATTACK_TIME_RANGE_MAX);
     }
     pause_fleet_attack--;
 }
@@ -662,8 +657,7 @@ void refresh_bombs_position(AlienFleet &fleet) {
             for (auto &a : aliens_line) {
                 for (auto &bomb : a.bombs) {
                     if (bomb.position.x != NOT_ON_FIELD and delay_bombs_reposition == 0) {
-
-                        bomb.position.y += 1;  // todo: change this into a define
+                        bomb.position.y += 1;
                         // change animation frame
                         bomb.animation_frame = (bomb.animation_frame == FRAME_1) ? FRAME_2: FRAME_1;
 
@@ -792,7 +786,6 @@ bool is_hero_exploding(Hero &hero) {
         }
         return true;
     } else if (hero.explosion.timer == 0) {
-        // hero.status = ALIVE;  // todo check this
         return false;
     } else {
         return false;

@@ -51,6 +51,10 @@
 #define FLEET_ADVANCE_STEP 1
 #define UFO_ADVANCE_STEP 1
 #define MAX_BOMBS_IN_PLAY 5
+#define ATTACK_TIME_RANGE_MIN 30
+#define ATTACK_TIME_RANGE_MAX 50
+#define FLEET_ATTACK_PAUSE_RANGE_MIN 70
+#define FLEET_ATTACK_PAUSE_RANGE_MAX 100
 const std::string ALIEN_EXPLOSION_SPRITE[] {R"(\\//)", R"(//\\)"};
 const std::string UFO_EXPLOSION_SPRITE[] {R"( \\|// )", R"( //|\\ )"};
 const std::string ALIEN_BOMB_SPRITE[] {R"(/)", R"(\)"};
