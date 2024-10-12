@@ -16,7 +16,6 @@ const std::chrono::duration<double> FRAME_DURATION(1.0 / FPS); // get first time
 
 // prototypes
 void game_loop();
-bool play_again();
 
 /**
  * @brief Main entry point of the Space Invaders game.
@@ -40,9 +39,7 @@ int main() {
     gui::initialize_curses();
     
     // game procedure
-    do {
-        game_loop();
-    } while (play_again());
+    game_loop();
 
     // shutdown graphics
     gui::shutdown_curses();
@@ -51,50 +48,49 @@ int main() {
 
 }
 
-// todo: update docstring
 /**
  * @brief Executes the core game loop for Space Invaders.
  * 
- * This function manages the main game loop, handling user input, 
- * updating game data, and rendering the game state on the screen at 
- * regular intervals to maintain a target frame rate (FPS).
+ * This function runs the main loop for the game, managing user input, updating
+ * the game state, and rendering the updated state at each frame. It maintains 
+ * a target frame rate (FPS) by calculating frame time and sleeping as needed.
  * 
- * Workflow:
- * - Initializes game state by calling `initialize_game()`.
- * - Displays the welcome screen (currently TODO).
- * - Continuously checks for user input (such as movement or quitting).
- * - Updates the game state based on user input using `update_game_data()`.
- * - Redraws the screen using `draw_screen_game()` after each update.
- * - Ensures the game loop runs at the desired frame rate by calculating
- *   and sleeping for the appropriate time.
- * - Exits the loop when the quit condition is met (`IS_QUIT_CHAR`).
+ * Detailed Workflow:
+ * - Initializes the game state by calling `initialize_game()`.
+ * - Initially draws the game state on the screen using `draw_screen_game()`.
+ * - Enters a continuous loop that:
+ *   - Captures user input via `get_user_input()`.
+ *   - Checks for the quit condition with `IS_QUIT_CHAR()`.
+ *   - Updates the game state by calling `update_game_data()` with the user's input.
+ *   - Monitors the game state for game over or win conditions using `check_game_status()`.
+ *   - Redraws the updated game state on the screen.
+ *   - Pauses the game as needed through `pause_game()`.
+ *   - Manages timing to maintain consistent FPS by calculating the elapsed time 
+ *     and adjusting the sleep duration to match `FRAME_DURATION`.
+ * - Exits the loop and terminates the game when the quit condition is met.
  * 
  * Performance Considerations:
- * - The function ensures smooth gameplay by calculating the elapsed time 
- *   between frames and sleeping for the remaining duration to achieve 
- *   the desired FPS (~30).
- * 
- * @note The welcome screen is currently a TODO.
+ * - The loop calculates the exact duration taken by each iteration, subtracts 
+ *   that from the target frame duration, and sleeps for the remainder. This 
+ *   ensures smooth gameplay by adhering closely to the desired FPS (~30).
+ * - Game logic and rendering are optimized to prevent unnecessary delays 
+ *   within each iteration.
  */
 void game_loop() {
     int user_choice;
-    bool quit = false;
 
     // game initialization
     auto game_data = initialize_game();
 
-    // show welcome screen
-    // TODO
-
     // refresh on screen game data
     draw_screen_game(game_data);
-    while (!quit) {
+    while (true) {
         // get current time
         auto curr_time = std::chrono::high_resolution_clock::now();
 
         // get user choice
         user_choice = get_user_input();
-        if (IS_QUIT_CHAR(user_choice)) { quit = true; continue; }
+        if (IS_QUIT_CHAR(user_choice)) { break; }
         // update game data
         update_game_data(game_data, static_cast<key>(user_choice));
         // check game status
@@ -112,21 +108,4 @@ void game_loop() {
             std::this_thread::sleep_for(sleep_duration);
         }
     }
-}
-
-/**
- * @brief Determines whether the player wants to play the game again.
- * 
- * This function is responsible for prompting the player to decide whether they 
- * want to play another round of Space Invaders after a game session ends.
- * 
- * @return bool Returns `true` if the player chooses to play again, 
- *              otherwise returns `false`.
- * 
- * @note The current implementation is a placeholder and always returns `false`.
- * 
- * @todo Implement logic to determine if the player wish to continue playing or not.
- */
-bool play_again() {
-    return false;
 }
