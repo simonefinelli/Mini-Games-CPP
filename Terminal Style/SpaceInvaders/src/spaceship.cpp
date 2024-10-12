@@ -557,15 +557,15 @@ void reset_fleet_speed(AlienFleet &fleet) {
 
     if (fleet.population == ALIEN_FLEET_N) {
         fleet.movement_speed = INITIAL_FLEET_SPEED;
-    } else if (fleet.population >= 45) {
+    } else if (fleet.population > 45) {
         fleet.movement_speed = FLEET_45_SPEED;
-    } else if (fleet.population >= 35) {
+    } else if (fleet.population > 35) {
         fleet.movement_speed = FLEET_35_SPEED;
-    } else if (fleet.population >= 25) {
+    } else if (fleet.population > 25) {
         fleet.movement_speed = FLEET_25_SPEED;
-    } else if (fleet.population >= 15) {
+    } else if (fleet.population > 15) {
         fleet.movement_speed = FLEET_15_SPEED;
-    } else if (fleet.population >= 5) {
+    } else if (fleet.population > 5) {
         fleet.movement_speed = FLEET_05_SPEED;
     } else if (fleet.population >= 2) {
         fleet.movement_speed = FLEET_02_SPEED;
