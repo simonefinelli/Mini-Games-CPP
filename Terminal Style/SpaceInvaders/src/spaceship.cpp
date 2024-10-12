@@ -121,7 +121,7 @@ void hero_init_shoot(Hero& h) {
  * 
  * @param h A reference to the `Hero` object, whose missile's position is being updated.
  */
-void refresh_missile_position(Hero &h) {
+void refresh_missile_position(Hero& h) {
     if (h.missile.position.x != NOT_ON_FIELD) {
         h.missile.position.y -= MISSILE_PACE;
 
@@ -302,17 +302,6 @@ bool is_collision(const coords &shot_pos, const std::array<std::array<Alien, ALI
  * If a collision is detected, it updates the alien's status to `EXPLODING`, reduces 
  * the fleet population, resets the Hero's missile, and increases the Hero's score 
  * based on the points value of the destroyed alien.
- * 
- * Workflow:
- * - Calls `is_collision()` to check if the Hero's missile hits any alien in the 
- *    fleet.
- * - If a collision is detected:
- *   - Retrieves the alien involved in the collision using the collision index.
- *   - Sets the alien's status to `EXPLODING` to trigger its destruction animation.
- *   - Decreases the alien fleet's population count.
- *   - Resets the Hero's missile position to `{NOT_ON_FIELD, NOT_ON_FIELD}` to 
- *      indicate that the missile is no longer in play.
- *   - Adds the alien's point value to the Hero's score.
  * 
  * @param fleet A reference to the `AlienFleet` object, representing the current 
  *        alien fleet on the field.
