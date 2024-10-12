@@ -191,10 +191,11 @@ void update_game_data(GameData &gd, key user_choice) {
         refresh_missile_position(gd.hero);
         check_shield_collision(gd.field_game.shields, gd.hero.missile);
         check_fleet_collision(gd.alien_fleet, gd.hero);
+        check_ufo_collision(gd.ufo, gd.hero);
         // update alien info
         check_alien_explosion(gd.alien_fleet.aliens);
+        check_ufo_explosion(gd.ufo);
         make_fleet_movement(gd.alien_fleet);
-        check_ufo_spawn(gd.ufo);
         make_ufo_movement(gd.ufo);
         make_fleet_shoot(gd.alien_fleet);
         refresh_bombs_position(gd.alien_fleet);
@@ -239,6 +240,8 @@ void check_game_status(GameData& current_gd) {
     if (current_gd.hero.status == DEAD and current_gd.hero.lives == 0) {
         current_gd.field_game.state = GAME_OVER_SCREEN;
     }
+    // ufo alien
+    check_ufo_spawn(current_gd.ufo);
 
     /**************************************************************************
      * create a behaviour for each game status condition                      *
@@ -361,7 +364,7 @@ void draw_alien_fleet(const AlienFleet &f) {
  */
 void draw_alien_ufo(const UFO& ufo) {
     if (ufo.status == EXPLODING)
-        gui::draw_sprite(ufo.position.x, ufo.position.y, ufo.explosion.frame0);  // explosion animation
+        gui::draw_sprite(ufo.position.x, ufo.position.y, ufo.explosion.frame1);  // explosion animation
     if (ufo.status == ALIVE)
         gui::draw_sprite(ufo.position.x, ufo.position.y, ufo.sprite);
 }
@@ -381,7 +384,7 @@ void draw_alien_ufo(const UFO& ufo) {
 void update_hero_explosion_status(GameData& gd) {
     if (is_hero_exploding(gd.hero)) {
         // pause animation setting the entire field pause
-        gd.field_game.wait_time = 300;  // milliseconds
+        gd.field_game.wait_time = 300;  // milliseconds  //todo make constant
     }
 }
 

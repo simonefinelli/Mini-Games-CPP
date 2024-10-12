@@ -241,6 +241,7 @@ void init_alien(UFO &u, int x_offset, int y_offset) {
     u.points = UFO_CLASS_PTS;
     u.spawn_delay = UFO_SPAWN_DELAY;
     u.movement_speed = UFO_SPEED_DELAY;
+    u.explosion.timer = FPS * UFO_EXPLOSION_DURATION;
 }
 
 /**
@@ -321,7 +322,7 @@ bool is_collision(const coords &shot_pos, const std::array<std::array<Alien, ALI
 void check_fleet_collision(AlienFleet& fleet, Hero& h) {
     alien_collision c {};
     if (is_collision(h.missile.position, fleet.aliens, c)) {
-        // remove the alien spaceship
+        // get the alien spaceship
         Alien& a = fleet.aliens[c.alien_idx.x][c.alien_idx.y];
         // update alien status
         a.status = EXPLODING;
@@ -333,6 +334,32 @@ void check_fleet_collision(AlienFleet& fleet, Hero& h) {
         h.score += a.points;
     }
 }
+
+/**
+ * // todo
+ */
+void check_ufo_collision(UFO& ufo, Hero& h) {
+    // collision with hero's missile
+    if ((h.missile.position.x >= ufo.position.x and h.missile.position.x < (ufo.position.x + UFO_SPRITE_WIDTH)) and 
+        (h.missile.position.y >= ufo.position.y and h.missile.position.y < (ufo.position.y + UFO_SPRITE_HEIGHT)) and
+         ufo.status == ALIVE) {
+        // remove the alien spaceship
+        ufo.status = EXPLODING;
+        ufo.explosion.timer = FPS * UFO_EXPLOSION_DURATION;
+        // reset hero missile
+        h.missile.position = {NOT_ON_FIELD, NOT_ON_FIELD};
+        // update hero score
+        h.score += ufo.points;
+    }
+
+    // ufo out of boundaries
+    if (ufo.status == ALIVE and ufo.position.x + LATERAL_MOVEMENT_STEP > (W_WIDTH - UFO_SPRITE_WIDTH)) {
+        ufo.status = DEAD;
+        ufo.spawn_delay = UFO_SPAWN_DELAY;
+        ufo.position = {INITIAL_UFO_X_POSITION, INITIAL_UFO_Y_POSITION};
+    }
+}
+
 
 /**
  * @brief Manages the explosion animation and status updates for aliens in the 
@@ -357,6 +384,20 @@ void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_RO
                     a.status = DEAD;
                 }
             }
+        }
+    }
+}
+
+/**
+ * //todo
+ */
+void check_ufo_explosion(UFO& ufo) {
+     if (ufo.status == EXPLODING and ufo.explosion.timer > 0) {
+        ufo.explosion.timer--;
+        if (ufo.explosion.timer <= 0) {
+            ufo.status = DEAD;
+            ufo.spawn_delay = UFO_SPAWN_DELAY;
+            ufo.position = {INITIAL_UFO_X_POSITION, INITIAL_UFO_Y_POSITION};
         }
     }
 }
@@ -419,16 +460,10 @@ void make_fleet_movement(AlienFleet& fleet) {
  */
 void check_ufo_spawn(UFO& ufo) {
     // UFO status
-    if (ufo.spawn_delay <= 0) {
+    if (ufo.spawn_delay <= 0 and ufo.status == DEAD and ufo.status != EXPLODING) {
         ufo.status = ALIVE;
     } else {
         ufo.spawn_delay--;
-    }
-
-    if (ufo.position.x + LATERAL_MOVEMENT_STEP > (W_WIDTH - UFO_SPRITE_WIDTH)) { // ufo out of boundaries
-        ufo.status = DEAD;
-        ufo.spawn_delay = UFO_SPAWN_DELAY;
-        ufo.position = {INITIAL_UFO_X_POSITION, INITIAL_UFO_Y_POSITION};
     }
 }
 
@@ -440,7 +475,7 @@ void make_ufo_movement(UFO& ufo) {
         ufo.position.x++;
     }
     // update and/or reset movement time
-    ufo.movement_speed -= FLEET_ADVANCE_STEP;  // how fast the feet will move
+    ufo.movement_speed -= FLEET_ADVANCE_STEP;  // how fast the feet will move // todo change constant and do one for UFO
     if (ufo.movement_speed < 0) ufo.movement_speed = UFO_SPEED_DELAY;
 }
 
@@ -700,7 +735,7 @@ bool is_hero_exploding(Hero &hero) {
         }
         return true;
     } else if (hero.explosion.timer == 0) {
-        // hero.status = ALIVE;
+        // hero.status = ALIVE;  // todo check this
         return false;
     } else {
         return false;

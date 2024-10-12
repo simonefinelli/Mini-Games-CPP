@@ -25,7 +25,7 @@
 #define ALIEN_FLEET_N (ALIEN_PER_ROW * ALIEN_ROWS)
 #define SPRITE_FRAME 2
 #define UFO_CLASS_PTS 100
-#define UFO_SPAWN_DELAY 700
+#define UFO_SPAWN_DELAY 10
 #define FIRST_CLASS_PTS 30
 #define SECOND_CLASS_PTS 20
 #define THIRD_CLASS_PTS 10
@@ -36,6 +36,7 @@
 #define Y_OFFSET_BETWEEN_ALIEN (SPRITE_HEIGHT + 1)
 #define X_OFFSET_BETWEEN_ALIEN 6
 #define ALIEN_EXPLOSION_DURATION 0.2
+#define UFO_EXPLOSION_DURATION 0.5
 #define LATERAL_MOVEMENT_STEP 1
 #define VERTICAL_MOVEMENT_STEP 1
 #define INITIAL_FLEET_SPEED 20
@@ -43,6 +44,7 @@
 #define FLEET_ADVANCE_STEP 1
 #define MAX_BOMBS_IN_PLAY 5
 const std::string ALIEN_EXPLOSION_SPRITE[] {R"(\\//)", R"(//\\)"};
+const std::string UFO_EXPLOSION_SPRITE[] {R"( \\|// )", R"( //|\\ )"};
 const std::string ALIEN_BOMB_SPRITE[] {R"(/)", R"(\)"};
 const std::string FIRST_CLASS_ALIEN_SPRITE[]  {R"(/oo\)", R"(<  >)", R"(/oo\)", R"(/^^\)"};
 const std::string SECOND_CLASS_ALIEN_SPRITE[] {R"( 66 )", R"(|\/|)", R"(|66|)", R"(/  \)"};
@@ -125,9 +127,13 @@ typedef struct AlienBomb {
 } Bomb;
 
 struct AlienExplosionAnimation {
-    const std::array<std::string, SPRITE_HEIGHT> frame0 = {
+    const std::array<std::string, SPRITE_HEIGHT> frame0 = {  // normal alien
             ALIEN_EXPLOSION_SPRITE[0],
             ALIEN_EXPLOSION_SPRITE[1]
+    };
+    const std::array<std::string, SPRITE_HEIGHT> frame1 = { // ufo alien
+            UFO_EXPLOSION_SPRITE[0],
+            UFO_EXPLOSION_SPRITE[1]
     };
     float timer{0};
 
@@ -279,7 +285,9 @@ void refresh_hero_on_playfield(Hero& h, key user_choice);
 void refresh_missile_position(Hero& h);
 void init_fleet(AlienFleet& f);
 void check_fleet_collision(AlienFleet& f, Hero &h);
+void check_ufo_collision(UFO& ufo, Hero& h);
 void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_ROWS>& aliens);
+void check_ufo_explosion(UFO& ufo);
 void make_fleet_movement(AlienFleet& fleet);
 void check_ufo_spawn(UFO& ufo);
 void make_ufo_movement(UFO& ufo);
