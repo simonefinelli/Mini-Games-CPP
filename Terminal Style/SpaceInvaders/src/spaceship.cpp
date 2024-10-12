@@ -162,7 +162,7 @@ void refresh_missile_position(Hero& h) {
 void init_fleet(AlienFleet& f) {
     f.start_position = {INITIAL_FLEET_X_POSITION, INITIAL_FLEET_Y_POSITION};
     f.bombs_in_play = 0;
-    f.movement_speed = INITIAL_FLEET_SPEED;  // todo make this interactive as the game progress
+    f.movement_speed = INITIAL_FLEET_SPEED;
     f.attack_direction = RIGHT_DIRECTION;
     f.population = ALIEN_FLEET_N;
     f.animation_frame = FRAME_1;
@@ -186,11 +186,18 @@ void init_fleet(AlienFleet& f) {
     }
 }
 
-/** // todo
- * @brief Initializes the single Alien taking into account its Class.
- *
- * @param a The Alien object.
- * @param type The Class of the Alien.
+/**
+ * @brief Initializes an alien with specific attributes based on its type and position.
+ * 
+ * This function sets up an `Alien` object by configuring its status, type, position,
+ * sprite, and point value according to the specified `alien_type`. The alien's 
+ * position is determined relative to the fleet's position with provided offsets.
+ * 
+ * @param a Reference to the `Alien` object that will be initialized.
+ * @param type The `alien_type` of the alien (e.g., `FIRST_CLASS`, `SECOND_CLASS`, or `THIRD_CLASS`).
+ * @param x_offset The horizontal offset from the fleet's position for the alien's placement.
+ * @param y_offset The vertical offset from the fleet's position for the alien's placement.
+ * @param fleet_position A `coords` object representing the base position of the alien fleet.
  */
 void init_alien(Alien &a, alien_type type, int x_offset, int y_offset, const coords &fleet_position) {
     switch (type) {
@@ -231,7 +238,16 @@ void init_alien(Alien &a, alien_type type, int x_offset, int y_offset, const coo
 }
 
 /**
- * //todo
+ * @brief Initializes a UFO object with default values for its properties.
+ *
+ * This function sets the status of the UFO to DEAD, assigns it a type,
+ * initializes its position based on the given offsets, and configures 
+ * other properties such as sprite, points, spawn delay, movement speed, 
+ * and explosion timer.
+ *
+ * @param u Reference to the UFO object to be initialized.
+ * @param x_offset The x-coordinate offset for the UFO's position.
+ * @param y_offset The y-coordinate offset for the UFO's position.
  */
 void init_alien(UFO &u, int x_offset, int y_offset) {
     u.status = DEAD;
@@ -325,7 +341,17 @@ void check_fleet_collision(AlienFleet& fleet, Hero& h) {
 }
 
 /**
- * // todo
+ * @brief Checks for collisions between a UFO and a Hero's missile.
+ *
+ * This function determines if the Hero's missile has collided with the UFO. 
+ * If a collision is detected, the UFO's status is changed to EXPLODING, 
+ * and the missile's position is reset. The Hero's score is updated based 
+ * on the points associated with the UFO. Additionally, it checks if the 
+ * UFO has moved out of the game boundaries, in which case it is marked as DEAD 
+ * and reset to its initial position.
+ *
+ * @param ufo Reference to the UFO object to check for collisions.
+ * @param h Reference to the Hero object whose missile is checked against the UFO.
  */
 void check_ufo_collision(UFO& ufo, Hero& h) {
     // collision with hero's missile
@@ -378,7 +404,15 @@ void check_alien_explosion(std::array<std::array<Alien, ALIEN_PER_ROW>, ALIEN_RO
 }
 
 /**
- * //todo
+ * @brief Updates the explosion state of a UFO.
+ *
+ * This function checks if the UFO is in the EXPLODING state and has a 
+ * remaining explosion timer. If so, it decrements the timer. Once the 
+ * timer reaches zero, the UFO's status is changed to DEAD, and its 
+ * position is reset to the initial values. The spawn delay is also 
+ * reset to allow the UFO to be spawned again.
+ *
+ * @param ufo Reference to the UFO object to update its explosion state.
  */
 void check_ufo_explosion(UFO& ufo) {
      if (ufo.status == EXPLODING and ufo.explosion.timer > 0) {
@@ -445,7 +479,15 @@ void make_fleet_movement(AlienFleet& fleet) {
 }
 
 /**
- *  //todo
+ * @brief Checks and updates the spawn status of a UFO.
+ *
+ * This function determines if a UFO can be spawned based on its current 
+ * status and spawn delay. If the spawn delay has expired and the UFO 
+ * is DEAD (but not EXPLODING), its status is changed to ALIVE, allowing 
+ * it to re-enter the game. If the UFO cannot be spawned, the spawn 
+ * delay is decremented.
+ *
+ * @param ufo Reference to the UFO object to check its spawn status.
  */
 void check_ufo_spawn(UFO& ufo) {
     // UFO status
@@ -457,14 +499,22 @@ void check_ufo_spawn(UFO& ufo) {
 }
 
 /**
- * //todo
+ * @brief Updates the movement of a UFO on the game field.
+ *
+ * This function controls the horizontal movement of the UFO. If the UFO is 
+ * currently alive and its movement speed is set to zero, it will move one 
+ * unit to the right. The movement speed is then decreased by a predefined 
+ * step. If the movement speed falls below zero, it is reset to the 
+ * default speed, allowing for controlled movement pacing.
+ *
+ * @param ufo Reference to the UFO object to update its movement.
  */
 void make_ufo_movement(UFO& ufo) {
     if (ufo.movement_speed == 0 and ufo.status == ALIVE) {  // the UFO is spowned on field
         ufo.position.x++;
     }
     // update and/or reset movement time
-    ufo.movement_speed -= FLEET_ADVANCE_STEP;  // how fast the feet will move // todo change constant and do one for UFO
+    ufo.movement_speed -= UFO_ADVANCE_STEP;  // how fast the feet will move
     if (ufo.movement_speed < 0) ufo.movement_speed = UFO_SPEED_DELAY;
 }
 
@@ -498,11 +548,29 @@ bool is_alien_overflow(const AlienFleet &fleet) {
  * @param fleet The alien Fleet.
  */
 void reset_fleet_speed(AlienFleet &fleet) {
-    if (fleet.population >= 2) {
-        int new_speed = INITIAL_FLEET_SPEED - (ALIEN_FLEET_N - fleet.population);
-        fleet.movement_speed = new_speed > 5 ? 30 : 5;  // todo make consts
-    } else {
-        fleet.movement_speed = 1;
+    // if (fleet.population >= 2) {
+    //     int new_speed = INITIAL_FLEET_SPEED - (ALIEN_FLEET_N - fleet.population);
+    //     fleet.movement_speed = new_speed > 5 ? INITIAL_FLEET_SPEED : 5;  // todo make consts
+    // } else {
+    //     fleet.movement_speed = 1;
+    // }
+
+    if (fleet.population == ALIEN_FLEET_N) {
+        fleet.movement_speed = INITIAL_FLEET_SPEED;
+    } else if (fleet.population >= 45) {
+        fleet.movement_speed = FLEET_45_SPEED;
+    } else if (fleet.population >= 35) {
+        fleet.movement_speed = FLEET_35_SPEED;
+    } else if (fleet.population >= 25) {
+        fleet.movement_speed = FLEET_25_SPEED;
+    } else if (fleet.population >= 15) {
+        fleet.movement_speed = FLEET_15_SPEED;
+    } else if (fleet.population >= 5) {
+        fleet.movement_speed = FLEET_05_SPEED;
+    } else if (fleet.population >= 2) {
+        fleet.movement_speed = FLEET_02_SPEED;
+    } else if (fleet.population == 1) {
+        fleet.movement_speed = FLEET_01_SPEED;
     }
 }
 

@@ -40,8 +40,16 @@
 #define LATERAL_MOVEMENT_STEP 1
 #define VERTICAL_MOVEMENT_STEP 1
 #define INITIAL_FLEET_SPEED 20
+#define FLEET_45_SPEED 14
+#define FLEET_35_SPEED 12
+#define FLEET_25_SPEED 10
+#define FLEET_15_SPEED 8
+#define FLEET_05_SPEED 5
+#define FLEET_02_SPEED 2
+#define FLEET_01_SPEED 0
 #define UFO_SPEED_DELAY 1
 #define FLEET_ADVANCE_STEP 1
+#define UFO_ADVANCE_STEP 1
 #define MAX_BOMBS_IN_PLAY 5
 const std::string ALIEN_EXPLOSION_SPRITE[] {R"(\\//)", R"(//\\)"};
 const std::string UFO_EXPLOSION_SPRITE[] {R"( \\|// )", R"( //|\\ )"};
