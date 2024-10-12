@@ -39,7 +39,6 @@ typedef enum FieldGameState {
     PLAY_SCREEN,
     PLAYER_DEAD_SCREEN,
     GAME_OVER_SCREEN,
-    HIGH_SCORES_SCREEN,  // todo remove this
     INTERVAL_LEVEL_SCREEN
 } game_state;
 
