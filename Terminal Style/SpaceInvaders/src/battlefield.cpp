@@ -2,13 +2,14 @@
  * @file battlefield.cpp
  * @brief This file and the relative header handle the playing field.
  * @author SimoX
- * @date 2023-09-09
+ * @date 2023-09-09 (creation)
+ * @date 2024-10-12 (last edit)
  */
 
 #include "battlefield.h"
 
 // prototypes
-bool is_shield_collision(const coords &pos, const std::array<FieldShield, SHIELD_NUMBER> &shields, shield_collision &c);
+bool is_shield_collision(const coords& pos, const std::array<FieldShield, SHIELD_NUMBER>& shields, shield_collision& c);
 
 /**
  * @brief Initializes the defensive shields on the game field.
@@ -17,25 +18,14 @@ bool is_shield_collision(const coords &pos, const std::array<FieldShield, SHIELD
  * in the game. It places the shields at a specific distance from the 
  * game boundaries and spaces them evenly across the field.
  * 
- * Workflow:
- * - Starts by setting the initial x-coordinate (`x`) to `SHIELD_INITIAL_PADDING`, 
- *    representing the padding between the first shield and the game boundary.
- * - Defines the spacing between shields using `SHIELD_SPACING`.
- * - Iterates over the array of shields:
- *   - Assigns each shield a unique ID based on its index within the array.
- *   - Sets the position of each shield using the current x-coordinate and 
- *      the constant horizontal distance `SHIELD_DISTANCE`.
- *   - Increments the x-coordinate by the spacing value to position the next 
- *      shield.
- * 
  * @param shields A reference to an array of `FieldShield` objects that will be 
  *                initialized.
  */
-void init_shields(std::array<FieldShield, SHIELD_NUMBER> &shields) {
+void init_shields(std::array<FieldShield, SHIELD_NUMBER>& shields) {
     int p = SHIELD_INITIAL_PADDING;  // distance between shields and game boundaries
     int offset = SHIELD_SPACING;  // distance between shields
 
-    for (auto &s : shields) {
+    for (auto& s : shields) {
         s.id = int(&s - &shields[0]);  // to retrieve the index
         s.position = {p, SHIELD_DISTANCE};
         p += offset;
@@ -53,8 +43,8 @@ void init_shields(std::array<FieldShield, SHIELD_NUMBER> &shields) {
  *        representing the defensive shields in the game. Each shield's position
  *        and sprite are used to render it on the screen.
  */
-void draw_shields_on_field(const std::array<FieldShield, SHIELD_NUMBER> &shields) {
-    for (const auto &s: shields) {
+void draw_shields_on_field(const std::array<FieldShield, SHIELD_NUMBER>& shields) {
+    for (const auto& s: shields) {
         gui::draw_sprite(s.position.x, s.position.y, s.sprite);
     }
 }
@@ -63,9 +53,9 @@ void draw_shields_on_field(const std::array<FieldShield, SHIELD_NUMBER> &shields
  * @brief Checks if there is a collision between a hero missile and the shields.
  *
  * @param shields The shields on the playing field.
- * @param missile The hero missile.
+ * @param missile The hero's missile.
  */
-void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Missile &m) {
+void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER> &shields, Missile& m) {
     shield_collision c {};
     if (is_shield_collision(m.position, shields, c)) {
         // remove hit part
@@ -97,8 +87,8 @@ void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER>& shields, Ali
 
     // check the Aliens' body and the shields
     int x, y;
-    for (const auto &aliens_line : fleet.aliens) {
-        for (const auto &a : aliens_line) {
+    for (const auto& aliens_line : fleet.aliens) {
+        for (const auto& a : aliens_line) {
             // check a collision with the bottom row of the Alien
             for (int i = 0; i < SPRITE_WIDTH; i++) {
                 x = a.position.x + i;
@@ -113,10 +103,10 @@ void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER>& shields, Ali
     }
 
     // check the Aliens' bombs and the shields
-    for (auto &aliens_line : fleet.aliens) {
-        for (auto &a : aliens_line) {
+    for (auto& aliens_line : fleet.aliens) {
+        for (auto& a : aliens_line) {
             // check a collision with the bottom row of the bomb
-            for (auto &bomb : a.bombs) {
+            for (auto& bomb : a.bombs) {
                 if (bomb.position.y == NOT_ON_FIELD) continue;
                 if (is_shield_collision({bomb.position.x, bomb.position.y + 1}, shields, c)) {
                     // remove hit part
@@ -139,24 +129,6 @@ void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER>& shields, Ali
  * the function records the index of the shield and the specific part that was 
  * hit. If no collision occurs, it returns `false`.
  * 
- * Workflow:
- * - Initializes the collision data (`shield_collision` object) with no collision
- *    state.
- * - If the position `pos` is off the field (`y == NOT_ON_FIELD`), the function 
- *    immediately returns `false`.
- * - Iterates over the shields to check if the given position is within the 
- *    bounds of any shield:
- *    - Checks if the position `pos` lies within the shield's width and height 
- *       boundaries.
- *    - Verifies that the corresponding shield part at that position is not 
- *       empty (`' '`).
- * - If a collision is detected:
- *   - Sets the shield index (`shield_idx`) in the collision data.
- *   - Records the exact part of the shield that was hit by storing its row and 
- *      column.
- *   - Returns `true`.
- * - If no collision is found after checking all shields, returns `false`.
- * 
  * @param pos The coordinates (`coords`) representing the current position 
  *            (e.g., of a missile or bomb) to be checked.
  * @param shields A constant reference to an array of `FieldShield` objects 
@@ -168,7 +140,7 @@ void check_shield_collision(std::array<FieldShield, SHIELD_NUMBER>& shields, Ali
  *         returns `false`.
  */
 
-bool is_shield_collision(const coords &pos, const std::array<FieldShield, SHIELD_NUMBER> &shields, shield_collision &c) {
+bool is_shield_collision(const coords& pos, const std::array<FieldShield, SHIELD_NUMBER>& shields, shield_collision& c) {
     c.shield_idx = NO_SHIELD_COLLISION;
     c.shield_part_hit = {NO_SHIELD_COLLISION, NO_SHIELD_COLLISION};
 
@@ -177,7 +149,7 @@ bool is_shield_collision(const coords &pos, const std::array<FieldShield, SHIELD
     }
 
     // if the missile/bomb is in the field check there is a shield_collision with a shield
-    for (const FieldShield &s : shields) {
+    for (const FieldShield& s : shields) {
         if (
             (pos.x >= s.position.x and pos.x < (s.position.x + SHIELD_SPRITE_WIDTH)) and  // shot in shield width
             (pos.y >= s.position.y and pos.y < (s.position.y + SHIELD_SPRITE_HEIGHT)) and  // shot in shield height
