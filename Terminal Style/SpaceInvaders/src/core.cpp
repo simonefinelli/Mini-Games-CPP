@@ -253,7 +253,6 @@ void check_game_status(GameData& current_gd) {
             // re-define fleet
             init_fleet(current_gd.alien_fleet);
             // re-define Hero
-            current_gd.hero.lives--;
             current_gd.hero.position = {INITIAL_HERO_X_POSITION, INITIAL_HERO_Y_POSITION};
             current_gd.hero.missile.position = {NOT_ON_FIELD, NOT_ON_FIELD};
             current_gd.field_game.wait_time = 3000;  // todo: make a constant
