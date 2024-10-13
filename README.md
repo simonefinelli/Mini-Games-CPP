@@ -5,7 +5,7 @@ Mini-games written in C++.
 <table>
   <tr>
     <td style="border-color: black; background-color: black;">
-      <img src="./Terminal Style/NumberGuesser/assets/number_guesser_demo.gif" alt="Number Guesser Demo">
+      <img src="./ASCIIStyle/NumberGuesser/assets/number_guesser_demo.gif" alt="Number Guesser Demo">
     </td>
     <td style="border-color: black; background-color: black;">
       <img src="./Terminal Style/HangmanGame/assets/hangman_demo.gif" alt="Hangman Demo">
@@ -14,10 +14,10 @@ Mini-games written in C++.
 
   <tr>
     <td style="border-color: black; background-color: black;">
-      <img src="./Terminal Style/Battleship/assets/battleship_demo.gif" alt="Number Guesser Demo">
+      <img src="./ASCIIStyle/Battleship/assets/battleship_demo.gif" alt="Number Guesser Demo">
     </td>
     <td style="border-color: black; background-color: black;">
-      <img src="./Terminal Style/SpaceInvaders/assets/ascii_invaders_demo.gif" alt="ASCII Invaders Demo"> 
+      <img src="./ASCIIStyle/SpaceInvaders/assets/ascii_invaders_demo.gif" alt="ASCII Invaders Demo"> 
     </td>
   </tr>
 </table>
