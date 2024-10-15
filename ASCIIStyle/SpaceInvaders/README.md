@@ -47,9 +47,5 @@ As aliens are defeated, their movement and the game's music both speed up. Defea
 which starts lower, a loop which can continue endlessly. A special "mystery ship" will occasionally move across the top 
 of the screen and award bonus points if destroyed.... [Continue on Wikipedia!](https://en.wikipedia.org/wiki/Space_Invaders)
 
-### TODO
-- Restart the same game when the Hero lost one life.
-- Restart the entire game whtn the Hero lost all lives.
-
 # Gameplay Demo
-![Demo]()
+![Demo](./assets/ascii_invaders_demo.gif)
