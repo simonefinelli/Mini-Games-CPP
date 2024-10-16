@@ -17,6 +17,8 @@ public:
     inline float get_y() const { return y_coord; }
     // operator overloading
     friend std::ostream& operator<<(std::ostream& out, const Vec2D& vec);
+    bool operator==(const Vec2D& other_vec) const;
+    bool operator!=(const Vec2D& other_vec) const;
 private:
     float x_coord;
     float y_coord;

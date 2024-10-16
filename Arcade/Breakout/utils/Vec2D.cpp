@@ -1,4 +1,5 @@
 #include "Vec2D.h"
+#include "vec2D_utils.h"
 
 /* ========================================================================== *
  * Static members                                                             *
@@ -17,10 +18,18 @@ std::ostream& operator<<(std::ostream& out, const Vec2D& vec) {
     return out;
 }
 
+bool Vec2D::operator==(const Vec2D& other_vec) const {
+    return is_equal(x_coord, other_vec.x_coord) and is_equal(y_coord, other_vec.y_coord);
+}
+
+bool Vec2D::operator!=(const Vec2D& other_vec) const {
+    return !(*this == other_vec);
+}
+
 /* ========================================================================== *
  * Public interface                                                           *
  * ========================================================================== */
 
 /* ========================================================================== *
- * Private interface                                                           *
+ * Private interface                                                          *
  * ========================================================================== */
