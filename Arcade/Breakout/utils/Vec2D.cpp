@@ -16,7 +16,7 @@ const Vec2D Vec2D::Zero;
  * Operator overloading                                                       *
  * ========================================================================== */
 
-// friend functions - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/* Friend functions ========================================================= */
 std::ostream& operator<<(std::ostream& out, const Vec2D& vec) {
     out << "Vec(x,y): (" << vec.x_coord << "," << vec.y_coord << ")";
     return out;
@@ -26,7 +26,7 @@ Vec2D operator*(float scalar, const Vec2D& vec) {
     return vec * scalar;
 }
 
-// class methods - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+/* Class methods ============================================================ */
 
 bool Vec2D::operator==(const Vec2D& other_vec) const {
     return is_equal(x_coord, other_vec.x_coord) and is_equal(y_coord, other_vec.y_coord);
