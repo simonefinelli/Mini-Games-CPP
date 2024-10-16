@@ -1,8 +1,6 @@
 #include "vec2D_utils.h"
 #include <cmath>
 
-static const float EPSILON = 0.0001f;  // tolerance for floating-point calculations
-
 bool is_equal(float x, float y) {
     return fabs(x - y) < EPSILON;
 }

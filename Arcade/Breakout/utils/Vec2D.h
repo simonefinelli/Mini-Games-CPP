@@ -20,6 +20,12 @@ public:
     bool operator==(const Vec2D& other_vec) const;
     bool operator!=(const Vec2D& other_vec) const;
     Vec2D operator-() const;
+    Vec2D operator*(float scalar) const;  // vector * scalar 
+    friend Vec2D operator*(float scalar, const Vec2D& vec);  // scalar * vector
+    Vec2D operator/(float scalar) const;
+    Vec2D& operator*=(float scalar);
+    Vec2D& operator/=(float scalar);
+
 private:
     float x_coord;
     float y_coord;
