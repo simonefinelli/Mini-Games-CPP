@@ -26,6 +26,10 @@ bool Vec2D::operator!=(const Vec2D& other_vec) const {
     return !(*this == other_vec);
 }
 
+Vec2D Vec2D::operator-() const {
+    return Vec2D(-x_coord, -y_coord);
+}
+
 /* ========================================================================== *
  * Public interface                                                           *
  * ========================================================================== */

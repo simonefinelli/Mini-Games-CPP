@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 add_executable(Breakout
         ./src/main.cpp
         ./utils/Vec2D.cpp
+        ./utils/vec2D_utils.cpp
 )
 
 # set the include directories

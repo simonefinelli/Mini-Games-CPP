@@ -19,6 +19,7 @@ public:
     friend std::ostream& operator<<(std::ostream& out, const Vec2D& vec);
     bool operator==(const Vec2D& other_vec) const;
     bool operator!=(const Vec2D& other_vec) const;
+    Vec2D operator-() const;
 private:
     float x_coord;
     float y_coord;
