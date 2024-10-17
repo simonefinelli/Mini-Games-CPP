@@ -18,6 +18,9 @@ public:
 
     float mag2() const;
     float mag() const;
+    Vec2D get_norm_vec() const;
+    Vec2D& normalize();
+    float Distance(const Vec2D& other_vec) const;
 
     // operator overloading ================================================= //
     friend std::ostream& operator<<(std::ostream& out, const Vec2D& vec);

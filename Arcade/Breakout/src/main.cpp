@@ -18,5 +18,16 @@ int main() {
 
     // new_v = vec2 / 0.000000003; // will crash (assertion raised)
 
+    Vec2D vec5(5,2);
+    std::cout << "Unit vector" << vec5.get_norm_vec() << std::endl;
+    std::cout << "Normalization" << vec5.normalize() << std::endl;
+
+    // distance
+
+    Vec2D v6;
+    Vec2D v7(-8,-7);
+    std::cout << "Distance: " << v6.Distance(v7) << std::endl;
+
+
     return 0;
 }

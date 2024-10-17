@@ -34,6 +34,36 @@ float Vec2D::mag() const {
     return sqrtf(mag2());
 }
 
+/**
+ * get a new normalized (range 0-1) vector
+ */
+Vec2D Vec2D::get_norm_vec() const {
+    float magnitude = mag();
+
+    if (magnitude > EPSILON)
+        return *this / magnitude;
+    else
+        return Vec2D::Zero;
+}
+
+/**
+ * normalize the vector (range 0-1)
+ */
+Vec2D& Vec2D::normalize() {
+    float magnitude = mag();
+
+    if (magnitude > EPSILON)
+        return *this /= magnitude;
+    else
+        return *this;
+}
+
+/**
+ * 
+ */
+float Vec2D::Distance(const Vec2D& other_vec) const {
+    return (*this - other_vec).mag();
+}
 
 // Operator overloading  ==================================================== //
 std::ostream& operator<<(std::ostream& out, const Vec2D& vec) {
