@@ -26,7 +26,7 @@ int main() {
 
     Vec2D v6;
     Vec2D v7(-8,-7);
-    std::cout << "Distance: " << v6.Distance(v7) << std::endl;
+    std::cout << "Distance: " << v6.distance(v7) << std::endl;
 
 
     return 0;

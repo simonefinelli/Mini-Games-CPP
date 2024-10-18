@@ -24,7 +24,7 @@ const Vec2D Vec2D::Zero;
  * Square of the magnitude of a vector
  */
 float Vec2D::mag2() const {
-    return powf(x_coord, 2) + powf(y_coord, 2);
+    return dot(*this);
 }
 
 /**
@@ -61,9 +61,17 @@ Vec2D& Vec2D::normalize() {
 /**
  * 
  */
-float Vec2D::Distance(const Vec2D& other_vec) const {
+float Vec2D::distance(const Vec2D& other_vec) const {
     return (*this - other_vec).mag();
 }
+
+/**
+ * 
+ */
+float Vec2D::dot(const Vec2D& other_vec) const {
+    return x_coord * other_vec.x_coord + y_coord * other_vec.y_coord;
+}
+
 
 // Operator overloading  ==================================================== //
 std::ostream& operator<<(std::ostream& out, const Vec2D& vec) {
