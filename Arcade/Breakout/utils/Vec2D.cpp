@@ -35,9 +35,9 @@ float Vec2D::mag() const {
 }
 
 /**
- * get a new normalized (range 0-1) vector
+ * get a new normalized vector (unit vector) starting from current vector.
  */
-Vec2D Vec2D::get_norm_vec() const {
+Vec2D Vec2D::get_unit_vec() const {
     float magnitude = mag();
 
     if (magnitude > EPSILON)
@@ -47,7 +47,7 @@ Vec2D Vec2D::get_norm_vec() const {
 }
 
 /**
- * normalize the vector (range 0-1)
+ * normalize the vector to obtain the unit vector.
  */
 Vec2D& Vec2D::normalize() {
     float magnitude = mag();
@@ -70,6 +70,18 @@ float Vec2D::distance(const Vec2D& other_vec) const {
  */
 float Vec2D::dot(const Vec2D& other_vec) const {
     return x_coord * other_vec.x_coord + y_coord * other_vec.y_coord;
+}
+
+/**
+ * 
+ */
+Vec2D Vec2D::project_onto(const Vec2D& other_vec) const {
+    // retrive 
+    Vec2D other_unit_vec = other_vec.get_unit_vec();
+
+    // calculate the projection
+    float dot_result = dot(other_unit_vec);
+    return other_unit_vec * dot_result;
 }
 
 

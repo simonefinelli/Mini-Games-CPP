@@ -18,16 +18,21 @@ int main() {
 
     // new_v = vec2 / 0.000000003; // will crash (assertion raised)
 
-    Vec2D vec5(5,2);
-    std::cout << "Unit vector" << vec5.get_norm_vec() << std::endl;
+    Vec2D vec5(0.6,0.8);
+    std::cout << "Magnitude " << vec5.mag2() << std::endl;
+    std::cout << "Unit vector" << vec5.get_unit_vec() << std::endl;
     std::cout << "Normalization" << vec5.normalize() << std::endl;
 
     // distance
-
     Vec2D v6;
     Vec2D v7(-8,-7);
     std::cout << "Distance: " << v6.distance(v7) << std::endl;
 
+    // projection
+    Vec2D v8(1,0);
+    Vec2D other(3,4);
+    Vec2D projection = v8.project_onto(other);
+    std::cout << "Projection: " << projection << std::endl;
 
     return 0;
 }
