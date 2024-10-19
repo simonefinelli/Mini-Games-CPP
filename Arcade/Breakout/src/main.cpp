@@ -34,5 +34,16 @@ int main() {
     Vec2D projection = v8.project_onto(other);
     std::cout << "Projection: " << projection << std::endl;
 
+    // angle
+    std::cout << "Angle (radiants): " << v8.angle_between(other) << std::endl;
+
+    // rotation
+    Vec2D v9(2,3);
+    Vec2D point(1,1);
+    float alfa = 45; // degrees
+    float alfa_rad = alfa * (M_PI / 180.0f); // radiants
+    v9.rotate(alfa_rad, point);
+    std::cout << "Rotated angle by +45 degrees: " << v9 << std::endl;
+
     return 0;
 }

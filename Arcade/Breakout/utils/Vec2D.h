@@ -2,14 +2,19 @@
 #define VEC2D_LIB_H
 
 #include <iostream>
+#include <cassert>
+#include <cmath>
+#include "vec2D_utils.h"
 
 class Vec2D {
 public:
     // static members ======================================================= //
     static const Vec2D Zero;
+
     // constructors ========================================================= //
     Vec2D() : Vec2D(0, 0) {}
     Vec2D(float x, float y) : x_coord(x), y_coord(y) {}
+
     // methods ============================================================== //
     inline void set_x(float x) { x_coord = x; }
     inline void set_y(float y) { y_coord = y; }
@@ -23,6 +28,10 @@ public:
     float distance(const Vec2D& other_vec) const;
     float dot(const Vec2D& other_vec) const;
     Vec2D project_onto(const Vec2D& other_vec) const;
+    float angle_between(const Vec2D& other_vec) const;
+    Vec2D reflect(const Vec2D& normal_vec) const;
+    void rotate(float alfa, const Vec2D& point=Vec2D(0,0));
+    Vec2D rotation_result(float alfa, const Vec2D& point=Vec2D(0,0)) const;
 
     // operator overloading ================================================= //
     friend std::ostream& operator<<(std::ostream& out, const Vec2D& vec);

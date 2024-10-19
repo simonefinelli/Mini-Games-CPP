@@ -1,7 +1,4 @@
-#include <cassert>
-#include <cmath>
 #include "Vec2D.h"
-#include "vec2D_utils.h"
 
 // ========================================================================== //
 // Static members                                                             //
@@ -84,6 +81,47 @@ Vec2D Vec2D::project_onto(const Vec2D& other_vec) const {
     return other_unit_vec * dot_result;
 }
 
+/**
+ * 
+ */
+float Vec2D::angle_between(const Vec2D& other_vec) const {
+    return acosf(get_unit_vec().dot(other_vec.get_unit_vec()));
+}
+
+/**
+ * This method reflects ourselves off this normal.
+ * normal vec is the point of application (e.g. surface) fot the reflection 
+ */
+Vec2D Vec2D::reflect(const Vec2D& normal_vec) const {
+    return *this - 2 * project_onto(normal_vec);
+}
+
+/**
+ * alfa = angle in grades
+ * point = application point
+ */
+void Vec2D::rotate(float alfa, const Vec2D& point) {
+    float x = x_coord, y = y_coord;
+    float x0 = point.x_coord, y0 = point.y_coord;
+
+    x_coord = (x - x0) * cosf(alfa) - (y - y0) * sinf(alfa) + x0;
+    y_coord = (x - x0) * sinf(alfa) + (y - y0) * cosf(alfa) + y0;
+}
+
+/**
+ * same as the rotation function but return a new vector
+ */
+Vec2D Vec2D::rotation_result(float alfa, const Vec2D& point) const {
+    Vec2D tmp;
+    
+    float x = x_coord, y = y_coord;
+    float x0 = point.x_coord, y0 = point.y_coord;
+
+    tmp.x_coord = (x - x0) * cosf(alfa) - (y - y0) * sinf(alfa) + x0;
+    tmp.y_coord = (x - x0) * sinf(alfa) + (y - y0) * cosf(alfa) + y0;
+
+    return tmp;
+}
 
 // Operator overloading  ==================================================== //
 std::ostream& operator<<(std::ostream& out, const Vec2D& vec) {
