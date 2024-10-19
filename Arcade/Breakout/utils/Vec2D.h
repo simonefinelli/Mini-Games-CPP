@@ -6,6 +6,14 @@
 #include <cmath>
 #include "vec2D_utils.h"
 
+/**
+ * @brief A 2D vector class representing a point or a vector in 2D space.
+ * 
+ * This class provides various operations for working with 2D vectors such as
+ * magnitude calculation, normalization, dot product, vector projection, rotation,
+ * and reflection. It also supports common vector operations like addition, 
+ * subtraction, scaling, and comparison through overloaded operators.
+ */
 class Vec2D {
 public:
     // static members ======================================================= //
