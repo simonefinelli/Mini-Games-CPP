@@ -1,3 +1,10 @@
+/**
+ * @file Vec2D.h
+ * @brief Small library to handle basic 2D point operations.
+ * @author SimoX
+ * @date 2024-10-16
+ */
+
 #ifndef VEC2D_LIB_H
 #define VEC2D_LIB_H
 
