@@ -23,14 +23,14 @@
  */
 class Vec2D {
 public:
-    // static members ======================================================= //
+    // Class variables ====================================================== //
     static const Vec2D Zero;
 
-    // constructors ========================================================= //
+    // Constructors ========================================================= //
     Vec2D() : Vec2D(0, 0) {}
     Vec2D(float x, float y) : x_coord(x), y_coord(y) {}
 
-    // methods ============================================================== //
+    // Instance methods ===================================================== //
     inline void set_x(float x) { x_coord = x; }
     inline void set_y(float y) { y_coord = y; }
     inline float get_x() const { return x_coord; }
@@ -48,7 +48,7 @@ public:
     void rotate(float alfa, const Vec2D& point=Vec2D(0,0));
     Vec2D rotation_result(float alfa, const Vec2D& point=Vec2D(0,0)) const;
 
-    // operator overloading ================================================= //
+    // Operator overloading ================================================= //
     friend std::ostream& operator<<(std::ostream& out, const Vec2D& vec);
     bool operator==(const Vec2D& other_vec) const;
     bool operator!=(const Vec2D& other_vec) const;
@@ -64,6 +64,7 @@ public:
     Vec2D& operator-=(const Vec2D& other_vec);
 
 private:
+    // Instance variables =================================================== //
     float x_coord;
     float y_coord;
 };
