@@ -11,6 +11,7 @@
 #include <iostream>
 #include <cassert>
 #include <cmath>
+#include <iomanip>
 #include "vec2D_utils.h"
 
 /**
@@ -27,7 +28,7 @@ public:
     static const Vec2D ZERO;
 
     // Constructors ========================================================= //
-    Vec2D() : Vec2D(0, 0) {}
+    Vec2D() : Vec2D(0.0f, 0.0f) {}
     Vec2D(float x, float y) : m_x(x), m_y(y) {}
 
     // Instance methods ===================================================== //

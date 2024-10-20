@@ -12,7 +12,7 @@
 // ========================================================================== //
 
 // Class variables ========================================================== //
-const Vec2D Vec2D::ZERO;
+const Vec2D Vec2D::ZERO = Vec2D(0.0f, 0.0f);
 
 // Constructors ============================================================= //
 
@@ -110,7 +110,9 @@ Vec2D Vec2D::project_onto(const Vec2D& other_vec) const {
  * @return The angle in radians between the two vectors.
  */
 float Vec2D::angle_between(const Vec2D& other_vec) const {
-    return acosf(get_unit_vec().dot(other_vec.get_unit_vec()));
+    float dot_product = get_unit_vec().dot(other_vec.get_unit_vec());
+    dot_product = std::min(1.0f, std::max(-1.0f, dot_product));
+    return acosf(dot_product);
 }
 
 /**
@@ -151,8 +153,11 @@ Vec2D Vec2D::rotation_result(float alfa, const Vec2D& point) const {
     float x = m_x, y = m_y;
     float x0 = point.m_x, y0 = point.m_y;
 
-    tmp.m_x = (x - x0) * cosf(alfa) - (y - y0) * sinf(alfa) + x0;
-    tmp.m_y = (x - x0) * sinf(alfa) + (y - y0) * cosf(alfa) + y0;
+    float cos_a = cosf(alfa);
+    float sin_a = sinf(alfa);
+
+    tmp.m_x = (x - x0) * cos_a - (y - y0) * sin_a + x0;
+    tmp.m_y = (x - x0) * sin_a + (y - y0) * cos_a + y0;
 
     return tmp;
 }
@@ -160,7 +165,8 @@ Vec2D Vec2D::rotation_result(float alfa, const Vec2D& point) const {
 // Operator overloading ===================================================== //
 
 std::ostream& operator<<(std::ostream& out, const Vec2D& vec) {
-    out << "Vec(x,y): (" << vec.m_x << "," << vec.m_y << ")";
+    out << "Vec(x,y): (" << std::fixed << std::setprecision(2) 
+        << vec.m_x << "," << vec.m_y << ")";
     return out;
 }
 
@@ -185,7 +191,9 @@ Vec2D operator*(float scalar, const Vec2D& vec) {
 }
 
 Vec2D Vec2D::operator/(float scalar) const {
-    assert(fabsf(scalar) > EPSILON);
+    if (fabsf(scalar) < EPSILON)
+        throw std::runtime_error("Division by zero or a very small value!");
+
     return Vec2D(m_x / scalar, m_y / scalar);
 }
 
@@ -195,7 +203,9 @@ Vec2D& Vec2D::operator*=(float scalar) {
 }
 
 Vec2D& Vec2D::operator/=(float scalar) {
-    assert(fabsf(scalar) > EPSILON);
+    if (fabsf(scalar) < EPSILON)
+        throw std::runtime_error("Division by zero or a very small value!");
+
     *this = *this / scalar;
     return *this;
 }
