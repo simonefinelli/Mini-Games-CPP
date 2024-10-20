@@ -24,17 +24,17 @@
 class Vec2D {
 public:
     // Class variables ====================================================== //
-    static const Vec2D Zero;
+    static const Vec2D ZERO;
 
     // Constructors ========================================================= //
     Vec2D() : Vec2D(0, 0) {}
-    Vec2D(float x, float y) : x_coord(x), y_coord(y) {}
+    Vec2D(float x, float y) : m_x(x), m_y(y) {}
 
     // Instance methods ===================================================== //
-    inline void set_x(float x) { x_coord = x; }
-    inline void set_y(float y) { y_coord = y; }
-    inline float get_x() const { return x_coord; }
-    inline float get_y() const { return y_coord; }
+    inline void set_x(float x) { m_x = x; }
+    inline void set_y(float y) { m_y = y; }
+    inline float get_x() const { return m_x; }
+    inline float get_y() const { return m_y; }
 
     float mag2() const;
     float mag() const;
@@ -65,8 +65,8 @@ public:
 
 private:
     // Instance variables =================================================== //
-    float x_coord;
-    float y_coord;
+    float m_x;
+    float m_y;
 };
 
 #endif // VEC2D_LIB_H

@@ -6,7 +6,7 @@ int main() {
     Vec2D vec2(2,1);
 
     std::cout << "Vector1:    " << vec1 << std::endl;
-    std::cout << "VectorZero: " << Vec2D::Zero << std::endl;
+    std::cout << "VectorZero: " << Vec2D::ZERO << std::endl;
     std::cout << "Vector2:    " << -vec2 << std::endl;
 
     auto new_v = vec2 * 3;

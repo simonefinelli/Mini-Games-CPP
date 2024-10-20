@@ -12,7 +12,7 @@
 // ========================================================================== //
 
 // Class variables ========================================================== //
-const Vec2D Vec2D::Zero;
+const Vec2D Vec2D::ZERO;
 
 // Constructors ============================================================= //
 
@@ -50,7 +50,7 @@ Vec2D Vec2D::get_unit_vec() const {
     if (magnitude > EPSILON)
         return *this / magnitude;
     else
-        return Vec2D::Zero;
+        return Vec2D::ZERO;
 }
 
 /**
@@ -85,7 +85,7 @@ float Vec2D::distance(const Vec2D& other_vec) const {
  * @return The dot product of the two vectors.
  */
 float Vec2D::dot(const Vec2D& other_vec) const {
-    return x_coord * other_vec.x_coord + y_coord * other_vec.y_coord;
+    return m_x * other_vec.m_x + m_y * other_vec.m_y;
 }
 
 /**
@@ -130,11 +130,11 @@ Vec2D Vec2D::reflect(const Vec2D& normal_vec) const {
  * @param point The point around which the vector will be rotated.
  */
 void Vec2D::rotate(float alfa, const Vec2D& point) {
-    float x = x_coord, y = y_coord;
-    float x0 = point.x_coord, y0 = point.y_coord;
+    float x = m_x, y = m_y;
+    float x0 = point.m_x, y0 = point.m_y;
 
-    x_coord = (x - x0) * cosf(alfa) - (y - y0) * sinf(alfa) + x0;
-    y_coord = (x - x0) * sinf(alfa) + (y - y0) * cosf(alfa) + y0;
+    m_x = (x - x0) * cosf(alfa) - (y - y0) * sinf(alfa) + x0;
+    m_y = (x - x0) * sinf(alfa) + (y - y0) * cosf(alfa) + y0;
 }
 
 /**
@@ -148,11 +148,11 @@ void Vec2D::rotate(float alfa, const Vec2D& point) {
 Vec2D Vec2D::rotation_result(float alfa, const Vec2D& point) const {
     Vec2D tmp;
     
-    float x = x_coord, y = y_coord;
-    float x0 = point.x_coord, y0 = point.y_coord;
+    float x = m_x, y = m_y;
+    float x0 = point.m_x, y0 = point.m_y;
 
-    tmp.x_coord = (x - x0) * cosf(alfa) - (y - y0) * sinf(alfa) + x0;
-    tmp.y_coord = (x - x0) * sinf(alfa) + (y - y0) * cosf(alfa) + y0;
+    tmp.m_x = (x - x0) * cosf(alfa) - (y - y0) * sinf(alfa) + x0;
+    tmp.m_y = (x - x0) * sinf(alfa) + (y - y0) * cosf(alfa) + y0;
 
     return tmp;
 }
@@ -160,12 +160,12 @@ Vec2D Vec2D::rotation_result(float alfa, const Vec2D& point) const {
 // Operator overloading ===================================================== //
 
 std::ostream& operator<<(std::ostream& out, const Vec2D& vec) {
-    out << "Vec(x,y): (" << vec.x_coord << "," << vec.y_coord << ")";
+    out << "Vec(x,y): (" << vec.m_x << "," << vec.m_y << ")";
     return out;
 }
 
 bool Vec2D::operator==(const Vec2D& other_vec) const {
-    return is_equal(x_coord, other_vec.x_coord) and is_equal(y_coord, other_vec.y_coord);
+    return is_equal(m_x, other_vec.m_x) and is_equal(m_y, other_vec.m_y);
 }
 
 bool Vec2D::operator!=(const Vec2D& other_vec) const {
@@ -173,11 +173,11 @@ bool Vec2D::operator!=(const Vec2D& other_vec) const {
 }
 
 Vec2D Vec2D::operator-() const {
-    return Vec2D(-x_coord, -y_coord);
+    return Vec2D(-m_x, -m_y);
 }
 
 Vec2D Vec2D::operator*(float scalar) const {
-    return Vec2D(scalar * x_coord, scalar * y_coord);
+    return Vec2D(scalar * m_x, scalar * m_y);
 }
 
 Vec2D operator*(float scalar, const Vec2D& vec) {
@@ -186,7 +186,7 @@ Vec2D operator*(float scalar, const Vec2D& vec) {
 
 Vec2D Vec2D::operator/(float scalar) const {
     assert(fabsf(scalar) > EPSILON);
-    return Vec2D(x_coord / scalar, y_coord / scalar);
+    return Vec2D(m_x / scalar, m_y / scalar);
 }
 
 Vec2D& Vec2D::operator*=(float scalar) {
@@ -201,11 +201,11 @@ Vec2D& Vec2D::operator/=(float scalar) {
 }
 
 Vec2D Vec2D::operator+(const Vec2D& other_vec) const {
-    return Vec2D(x_coord + other_vec.x_coord, y_coord + other_vec.y_coord);
+    return Vec2D(m_x + other_vec.m_x, m_y + other_vec.m_y);
 }
 
 Vec2D Vec2D::operator-(const Vec2D& other_vec) const {
-    return Vec2D(x_coord - other_vec.x_coord, y_coord - other_vec.y_coord);
+    return Vec2D(m_x - other_vec.m_x, m_y - other_vec.m_y);
 }
 
 Vec2D& Vec2D::operator+=(const Vec2D& other_vec) {
