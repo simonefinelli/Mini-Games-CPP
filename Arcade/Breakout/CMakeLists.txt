@@ -8,7 +8,11 @@ add_executable(Breakout
     ./src/main.cpp
     ./utils/Vec2D.cpp
     ./utils/vec2D_utils.cpp
+    ./graphics/Color.cpp
 )
+
+# Find SDL2 package
+find_package(SDL2 REQUIRED)
 
 # Include GoogleTest
 find_package(GTest REQUIRED)
@@ -18,6 +22,7 @@ include_directories(${GTEST_INCLUDE_DIRS})
 target_include_directories(Breakout PRIVATE 
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/utils
+    ${CMAKE_SOURCE_DIR}/graphics
 )
 
 # Enable testing with CTest
@@ -35,6 +40,9 @@ target_include_directories(Vec2DTests PRIVATE
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/utils
 )
+
+# Link SDL2 to the target
+target_link_libraries(Breakout PRIVATE ${SDL2_LIBRARIES})
 
 # Link GoogleTest to the test executable
 target_link_libraries(Vec2DTests
