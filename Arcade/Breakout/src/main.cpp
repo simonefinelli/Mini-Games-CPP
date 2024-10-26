@@ -12,13 +12,13 @@ size_t get_index(SDL_Surface* surface_ptr, int row, int col);
 
 int main(int args, const char* argv[]) {
 
-    // init SDL
+    // Init SDL
     if (SDL_Init(SDL_INIT_VIDEO)) {
         std::cerr << "Error - SDL could not initialize: " << SDL_GetError() << std::endl;
         return 1;
     }
 
-    // window creation
+    // Window creation
     SDL_Window* window_ptr = SDL_CreateWindow(
         "ARCADE",
         SDL_WINDOWPOS_CENTERED,
@@ -33,15 +33,15 @@ int main(int args, const char* argv[]) {
         return 1;
     }
 
-    // create surface
+    // Create surface
     SDL_Surface* surface_ptr = SDL_GetWindowSurface(window_ptr); // our canvas (2D matrix)
-    // surface_ptr->format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888);  // for alpha channel
+    // Surface_ptr->format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888);  // for alpha channel
     surface_ptr = SDL_ConvertSurfaceFormat(surface_ptr, SDL_PIXELFORMAT_RGBA32, 0);
     
     SDL_PixelFormat* pixel_format = surface_ptr->format;
     std::cout << "The window (surface) pixel format is: " << SDL_GetPixelFormatName(pixel_format->format) << std::endl;  // SDL_PIXELFORMAT_RGB888
 
-    // drow something (color the pixels)
+    // Drow something (color the pixels)
     Color::init_color_format(pixel_format);
     Color c(255, 0, 0, 255);
     Color c1(255, 0, 0, 01);
@@ -63,7 +63,7 @@ int main(int args, const char* argv[]) {
     SDL_UpdateWindowSurface(window_ptr);
 
 
-    // start the main program
+    // Start the main program
     SDL_Event sdl_event;
     bool running = true;
 
@@ -91,15 +91,13 @@ int main(int args, const char* argv[]) {
  */
 void set_pixel(SDL_Surface* surface_ptr, uint32_t color, int x, int y) {
 
-    // exclusive access to the surface until Unlock
-    // SDL_LockSurface(surface_ptr);
+    // Exclusive access to the surface until Unlock
     if (SDL_MUSTLOCK(surface_ptr)) SDL_LockSurface(surface_ptr);
 
     uint32_t* pixels = (uint32_t*)surface_ptr->pixels;  // 1D array (buffer)
     pixels[get_index(surface_ptr, y, x)] = color;
 
     if (SDL_MUSTLOCK(surface_ptr)) SDL_UnlockSurface(surface_ptr);
-    // SDL_UnlockSurface(surface_ptr);
 }
 
 /**
