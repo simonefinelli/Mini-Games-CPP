@@ -17,11 +17,26 @@ class Color {
 public:
     // Class variables ====================================================== //
     static const SDL_PixelFormat* m_format;
+    static const uint32_t BLACK, GRAY, WHITE, RED, GREEN, BLUE, CYAN, MAGENTA, YELLOW, ORANGE, PURPLE;
+
+    // Class methods ======================================================== //
     static void init_color_format(const SDL_PixelFormat* format);
+    // Colors factory
+    static Color Black();
+    static Color Gray();
+    static Color White();
+    static Color Red();
+    static Color Green();
+    static Color Blue();
+    static Color Cyan();
+    static Color Magenta();
+    static Color Yellow();
+    static Color Orange();
+    static Color Purple();
 
     // Constructors ========================================================= //
-    Color() : Color(0) {};
-    Color(uint32_t color) : m_color(color) {}
+    Color() : Color(0xFF0000) {};
+    Color(uint32_t color);
     Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
     // Instance methods ===================================================== //

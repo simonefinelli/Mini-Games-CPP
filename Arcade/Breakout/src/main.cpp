@@ -57,19 +57,20 @@ int main(int args, const char* argv[]) {
               << SDL_GetPixelFormatName(pixel_format->format) << std::endl;  // SDL_PIXELFORMAT_ARGB8888
 
 
-    // Drow something (color the pixels)
+    // init color class
     Color::init_color_format(pixel_format);
-    Color c(255, 255, 255, 10);
+    // std::cout << "Color value" << Color::Cyan().get_pixel_color() << std::endl;
+
 
     for (int i = 0; i<100; i++ ) {
         for (int j= 0; j<100; j++) {
-            set_pixel(surface_ptr, c.get_pixel_color(), i, j);
+            set_pixel(surface_ptr, Color::Purple().get_pixel_color(), i, j);
         }
     }
 
     for (int i = 100; i<200; i++ ) {
         for (int j= 100; j<200; j++) {
-            set_pixel(surface_ptr, 0x0AFFFFFF, i, j);
+            set_pixel(surface_ptr, Color::PURPLE, i, j);
         }
     }
 
@@ -103,6 +104,7 @@ int main(int args, const char* argv[]) {
 
 /**
  * Set the pixel's intensity (color) in a specific location
+ * color ARGB
  * x column
  * y row
  */
