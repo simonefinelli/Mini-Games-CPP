@@ -1,49 +1,109 @@
 #include <iostream>
-#include "Vec2D.h"
+#include <SDL2/SDL.h>
 
-int main() {
-    Vec2D vec1;
-    Vec2D vec2(2,1);
+#include <Color.h>
 
-    std::cout << "Vector1:    " << vec1 << std::endl;
-    std::cout << "VectorZero: " << Vec2D::ZERO << std::endl;
-    std::cout << "Vector2:    " << -vec2 << std::endl;
+const int SCREEN_WIDTH = 224;
+const int SCREEN_HEIGHT = 288;
 
-    auto new_v = vec2 * 3;
-    new_v *= 2;
-    std::cout << "Vector2 * 3 * 2: " << new_v << std::endl;
+void set_pixel(SDL_Surface* sdl_surface_ptr, uint32_t color, int x, int y);
+size_t get_index(SDL_Surface* sdl_surface_ptr, int row, int col);
 
-    auto new_v1 = 5 * vec1;
-    std::cout << "5 * Vector1: " << new_v1 << std::endl;
 
-    // new_v = vec2 / 0.000000003; // will crash (assertion raised)
+int main(int args, const char* argv[]) {
 
-    Vec2D vec5(0.6,0.8);
-    std::cout << "Magnitude " << vec5.mag2() << std::endl;
-    std::cout << "Unit vector" << vec5.get_unit_vec() << std::endl;
-    std::cout << "Normalization" << vec5.normalize() << std::endl;
+    // init SDL
+    if (SDL_Init(SDL_INIT_VIDEO)) {
+        std::cout << "Error: SDL initialization filed!" << std::endl;
+        return 1;
+    }
 
-    // distance
-    Vec2D v6;
-    Vec2D v7(-8,-7);
-    std::cout << "Distance: " << v6.distance(v7) << std::endl;
+    // window creation
+    SDL_Window* window_ptr = SDL_CreateWindow(
+        "ARCADE",
+        SDL_WINDOWPOS_CENTERED,
+        SDL_WINDOWPOS_CENTERED,
+        SCREEN_WIDTH,
+        SCREEN_HEIGHT,
+        0
+    );
 
-    // projection
-    Vec2D v8(1,0);
-    Vec2D other(3,4);
-    Vec2D projection = v8.project_onto(other);
-    std::cout << "Projection: " << projection << std::endl;
+    if (window_ptr == nullptr) {
+        std::cout << "Error: Could not create the window - " << SDL_GetError() <<  std::endl;
+        return 1;
+    }
 
-    // angle
-    std::cout << "Angle (radiants): " << v8.angle_between(other) << std::endl;
+    // create surface
+    SDL_Surface* sdl_surface_ptr = SDL_GetWindowSurface(window_ptr); // our canvas (2D matrix)
+    // sdl_surface_ptr->format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888);  // for alpha channel
+    sdl_surface_ptr = SDL_ConvertSurfaceFormat(sdl_surface_ptr, SDL_PIXELFORMAT_RGBA32, 0);
+    
+    SDL_PixelFormat* pixel_format = sdl_surface_ptr->format;
+    std::cout << "The window (surface) pixel format is: " << SDL_GetPixelFormatName(pixel_format->format) << std::endl;  // SDL_PIXELFORMAT_RGB888
 
-    // rotation
-    Vec2D v9(2,3);
-    Vec2D point(1,1);
-    float alfa = 45; // degrees
-    float alfa_rad = alfa * (M_PI / 180.0f); // radiants
-    v9.rotate(alfa_rad, point);
-    std::cout << "Rotated angle by +45 degrees: " << v9 << std::endl;
+    // drow something (color the pixels)
+    Color::init_color_format(pixel_format);
+    Color c(255, 0, 0, 255);
+    Color c1(255, 0, 0, 01);
+    set_pixel(sdl_surface_ptr, c.get_pixel_color(), SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+    
+
+    for (int i = 0; i<100; i++ ) {
+        for (int j= 0; j<100; j++) {
+            set_pixel(sdl_surface_ptr, 0xFFFF00FF, i, j);
+        }
+    }
+
+    // for (int i = 100; i<200; i++ ) {
+    //     for (int j= 100; j<200; j++) {
+    //         set_pixel(sdl_surface_ptr, 0x00FF0000, i, j);
+    //     }
+    // }
+
+    SDL_UpdateWindowSurface(window_ptr);
+
+
+    // start the main program
+    SDL_Event sdl_event;
+    bool running = true;
+
+    while (running) {
+        while (SDL_PollEvent(&sdl_event)) {
+            switch (sdl_event.type) {
+                case SDL_QUIT:  // close the window
+                    running = false;
+                    break;
+                default:;
+            }
+        }
+    }
+
+    SDL_DestroyWindow(window_ptr);  // clean window
+    SDL_Quit();  // clean SDL instance
 
     return 0;
+}
+
+/**
+ * Set the pixel's intensity (color) in a specific location
+ * x column
+ * y row
+ */
+void set_pixel(SDL_Surface* sdl_surface_ptr, uint32_t color, int x, int y) {
+
+    // exclusive access to the surface until Unlock
+    SDL_LockSurface(sdl_surface_ptr);
+
+    uint32_t* pixels = (uint32_t*)sdl_surface_ptr->pixels;  // 1D array (buffer)
+    size_t index = get_index(sdl_surface_ptr, y, x);
+    pixels[index] = color;
+
+    SDL_UnlockSurface(sdl_surface_ptr);
+}
+
+/**
+ * Transform 2D index in 1D index
+ */
+size_t get_index(SDL_Surface* sdl_surface_ptr, int row, int col) {
+    return sdl_surface_ptr->w * row + col;
 }
