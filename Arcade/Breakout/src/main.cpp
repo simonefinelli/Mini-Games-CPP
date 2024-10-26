@@ -14,7 +14,7 @@ int main(int args, const char* argv[]) {
 
     // init SDL
     if (SDL_Init(SDL_INIT_VIDEO)) {
-        std::cout << "Error: SDL initialization filed!" << std::endl;
+        std::cerr << "Error - SDL could not initialize: " << SDL_GetError() << std::endl;
         return 1;
     }
 
@@ -29,7 +29,7 @@ int main(int args, const char* argv[]) {
     );
 
     if (window_ptr == nullptr) {
-        std::cout << "Error: Could not create the window - " << SDL_GetError() <<  std::endl;
+        std::cerr << "Error - Could not create the window: " << SDL_GetError() <<  std::endl;
         return 1;
     }
 
