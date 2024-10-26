@@ -92,13 +92,14 @@ int main(int args, const char* argv[]) {
 void set_pixel(SDL_Surface* sdl_surface_ptr, uint32_t color, int x, int y) {
 
     // exclusive access to the surface until Unlock
-    SDL_LockSurface(sdl_surface_ptr);
+    // SDL_LockSurface(sdl_surface_ptr);
+    if (SDL_MUSTLOCK(sdl_surface_ptr)) SDL_LockSurface(sdl_surface_ptr);
 
     uint32_t* pixels = (uint32_t*)sdl_surface_ptr->pixels;  // 1D array (buffer)
-    size_t index = get_index(sdl_surface_ptr, y, x);
-    pixels[index] = color;
+    pixels[get_index(sdl_surface_ptr, y, x)] = color;
 
-    SDL_UnlockSurface(sdl_surface_ptr);
+    if (SDL_MUSTLOCK(sdl_surface_ptr)) SDL_UnlockSurface(sdl_surface_ptr);
+    // SDL_UnlockSurface(sdl_surface_ptr);
 }
 
 /**
