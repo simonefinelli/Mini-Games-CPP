@@ -45,43 +45,33 @@ int main(int args, const char* argv[]) {
         0x000000FF,  // B mask
         0xFF000000   // A mask
     );  
-        if (!surface_ptr) {
+    if (!surface_ptr) {
         std::cerr << "Error: Failed to create RGBA surface: " << SDL_GetError() << std::endl;
         SDL_DestroyWindow(window_ptr);
         SDL_Quit();
         return 1;
     }
-
-    // // Create surface
-    // SDL_Surface* surface_ptr = SDL_GetWindowSurface(window_ptr); // our canvas (2D matrix)
-    // // Surface_ptr->format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888);  // for alpha channel
-    // surface_ptr = SDL_ConvertSurfaceFormat(surface_ptr, SDL_PIXELFORMAT_RGBA32, 0);
     
-    // SDL_PixelFormat* pixel_format = surface_ptr->format;
-    // std::cout << "The window (surface) pixel format is: " << SDL_GetPixelFormatName(pixel_format->format) << std::endl;  // SDL_PIXELFORMAT_RGB888
     SDL_PixelFormat* pixel_format = surface_ptr->format;
     std::cout << "The RGBA surface pixel format is: "
-              << SDL_GetPixelFormatName(pixel_format->format) << std::endl;
+              << SDL_GetPixelFormatName(pixel_format->format) << std::endl;  // SDL_PIXELFORMAT_ARGB8888
 
 
     // Drow something (color the pixels)
     Color::init_color_format(pixel_format);
-    Color c(255, 0, 0, 255);
-    Color c1(255, 0, 0, 01);
-    // set_pixel(surface_ptr, c.get_pixel_color(), SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
-    
+    Color c(255, 255, 255, 10);
 
     for (int i = 0; i<100; i++ ) {
         for (int j= 0; j<100; j++) {
-            set_pixel(surface_ptr, 0x10FFFFFF, i, j);
+            set_pixel(surface_ptr, c.get_pixel_color(), i, j);
         }
     }
 
-    // for (int i = 100; i<200; i++ ) {
-    //     for (int j= 100; j<200; j++) {
-    //         set_pixel(surface_ptr, 0x00FF0000, i, j);
-    //     }
-    // }
+    for (int i = 100; i<200; i++ ) {
+        for (int j= 100; j<200; j++) {
+            set_pixel(surface_ptr, 0x0AFFFFFF, i, j);
+        }
+    }
 
     // Blit the RGBA surface onto the window surface
     SDL_BlitSurface(surface_ptr, NULL, window_surface_ptr, NULL);
@@ -104,6 +94,7 @@ int main(int args, const char* argv[]) {
         }
     }
 
+    SDL_FreeSurface(surface_ptr);  // clear argb surface
     SDL_DestroyWindow(window_ptr);  // clean window
     SDL_Quit();  // clean SDL instance
 
