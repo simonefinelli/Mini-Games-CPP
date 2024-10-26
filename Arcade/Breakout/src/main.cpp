@@ -6,8 +6,8 @@
 const int SCREEN_WIDTH = 224;
 const int SCREEN_HEIGHT = 288;
 
-void set_pixel(SDL_Surface* sdl_surface_ptr, uint32_t color, int x, int y);
-size_t get_index(SDL_Surface* sdl_surface_ptr, int row, int col);
+void set_pixel(SDL_Surface* surface_ptr, uint32_t color, int x, int y);
+size_t get_index(SDL_Surface* surface_ptr, int row, int col);
 
 
 int main(int args, const char* argv[]) {
@@ -34,29 +34,29 @@ int main(int args, const char* argv[]) {
     }
 
     // create surface
-    SDL_Surface* sdl_surface_ptr = SDL_GetWindowSurface(window_ptr); // our canvas (2D matrix)
-    // sdl_surface_ptr->format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888);  // for alpha channel
-    sdl_surface_ptr = SDL_ConvertSurfaceFormat(sdl_surface_ptr, SDL_PIXELFORMAT_RGBA32, 0);
+    SDL_Surface* surface_ptr = SDL_GetWindowSurface(window_ptr); // our canvas (2D matrix)
+    // surface_ptr->format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888);  // for alpha channel
+    surface_ptr = SDL_ConvertSurfaceFormat(surface_ptr, SDL_PIXELFORMAT_RGBA32, 0);
     
-    SDL_PixelFormat* pixel_format = sdl_surface_ptr->format;
+    SDL_PixelFormat* pixel_format = surface_ptr->format;
     std::cout << "The window (surface) pixel format is: " << SDL_GetPixelFormatName(pixel_format->format) << std::endl;  // SDL_PIXELFORMAT_RGB888
 
     // drow something (color the pixels)
     Color::init_color_format(pixel_format);
     Color c(255, 0, 0, 255);
     Color c1(255, 0, 0, 01);
-    set_pixel(sdl_surface_ptr, c.get_pixel_color(), SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+    set_pixel(surface_ptr, c.get_pixel_color(), SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
     
 
     for (int i = 0; i<100; i++ ) {
         for (int j= 0; j<100; j++) {
-            set_pixel(sdl_surface_ptr, 0xFFFF00FF, i, j);
+            set_pixel(surface_ptr, 0xFFFF00FF, i, j);
         }
     }
 
     // for (int i = 100; i<200; i++ ) {
     //     for (int j= 100; j<200; j++) {
-    //         set_pixel(sdl_surface_ptr, 0x00FF0000, i, j);
+    //         set_pixel(surface_ptr, 0x00FF0000, i, j);
     //     }
     // }
 
@@ -89,22 +89,22 @@ int main(int args, const char* argv[]) {
  * x column
  * y row
  */
-void set_pixel(SDL_Surface* sdl_surface_ptr, uint32_t color, int x, int y) {
+void set_pixel(SDL_Surface* surface_ptr, uint32_t color, int x, int y) {
 
     // exclusive access to the surface until Unlock
-    // SDL_LockSurface(sdl_surface_ptr);
-    if (SDL_MUSTLOCK(sdl_surface_ptr)) SDL_LockSurface(sdl_surface_ptr);
+    // SDL_LockSurface(surface_ptr);
+    if (SDL_MUSTLOCK(surface_ptr)) SDL_LockSurface(surface_ptr);
 
-    uint32_t* pixels = (uint32_t*)sdl_surface_ptr->pixels;  // 1D array (buffer)
-    pixels[get_index(sdl_surface_ptr, y, x)] = color;
+    uint32_t* pixels = (uint32_t*)surface_ptr->pixels;  // 1D array (buffer)
+    pixels[get_index(surface_ptr, y, x)] = color;
 
-    if (SDL_MUSTLOCK(sdl_surface_ptr)) SDL_UnlockSurface(sdl_surface_ptr);
-    // SDL_UnlockSurface(sdl_surface_ptr);
+    if (SDL_MUSTLOCK(surface_ptr)) SDL_UnlockSurface(surface_ptr);
+    // SDL_UnlockSurface(surface_ptr);
 }
 
 /**
  * Transform 2D index in 1D index
  */
-size_t get_index(SDL_Surface* sdl_surface_ptr, int row, int col) {
-    return sdl_surface_ptr->w * row + col;
+size_t get_index(SDL_Surface* surface_ptr, int row, int col) {
+    return surface_ptr->w * row + col;
 }
