@@ -27,9 +27,9 @@ int main(int args, const char* argv[]) {
         SCREEN_HEIGHT,
         SDL_WINDOW_SHOWN
     );
-
-    if (window_ptr == nullptr) {
+    if (!window_ptr) {
         std::cerr << "Error - Could not create the window: " << SDL_GetError() <<  std::endl;
+        SDL_Quit();
         return 1;
     }
 
