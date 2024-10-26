@@ -25,7 +25,7 @@ int main(int args, const char* argv[]) {
         SDL_WINDOWPOS_CENTERED,
         SCREEN_WIDTH,
         SCREEN_HEIGHT,
-        0
+        SDL_WINDOW_SHOWN
     );
 
     if (window_ptr == nullptr) {
