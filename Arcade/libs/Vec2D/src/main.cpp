@@ -12,11 +12,5 @@ int main() {
     std::cout << "Vector 1: (" << vec1.get_x() << ", " << vec1.get_y() << ")\n";
     std::cout << "Vector 2: (" << vec2.get_x() << ", " << vec2.get_y() << ")\n";
 
-    int value = -1;
-
-    // Simple assert to check if the value is greater than 0
-    assert(value > 0 && "Value should be greater than 0");
-    
-
     return 0;
 }
