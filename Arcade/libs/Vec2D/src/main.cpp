@@ -1,6 +1,5 @@
 // main.cpp
 #include <iostream>
-#include <cassert>
 #include "Vec2D.h"
 
 int main() {
