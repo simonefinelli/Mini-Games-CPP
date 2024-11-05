@@ -1,4 +1,3 @@
-// main.cpp
 #include <iostream>
 #include "Vec2D.h"
 
