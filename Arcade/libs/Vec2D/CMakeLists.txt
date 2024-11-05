@@ -41,3 +41,42 @@ set_target_properties(Vec2DShared PROPERTIES
 
 # Position Independent Code (PIC) is required for shared libraries
 target_compile_options(Vec2DShared PRIVATE -fPIC)
+
+# Testing ==================================================================== #
+
+# Enable testing
+enable_testing()
+
+# Find Google Test
+find_package(GTest REQUIRED)
+include_directories(${GTEST_INCLUDE_DIRS})
+
+# Create a test executable
+add_executable(TestVec2D
+    tests/test_vec2D.cpp  # Make sure this path is correct
+)
+
+# Link GoogleTest to the test executable
+target_link_libraries(TestVec2D
+    Vec2DStatic
+    GTest::GTest
+    GTest::Main
+    pthread  # ensure pthread is linked (required by GoogleTest)
+)
+
+# Register the test executable with CTest
+add_test(NAME Vec2D COMMAND TestVec2D)
+
+# Optional: Add a flag to run tests after build
+option(RUN_TESTS "Automatically run tests after build" ON)
+
+if(RUN_TESTS)
+    # Define the custom target without the TARGET keyword
+    add_custom_target(run_tests
+        COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
+        DEPENDS TestVec2D  # Ensure the test executable is built before running
+    )
+    # Ensure that `run_tests` is executed after building Vec2DTest
+    add_dependencies(run_tests Vec2D)
+endif()
+
