@@ -138,7 +138,3 @@ TEST(Vec2DEdgesTest, NormalizeZeroVector) {
 
     EXPECT_EQ(unit_vec, Vec2D::ZERO);  // normalization of zero vector should return zero vector
 }
-
-
-
-
