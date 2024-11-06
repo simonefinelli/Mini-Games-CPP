@@ -4,21 +4,21 @@
 // Basic functionality tests ================================================ //
 
 // Test default constructor and getters
-TEST(Vec2DTest, DefaultConstructor) {
+TEST(Vec2DBasicTest, DefaultConstructor) {
     Vec2D vec;
     EXPECT_EQ(vec.get_x(), 0);
     EXPECT_EQ(vec.get_y(), 0);
 }
 
 // Test custom constructor and getters
-TEST(Vec2DTest, CustomConstructor) {
+TEST(Vec2DBasicTest, CustomConstructor) {
     Vec2D vec(3.0f, 4.0f);
     EXPECT_EQ(vec.get_x(), 3.0f);
     EXPECT_EQ(vec.get_y(), 4.0f);
 }
 
 // Test Setters.
-TEST(Vec2DTest, Setters) {
+TEST(Vec2DBasicTest, Setters) {
     Vec2D vec;
     vec.set_x(5.3f);
     vec.set_y(6.89f);
@@ -30,7 +30,7 @@ TEST(Vec2DTest, Setters) {
 // Arithmetic operations ==================================================== //
 
 // Test vector addition
-TEST(Vec2DTest, Addition) {
+TEST(Vec2DArithmeticTest, Addition) {
     Vec2D vec1(1.0f, 2.0f);
     Vec2D vec2(2.0f, 3.0f);
     Vec2D result = vec1 + vec2;
@@ -40,7 +40,7 @@ TEST(Vec2DTest, Addition) {
 }
 
 // Test vector subtraction
-TEST(Vec2DTest, Subtraction) {
+TEST(Vec2DArithmeticTest, Subtraction) {
     Vec2D vec1(4.0f, 5.0f);
     Vec2D vec2(1.0f, 1.0f);
     Vec2D result = vec1 - vec2;
@@ -50,7 +50,7 @@ TEST(Vec2DTest, Subtraction) {
 }
 
 // Test scalar multiplication
-TEST(Vec2DTest, ScalarMultiplication) {
+TEST(Vec2DArithmeticTest, ScalarMultiplication) {
     Vec2D vec(2.0f, 3.0f);
     Vec2D result = vec * 2.0f;
 
@@ -59,7 +59,7 @@ TEST(Vec2DTest, ScalarMultiplication) {
 }
 
 // Test scalar division and zero-division
-TEST(Vec2DTest, ScalarDivision) {
+TEST(Vec2DArithmeticTest, ScalarDivision) {
     Vec2D vec(6.0f, 8.0f);
     Vec2D result = vec / 2.0f;
 
@@ -76,13 +76,13 @@ TEST(Vec2DTest, ScalarDivision) {
 // Special operations ======================================================= //
 
 // Test vector magnitude
-TEST(Vec2DTest, Magnitude) {
+TEST(Vec2DSpecialOperationsTest, Magnitude) {
     Vec2D vec(3.0f, 4.0f);
     EXPECT_FLOAT_EQ(vec.mag(), 5.0f);
 }
 
 // Test vector normalization
-TEST(Vec2DTest, Normalization) {
+TEST(Vec2DSpecialOperationsTest, Normalization) {
     Vec2D vec(3.0f, 4.0f);
     Vec2D unit_vec = vec.get_unit_vec();
 
@@ -92,7 +92,7 @@ TEST(Vec2DTest, Normalization) {
 }
 
 // Test dot product
-TEST(Vec2DTest, DotProduct) {
+TEST(Vec2DSpecialOperationsTest, DotProduct) {
     Vec2D vec1(1.0f, 2.0f);
     Vec2D vec2(2.0f, 3.0f);
     
@@ -100,7 +100,7 @@ TEST(Vec2DTest, DotProduct) {
 }
 
 // Test projection onto another vector
-TEST(Vec2DTest, Projection) {
+TEST(Vec2DSpecialOperationsTest, Projection) {
     Vec2D vec1(3.0f, 4.0f);
     Vec2D vec2(1.0f, 0.0f);
 
@@ -110,7 +110,7 @@ TEST(Vec2DTest, Projection) {
 }
 
 // Test rotation
-TEST(Vec2DTest, Rotation) {
+TEST(Vec2DSpecialOperationsTest, Rotation) {
     Vec2D vec(1.0f, 0.0f);
     Vec2D rotated = vec.rotation_result(M_PI / 2);  // 90 degrees rotation
     
@@ -119,7 +119,7 @@ TEST(Vec2DTest, Rotation) {
 }
 
 // Test reflection
-TEST(Vec2DTest, Reflection) {
+TEST(Vec2DSpecialOperationsTest, Reflection) {
     Vec2D vec(1.0f, 1.0f);
     Vec2D normal(1.0f, 0.0f);
     
@@ -132,7 +132,7 @@ TEST(Vec2DTest, Reflection) {
 // Edge and corner cases ==================================================== //
 
 // Test normalization of a zero vector
-TEST(Vec2DTest, NormalizeZeroVector) {
+TEST(Vec2DEdgesTest, NormalizeZeroVector) {
     Vec2D vec;
     Vec2D unit_vec = vec.get_unit_vec();
 
