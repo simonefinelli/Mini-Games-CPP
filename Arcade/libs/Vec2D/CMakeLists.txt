@@ -67,16 +67,16 @@ target_link_libraries(TestVec2D
 # Register the test executable with CTest
 add_test(NAME Vec2D COMMAND TestVec2D)
 
-# # Add a flag to run tests after build
-# option(RUN_TESTS "Automatically run tests after build" ON)
+# Add a flag to run tests after build
+option(RUN_TESTS "Automatically run tests after build" ON)
 
-# if(RUN_TESTS)
-#     # Define the custom target without the TARGET keyword
-#     add_custom_target(run_tests
-#         COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
-#         DEPENDS TestVec2D  # ensure the test executable is built before running
-#     )
-#     # Ensure that `run_tests` is executed after building Vec2DTest
-#     add_dependencies(run_tests Vec2D)
-# endif()
+# Automatically run tests after building TestVec2D if RUN_TESTS is ON
+if(RUN_TESTS)
+    add_custom_command(
+        TARGET TestVec2D
+        POST_BUILD
+        COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure -V
+        COMMENT "Running tests after build"
+    )
+endif()
 
