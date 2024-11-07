@@ -23,7 +23,7 @@ class ScreenBuffer {
 public:
     // Constructors ========================================================= //
     ScreenBuffer();
-    ScreenBuffer(const ScreenBuffer* screen_buff); // copy constructor
+    ScreenBuffer(const ScreenBuffer& screen_buff); // copy constructor
 
     // Instance methods ===================================================== //
     void init(uint32_t format, uint32_t width, uint32_t height);

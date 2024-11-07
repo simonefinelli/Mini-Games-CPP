@@ -14,13 +14,13 @@
 ScreenBuffer::ScreenBuffer() : m_surface_ptr(nullptr) {}
 
 // Copy constructor
-ScreenBuffer::ScreenBuffer(const ScreenBuffer* screen_buff) { 
+ScreenBuffer::ScreenBuffer(const ScreenBuffer& screen_buff) { 
     m_surface_ptr = SDL_CreateRGBSurfaceWithFormat(
         0,
-        screen_buff->m_surface_ptr->w,
-        screen_buff->m_surface_ptr->h,
+        screen_buff.m_surface_ptr->w,
+        screen_buff.m_surface_ptr->h,
         0,
-        screen_buff->m_surface_ptr->format->format
+        screen_buff.m_surface_ptr->format->format
     );
 
     if (!m_surface_ptr) {
@@ -29,7 +29,7 @@ ScreenBuffer::ScreenBuffer(const ScreenBuffer* screen_buff) {
         exit(1);
     }
 
-    SDL_BlitSurface(screen_buff->m_surface_ptr, nullptr, m_surface_ptr, nullptr);  // copy all the pixels
+    SDL_BlitSurface(screen_buff.m_surface_ptr, nullptr, m_surface_ptr, nullptr);  // copy all the pixels
 } 
 
 
@@ -50,6 +50,36 @@ void ScreenBuffer::set_pixel(const Color& color, int x, int y) {
     pixels[get_index(y, x)] = color.get_pixel_color();
 
     if (SDL_MUSTLOCK(m_surface_ptr)) SDL_UnlockSurface(m_surface_ptr);
+}
+
+// Operator overloading ===================================================== //
+ScreenBuffer& ScreenBuffer::operator=(const ScreenBuffer& screen_buff) {
+    if (this == &screen_buff) return *this;
+
+    if (m_surface_ptr) {
+        SDL_FreeSurface(m_surface_ptr);
+        m_surface_ptr = nullptr;
+    }
+
+    if (screen_buff.m_surface_ptr != nullptr) {
+        m_surface_ptr = SDL_CreateRGBSurfaceWithFormat(
+            0,
+            screen_buff.m_surface_ptr->w,
+            screen_buff.m_surface_ptr->h,
+            0,
+            screen_buff.m_surface_ptr->format->format
+        );
+
+        if (!m_surface_ptr) {
+            std::cerr << "Error: Failed to create RGBA surface: " << SDL_GetError() << std::endl;
+            SDL_Quit();
+            exit(1);
+        }
+
+        SDL_BlitSurface(screen_buff.m_surface_ptr, nullptr, m_surface_ptr, nullptr);  // copy all the pixels
+    }
+    
+    return *this;
 }
 
 // Destructor =========================================================== //
