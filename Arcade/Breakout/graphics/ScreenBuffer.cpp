@@ -48,7 +48,7 @@ void ScreenBuffer::init(uint32_t format, uint32_t width, uint32_t height) {
 }
 
 void ScreenBuffer::clear_surface(const Color& c) {
-    if(m_surface_ptr) {
+    if (m_surface_ptr) {
         SDL_FillRect(m_surface_ptr, nullptr, c.get_pixel_color());
     } else {
         throw std::runtime_error("Surface not found!");
@@ -62,8 +62,11 @@ void ScreenBuffer::clear_surface(const Color& c) {
  * y row
  */
 void ScreenBuffer::set_pixel(const Color& color, int x, int y) {
-
-    if(!m_surface_ptr) std::runtime_error("Surface not found!");
+    // check surface
+    if (!m_surface_ptr) std::runtime_error("Surface not found!");
+    // check boudaries
+    if (!((y >= 0 and y < m_surface_ptr->h) and (x >= 0 and x < m_surface_ptr->w))) 
+        std::runtime_error("Pixel out of boudaries!");
 
     // Exclusive access to the surface until Unlock
     if (SDL_MUSTLOCK(m_surface_ptr)) SDL_LockSurface(m_surface_ptr);
@@ -120,6 +123,6 @@ ScreenBuffer::~ScreenBuffer() {
  */
 size_t ScreenBuffer::get_index(int row, int col) {
     if(!m_surface_ptr) std::runtime_error("Surface not found!");
-    
+
     return m_surface_ptr->w * row + col;
 }
