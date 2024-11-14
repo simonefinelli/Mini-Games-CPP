@@ -2,12 +2,10 @@
 #include <SDL2/SDL.h>
 
 #include <Color.h>
+#include <ScreenBuffer.h>
 
 const int SCREEN_WIDTH = 224;
 const int SCREEN_HEIGHT = 288;
-
-void set_pixel(SDL_Surface* surface_ptr, uint32_t color, int x, int y);
-size_t get_index(SDL_Surface* surface_ptr, int row, int col);
 
 
 int main(int args, const char* argv[]) {
@@ -33,7 +31,7 @@ int main(int args, const char* argv[]) {
         return 1;
     }
 
-    // Create windo and RGBA surface (for alpha channel)
+    // Create window and RGBA surface (for alpha channel)
     SDL_Surface* window_surface_ptr = SDL_GetWindowSurface(window_ptr);
     SDL_Surface* surface_ptr = SDL_CreateRGBSurface(
         0,
@@ -52,30 +50,35 @@ int main(int args, const char* argv[]) {
         return 1;
     }
     
-    SDL_PixelFormat* pixel_format = surface_ptr->format;
+    SDL_PixelFormat* pixel_format_ptr = surface_ptr->format;
     std::cout << "The RGBA surface pixel format is: "
-              << SDL_GetPixelFormatName(pixel_format->format) << std::endl;  // SDL_PIXELFORMAT_ARGB8888
+              << SDL_GetPixelFormatName(pixel_format_ptr->format) << std::endl;  // SDL_PIXELFORMAT_ARGB8888
 
 
     // init color class
-    Color::init_color_format(pixel_format);
+    Color::init_color_format(pixel_format_ptr);
     // std::cout << "Color value" << Color::Cyan().get_pixel_color() << std::endl;
 
+    // Init ScreenBuffer
+    ScreenBuffer screen_buffer;
+    screen_buffer.init(pixel_format_ptr->format, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     for (int i = 0; i<100; i++ ) {
         for (int j= 0; j<100; j++) {
-            set_pixel(surface_ptr, Color::Purple().get_pixel_color(), i, j);
+            // set_pixel(surface_ptr, Color::Purple().get_pixel_color(), i, j);
+            screen_buffer.set_pixel(Color::Purple().get_pixel_color(), i, j);
         }
     }
 
     for (int i = 100; i<200; i++ ) {
         for (int j= 100; j<200; j++) {
-            set_pixel(surface_ptr, Color::PURPLE, i, j);
+            screen_buffer.set_pixel(0x88800080, i, j);
         }
     }
 
     // Blit the RGBA surface onto the window surface
-    SDL_BlitSurface(surface_ptr, NULL, window_surface_ptr, NULL);
+    // SDL_BlitSurface(surface_ptr, NULL, window_surface_ptr, NULL);
+    SDL_BlitSurface(screen_buffer.get_surface(), NULL, window_surface_ptr, NULL);
 
     SDL_UpdateWindowSurface(window_ptr);
 
@@ -100,28 +103,4 @@ int main(int args, const char* argv[]) {
     SDL_Quit();  // clean SDL instance
 
     return 0;
-}
-
-/**
- * Set the pixel's intensity (color) in a specific location
- * color ARGB
- * x column
- * y row
- */
-void set_pixel(SDL_Surface* surface_ptr, uint32_t color, int x, int y) {
-
-    // Exclusive access to the surface until Unlock
-    if (SDL_MUSTLOCK(surface_ptr)) SDL_LockSurface(surface_ptr);
-
-    uint32_t* pixels = (uint32_t*)surface_ptr->pixels;  // 1D array (buffer)
-    pixels[get_index(surface_ptr, y, x)] = color;
-
-    if (SDL_MUSTLOCK(surface_ptr)) SDL_UnlockSurface(surface_ptr);
-}
-
-/**
- * Transform 2D index in 1D index
- */
-size_t get_index(SDL_Surface* surface_ptr, int row, int col) {
-    return surface_ptr->w * row + col;
 }
