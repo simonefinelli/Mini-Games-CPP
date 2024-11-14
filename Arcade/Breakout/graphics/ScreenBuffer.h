@@ -45,4 +45,4 @@ private:
     size_t get_index(int row, int col);
 };
 
-#endif GRAPHICS_SCREEN_BUFFER_H
+#endif // GRAPHICS_SCREEN_BUFFER_H
