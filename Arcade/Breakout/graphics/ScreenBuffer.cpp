@@ -35,6 +35,26 @@ ScreenBuffer::ScreenBuffer(const ScreenBuffer& screen_buff) {
 
 // Instance methods ========================================================= //
 
+void ScreenBuffer::init(uint32_t format, uint32_t width, uint32_t height) {
+    m_surface_ptr = SDL_CreateRGBSurfaceWithFormat(0, width, height, 0, format);
+
+    if (!m_surface_ptr) {
+        std::cerr << "Error: Failed to create RGBA surface: " << SDL_GetError() << std::endl;
+        SDL_Quit();
+        exit(1);
+    }
+
+    clear_surface();
+}
+
+void ScreenBuffer::clear_surface(const Color& c) {
+    if(m_surface_ptr) {
+        SDL_FillRect(m_surface_ptr, nullptr, c.get_pixel_color());
+    } else {
+        throw std::runtime_error("Surface not found!");
+    }
+}
+
 /**
  * Set the pixel's intensity (color) in a specific location
  * color ARGB
@@ -42,6 +62,8 @@ ScreenBuffer::ScreenBuffer(const ScreenBuffer& screen_buff) {
  * y row
  */
 void ScreenBuffer::set_pixel(const Color& color, int x, int y) {
+
+    if(!m_surface_ptr) std::runtime_error("Surface not found!");
 
     // Exclusive access to the surface until Unlock
     if (SDL_MUSTLOCK(m_surface_ptr)) SDL_LockSurface(m_surface_ptr);
@@ -97,5 +119,7 @@ ScreenBuffer::~ScreenBuffer() {
  * Transform 2D index in 1D index
  */
 size_t ScreenBuffer::get_index(int row, int col) {
+    if(!m_surface_ptr) std::runtime_error("Surface not found!");
+    
     return m_surface_ptr->w * row + col;
 }
