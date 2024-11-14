@@ -12,6 +12,7 @@ message("VEC2D_LIB_DIR is set to: ${VEC2D_LIB_DIR}")
 add_executable(Breakout
     ./src/main.cpp
     ./graphics/Color.cpp
+    graphics/ScreenBuffer.cpp
 )
 
 # Find SDL2 package
