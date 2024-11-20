@@ -1,5 +1,6 @@
 #include <iostream>
 #include <SDL2/SDL.h>
+#include <thread>
 
 #include <Color.h>
 #include <ScreenBuffer.h>
@@ -16,7 +17,7 @@ int main(int args, const char* argv[]) {
         return 1;
     }
 
-    // Window creation
+    // SDL Window creation
     SDL_Window* window_ptr = SDL_CreateWindow(
         "ARCADE",
         SDL_WINDOWPOS_CENTERED,
@@ -31,37 +32,21 @@ int main(int args, const char* argv[]) {
         return 1;
     }
 
-    // Create window and RGBA surface (for alpha channel)
+    // Create a surface for the main window
     SDL_Surface* window_surface_ptr = SDL_GetWindowSurface(window_ptr);
-    SDL_Surface* surface_ptr = SDL_CreateRGBSurface(
-        0,
-        SCREEN_WIDTH,
-        SCREEN_HEIGHT,
-        32,
-        0x00FF0000,  // R mask
-        0x0000FF00,  // G mask
-        0x000000FF,  // B mask
-        0xFF000000   // A mask
-    );  
-    if (!surface_ptr) {
-        std::cerr << "Error: Failed to create RGBA surface: " << SDL_GetError() << std::endl;
+    if (!window_surface_ptr) {
+        std::cerr << "Error: Failed to create SDL Window Surface: " << SDL_GetError() << std::endl;
         SDL_DestroyWindow(window_ptr);
         SDL_Quit();
         return 1;
     }
-    
-    SDL_PixelFormat* pixel_format_ptr = surface_ptr->format;
-    std::cout << "The RGBA surface pixel format is: "
-              << SDL_GetPixelFormatName(pixel_format_ptr->format) << std::endl;  // SDL_PIXELFORMAT_ARGB8888
-
-
-    // init color class
-    Color::init_color_format(pixel_format_ptr);
-    // std::cout << "Color value" << Color::Cyan().get_pixel_color() << std::endl;
 
     // Init ScreenBuffer
     ScreenBuffer screen_buffer;
-    screen_buffer.init(pixel_format_ptr->format, SCREEN_WIDTH, SCREEN_HEIGHT);
+    screen_buffer.init(SCREEN_WIDTH, SCREEN_HEIGHT);
+    
+    // init color class
+    Color::init_color_format(screen_buffer.get_surface()->format);
 
     for (int i = 0; i<100; i++ ) {
         for (int j= 0; j<100; j++) {
@@ -76,12 +61,10 @@ int main(int args, const char* argv[]) {
         }
     }
 
-    // Blit the RGBA surface onto the window surface
-    // SDL_BlitSurface(surface_ptr, NULL, window_surface_ptr, NULL);
+    // Blit the surface of the screen buffer with the main Window
     SDL_BlitSurface(screen_buffer.get_surface(), NULL, window_surface_ptr, NULL);
 
     SDL_UpdateWindowSurface(window_ptr);
-
 
     // Start the main program
     SDL_Event sdl_event;
@@ -96,9 +79,9 @@ int main(int args, const char* argv[]) {
                 default:;
             }
         }
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
 
-    SDL_FreeSurface(surface_ptr);  // clear argb surface
     SDL_DestroyWindow(window_ptr);  // clean window
     SDL_Quit();  // clean SDL instance
 
