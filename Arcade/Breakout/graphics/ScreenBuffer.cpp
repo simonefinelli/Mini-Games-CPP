@@ -35,8 +35,28 @@ ScreenBuffer::ScreenBuffer(const ScreenBuffer& screen_buff) {
 
 // Instance methods ========================================================= //
 
-void ScreenBuffer::init(uint32_t format, uint32_t width, uint32_t height) {
-    m_surface_ptr = SDL_CreateRGBSurfaceWithFormat(0, width, height, 0, format);
+void ScreenBuffer::init(uint32_t width, uint32_t height, bool alpha_channel) {
+    //m_surface_ptr = SDL_CreateRGBSurfaceWithFormat(0, width, height, 0, format);
+
+    if (alpha_channel) {
+        m_surface_ptr = SDL_CreateRGBSurface(
+            0,
+            width,
+            height,
+            32,
+            0x00FF0000,  // R mask
+            0x0000FF00,  // G mask
+            0x000000FF,  // B mask
+            0xFF000000   // A mask
+        ); 
+    } else {
+        m_surface_ptr = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
+    }
+
+    SDL_PixelFormat* pixel_format_ptr = m_surface_ptr->format;
+    std::cout << "The RGBA surface pixel format is: "
+              << SDL_GetPixelFormatName(pixel_format_ptr->format) << std::endl;  // SDL_PIXELFORMAT_ARGB8888
+
 
     if (!m_surface_ptr) {
         std::cerr << "Error: Failed to create RGBA surface: " << SDL_GetError() << std::endl;

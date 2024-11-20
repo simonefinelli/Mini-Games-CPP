@@ -26,7 +26,7 @@ public:
     ScreenBuffer(const ScreenBuffer& screen_buff); // copy constructor
 
     // Instance methods ===================================================== //
-    void init(uint32_t format, uint32_t width, uint32_t height);
+    void init(uint32_t width, uint32_t height, bool alpha_channel=true);
     inline SDL_Surface* get_surface() {return m_surface_ptr;}
     void clear_surface(const Color& c=Color::Black());
     void set_pixel(const Color& c, int x, int y);
