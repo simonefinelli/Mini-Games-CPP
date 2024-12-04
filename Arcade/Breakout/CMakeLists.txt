@@ -10,9 +10,10 @@ message("VEC2D_LIB_DIR is set to: ${VEC2D_LIB_DIR}")
 
 # Add main executable (the game, for example)
 add_executable(Breakout
-    ./src/main.cpp
-    ./graphics/Color.cpp
+    src/main.cpp
+    graphics/Color.cpp
     graphics/ScreenBuffer.cpp
+    graphics/Screen.cpp
 )
 
 # Find SDL2 package
