@@ -127,7 +127,7 @@ ScreenBuffer& ScreenBuffer::operator=(const ScreenBuffer& screen_buff) {
     return *this;
 }
 
-// Destructor =========================================================== //
+// Destructor =============================================================== //
 ScreenBuffer::~ScreenBuffer() {
     if (m_surface_ptr) SDL_FreeSurface(m_surface_ptr);
 }
