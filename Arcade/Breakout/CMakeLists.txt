@@ -14,6 +14,7 @@ add_executable(Breakout
     graphics/Color.cpp
     graphics/ScreenBuffer.cpp
     graphics/Screen.cpp
+    shapes/Line2D.cpp
 )
 
 # Find SDL2 package
@@ -23,6 +24,7 @@ find_package(SDL2 REQUIRED)
 target_include_directories(Breakout PRIVATE 
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/graphics
+    ${CMAKE_SOURCE_DIR}/shapes
 )
 
 # Link SDL2 to the target
