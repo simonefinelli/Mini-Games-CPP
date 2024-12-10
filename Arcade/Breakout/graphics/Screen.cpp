@@ -99,6 +99,63 @@ void Screen::draw(const Vec2D& point, const Color& color) {
     m_back_buffer.set_pixel(color, point.get_x(), point.get_y());
 }
 
+/**
+ * Draw a line using Bresnham's Algorithm 
+ */
+void Screen::draw(const Line2D& line, const Color& color) {
+    // Check for window initialization
+    if (!m_window_ptr) throw std::runtime_error("Window not initialized!");
+
+    int dx, dy;
+
+    int x0 = roundf(line.get_p0().get_x());
+    int y0 = roundf(line.get_p0().get_y());
+    int x1 = roundf(line.get_p1().get_x());
+    int y1 = roundf(line.get_p1().get_y());
+
+    dx = x1 - x0;
+    dy = y1 - y0;
+
+    signed const char ix((dx > 0) - (dx < 0));  // evaluate to 1 or -1 (depends of which direction the line is)
+    signed const char iy((dy > 0) - (dy < 0));
+
+    dx = abs(dx) * 2;  // * 2 to get rid of any floating point math
+    dy = abs(dy) * 2;
+
+    // Draw the line
+    draw(x0, y0, color); // first point
+    if (dx >= dy) {  // go along in the x direction
+        int d = dy - dx/2;
+
+        while(x0 != x1) {
+            if(d >= 0) {
+                d -= dx;
+                y0 += iy;
+            }
+
+            d += dy;
+            x0 += ix;
+
+            draw(x0, y0, color);
+        }
+    } else {  // go along in y
+        int d = dx - dy/2;
+
+        while(y0 != y1) {
+            if (d >= 0) {
+                d -= dy;
+                x0 += ix;
+            }
+
+            d += dx;
+            y0 += iy;
+
+            draw(x0, y0, color);
+        }
+    }
+
+}
+
 // Operator overloading ===================================================== //
 
 // Destructor =============================================================== //
