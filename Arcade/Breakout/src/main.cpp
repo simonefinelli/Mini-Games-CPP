@@ -3,6 +3,7 @@
 #include <thread>
 
 #include "Color.h"
+#include "Line2D.h"
 #include "Screen.h"
 #include "ScreenBuffer.h"
 
@@ -70,7 +71,12 @@ int main(int args, const char* argv[]) {
     Screen screen;
     screen.init(SCREEN_WIDTH, SCREEN_HEIGHT, MAGNIFICATION);
 
+    // Create a line
+    Line2D line = {Vec2D(0,0), Vec2D(SCREEN_WIDTH, SCREEN_HEIGHT)};
+
     screen.draw(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, Color::Cyan());
+    screen.draw(line, Color::Orange());
+
     screen.swap_screens();
 
     // Start the main program
