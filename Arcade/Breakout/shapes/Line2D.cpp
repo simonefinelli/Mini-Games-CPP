@@ -41,7 +41,7 @@ Line2D::Line2D(const Vec2D& p0, const Vec2D& p1)
  *       is `true`, the projection parameter is clamped between 0 and 1 to ensure the result lies
  *       within the segment bounds.
  */
-Vec2D Line2D::closest_point(const Vec2D& p, bool limit_to_segment=false) const {
+Vec2D Line2D::closest_point(const Vec2D& p, bool limit_to_segment) const {
     Vec2D p0_to_p = p - m_p0;
     Vec2D p0_to_p1 = m_p1 - m_p0;
 
