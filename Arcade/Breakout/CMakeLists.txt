@@ -15,6 +15,7 @@ add_executable(Breakout
     graphics/ScreenBuffer.cpp
     graphics/Screen.cpp
     shapes/Line2D.cpp
+    shapes/Shape2D.cpp
 )
 
 # Find SDL2 package
