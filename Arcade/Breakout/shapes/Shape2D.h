@@ -24,6 +24,4 @@ protected:
 
 };
 
-
-
 #endif // SHAPES_SHAPE_2D_H

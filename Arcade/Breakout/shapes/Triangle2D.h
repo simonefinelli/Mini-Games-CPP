@@ -32,8 +32,6 @@ public:
 private:
     // Instance methods ===================================================== //
     float area(const Vec2D& p0, const Vec2D& p1, const Vec2D& p2) const;
-
-
 };
 
 #endif // SHAPES_TRIANGLE_2D_H
