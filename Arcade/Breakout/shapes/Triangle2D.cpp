@@ -41,9 +41,7 @@ bool Triangle2D::contains_point(const Vec2D& p) const {
     float a2 = area(get_p0(), p, get_p2());
     float a3 = area(get_p0(), get_p1(), p);
 
-    is_equal(this_area, a1 + a2 + a3);
-
-    return false;
+    return is_equal(this_area, a1 + a2 + a3);;
 }
 
 
