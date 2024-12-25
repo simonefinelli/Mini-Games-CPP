@@ -61,10 +61,13 @@ Vec2D Rectangle2D::get_center_point() const {
 }
 
 bool Rectangle2D::intersects(const Rectangle2D& other_rectangle) const {
-    return get_top_left_point().get_x() <= other_rectangle.get_bottom_right_point().get_x() and
-           get_bottom_right_point().get_x() >= other_rectangle.get_top_left_point().get_x() and
-           get_top_left_point().get_y() <= other_rectangle.get_bottom_right_point().get_y() and
-           get_bottom_right_point().get_y() >= other_rectangle.get_top_left_point().get_y();
+    bool within_x = get_top_left_point().get_x() <= other_rectangle.get_bottom_right_point().get_x() and
+                    get_bottom_right_point().get_x() >= other_rectangle.get_top_left_point().get_x();
+
+    bool within_y = get_top_left_point().get_y() <= other_rectangle.get_bottom_right_point().get_y() and
+                    get_bottom_right_point().get_y() >= other_rectangle.get_top_left_point().get_y();
+    
+    return within_x and within_y;
 }
 
 bool Rectangle2D::constains_point(const Vec2D& point) const {
