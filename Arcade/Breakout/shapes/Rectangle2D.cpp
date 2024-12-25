@@ -86,3 +86,14 @@ Rectangle2D Rectangle2D::inset(const Rectangle2D& rect, Vec2D& insets) {
 
     return Rectangle2D(top_left, width, height);
 }
+
+std::vector<Vec2D> Rectangle2D::get_points() const {
+    std::vector<Vec2D> points;
+
+    points.push_back(m_points[0]);
+    points.push_back(Vec2D(m_points[1].get_x(), m_points[0].get_y()));
+    points.push_back(Vec2D(m_points[0].get_x(), m_points[1].get_y()));
+    points.push_back(m_points[1]);
+
+    return points;
+}
