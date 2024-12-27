@@ -18,6 +18,7 @@ add_executable(Breakout
     shapes/Shape2D.cpp
     shapes/Triangle2D.cpp
     shapes/Rectangle2D.cpp
+    shapes/Circle2D.cpp
 )
 
 # Find SDL2 package
