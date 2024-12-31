@@ -156,6 +156,19 @@ void Screen::draw(const Line2D& line, const Color& color) {
 
 }
 
+void Screen::draw(const Triangle2D& triangle, const Color& color) {
+    // Check for window initialization
+    if (!m_window_ptr) throw std::runtime_error("Window not initialized!");
+
+    Line2D p0p1 = Line2D(triangle.get_p0(), triangle.get_p1());
+    Line2D p1p2 = Line2D(triangle.get_p1(), triangle.get_p2());
+    Line2D p2p0 = Line2D(triangle.get_p2(), triangle.get_p0());
+
+    draw(p0p1, color);
+    draw(p1p2, color);
+    draw(p2p0, color);
+}
+
 // Operator overloading ===================================================== //
 
 // Destructor =============================================================== //

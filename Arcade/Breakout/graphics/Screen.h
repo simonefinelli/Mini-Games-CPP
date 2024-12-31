@@ -13,6 +13,7 @@
 #include "Color.h"
 #include "Line2D.h"
 #include "ScreenBuffer.h"
+#include "Triangle2D.h"
 #include "Vec2D.h"
 
 class Vec2D;
@@ -36,6 +37,7 @@ public:
     void draw(int x, int y, const Color& color);
     void draw(const Vec2D& point, const Color& color);
     void draw(const Line2D& line, const Color& color);
+    void draw(const Triangle2D& triangle, const Color& color);
 
     // Destructor =========================================================== //
     ~Screen();
