@@ -4,6 +4,7 @@
 
 #include "Color.h"
 #include "Line2D.h"
+#include "Rectangle2D.h"
 #include "Screen.h"
 #include "ScreenBuffer.h"
 #include "Triangle2D.h"
@@ -28,9 +29,14 @@ int main(int args, const char* argv[]) {
     // screen.swap_screens();
     // std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 
-    // Create a Triangle
-    Triangle2D t = {Vec2D(SCREEN_WIDTH/2, 50), Vec2D(50, SCREEN_HEIGHT - 50), Vec2D(SCREEN_WIDTH - 50, SCREEN_HEIGHT - 50)};
-    screen.draw(t, Color::Orange());
+    // // Create a Triangle
+    // Triangle2D t = {Vec2D(SCREEN_WIDTH/2, 50), Vec2D(50, SCREEN_HEIGHT - 50), Vec2D(SCREEN_WIDTH - 50, SCREEN_HEIGHT - 50)};
+    // screen.draw(t, Color::Orange());
+    // screen.swap_screens();
+
+    // Create a Rectangle
+    Rectangle2D r{Vec2D(100, 100), 50, 25};
+    screen.draw(r, Color::Cyan());
     screen.swap_screens();
 
     // Start the main program
