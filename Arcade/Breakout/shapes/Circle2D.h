@@ -19,7 +19,7 @@ public:
 
     // Instance methods ===================================================== //
     inline virtual Vec2D get_center_point() const override { return m_points[0]; }
-    inline float get_radius () { return m_radius; }
+    inline float get_radius() const { return m_radius; }
     inline void set_radius(float radius) { m_radius = radius; }
     inline void move_to(const Vec2D& position) { m_points[0] = position; }
 
