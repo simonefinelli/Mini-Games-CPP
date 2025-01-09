@@ -5,7 +5,10 @@
  * @date 2024-10-24
  */
 
+#include <cmath>
+#include <algorithm>
 #include "Screen.h"
+#include "graphics_utils.h"
 
 // ========================================================================== //
 // Public interface                                                           //
@@ -184,6 +187,27 @@ void Screen::draw(const Rectangle2D& rectangle, const Color& color) {
     draw(p0p2, color);
     draw(p1p3, color);
     draw(p2p3, color);
+}
+
+void Screen::draw(const Circle2D& circle, const Color& color) {
+    unsigned number_of_segments = calculate_number_of_segments(circle.get_radius());
+    
+    float angle = (static_cast<float>(M_PI) * 2.0f) / static_cast<float>(number_of_segments);
+
+    Vec2D p0 = Vec2D(circle.get_center_point().get_x() + circle.get_radius(), 
+                     circle.get_center_point().get_y());
+    Vec2D p1 = p0;
+    Line2D next_line;
+
+    for(unsigned i=0; i < number_of_segments; i++) {
+        p1.rotate(angle, circle.get_center_point());
+        next_line.set_p0(p0);
+        next_line.set_p1(p1);
+
+        draw(next_line, color);
+
+        p0 = p1;
+    }
 }
 
 // Operator overloading ===================================================== //

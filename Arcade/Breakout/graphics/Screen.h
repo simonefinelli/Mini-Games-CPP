@@ -10,6 +10,7 @@
 #include <SDL2/SDL.h>
 #include <stdint.h>
 
+#include "Circle2D.h"
 #include "Color.h"
 #include "Line2D.h"
 #include "Rectangle2D.h"
@@ -40,6 +41,7 @@ public:
     void draw(const Line2D& line, const Color& color);
     void draw(const Triangle2D& triangle, const Color& color);
     void draw(const Rectangle2D& rectangle, const Color& color);
+    void draw(const Circle2D& circle, const Color& color);
 
     // Destructor =========================================================== //
     ~Screen();
