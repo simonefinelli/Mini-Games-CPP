@@ -11,7 +11,7 @@
 // ========================================================================== //
 
 // Constructors ============================================================= //
-ScreenBuffer::ScreenBuffer() : m_surface_ptr(nullptr) {}
+ScreenBuffer::ScreenBuffer() : m_surface_ptr(nullptr), m_surface_area(0) {}
 
 // Copy constructor
 ScreenBuffer::ScreenBuffer(const ScreenBuffer& screen_buff) { 
@@ -65,6 +65,9 @@ void ScreenBuffer::init(uint32_t width, uint32_t height, bool alpha_channel) {
     }
 
     clear_surface();
+
+    // Update area size
+    m_surface_area = m_surface_ptr->w * m_surface_ptr->h;
 }
 
 void ScreenBuffer::clear_surface(const Color& c) {
@@ -92,7 +95,12 @@ void ScreenBuffer::set_pixel(const Color& color, int x, int y) {
     if (SDL_MUSTLOCK(m_surface_ptr)) SDL_LockSurface(m_surface_ptr);
 
     uint32_t* pixels = (uint32_t*)m_surface_ptr->pixels;  // 1D array (buffer)
-    pixels[get_index(y, x)] = color.get_pixel_color();
+    
+    auto index_position = get_index(y, x);
+    if(index_position <= m_surface_area)
+        pixels[index_position] = color.get_pixel_color();
+    else
+        std::cout << "index: " << index_position << " out of area: " << m_surface_area << std::endl;
 
     if (SDL_MUSTLOCK(m_surface_ptr)) SDL_UnlockSurface(m_surface_ptr);
 }

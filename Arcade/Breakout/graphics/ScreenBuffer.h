@@ -40,6 +40,7 @@ public:
 private:
     // Instance variables =================================================== //
     SDL_Surface* m_surface_ptr;
+    size_t m_surface_area;
 
     // Instance methods ===================================================== //
     size_t get_index(int row, int col);
