@@ -14,6 +14,7 @@ add_executable(Breakout
     graphics/Color.cpp
     graphics/ScreenBuffer.cpp
     graphics/Screen.cpp
+    graphics/graphics_utils.cpp
     shapes/Line2D.cpp
     shapes/Shape2D.cpp
     shapes/Triangle2D.cpp
