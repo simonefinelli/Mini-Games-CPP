@@ -14,8 +14,22 @@
 // ========================================================================== //
 
 // Constructors ============================================================= //
+
+/**
+ * @brief Default constructor for the Rectangle2D class.
+ *
+ * This constructor initializes a Rectangle2D object with both the top-left
+ * and bottom-right corners set to the zero vector (Vec2D::ZERO).
+ */
 Rectangle2D::Rectangle2D() : Rectangle2D(Vec2D::ZERO, Vec2D::ZERO) {}
 
+/**
+ * @brief Constructs a Rectangle2D object with the specified top-left corner, width, and height.
+ *
+ * @param top_left The top-left corner of the rectangle as a Vec2D object.
+ * @param width The width of the rectangle.
+ * @param height The height of the rectangle.
+ */
 Rectangle2D::Rectangle2D(const Vec2D& top_left, unsigned int width, unsigned int height) {
     Vec2D bottom_right(top_left.get_x() + width - 1, 
                        top_left.get_y() + height - 1);
@@ -24,6 +38,12 @@ Rectangle2D::Rectangle2D(const Vec2D& top_left, unsigned int width, unsigned int
     m_points.push_back(bottom_right);
 }
 
+/**
+ * @brief Constructs a Rectangle2D object with the given top-left and bottom-right points.
+ * 
+ * @param top_left The top-left point of the rectangle.
+ * @param bottom_right The bottom-right point of the rectangle.
+ */
 Rectangle2D::Rectangle2D(const Vec2D& top_left, const Vec2D& bottom_right) {
     m_points.push_back(top_left);
     m_points.push_back(bottom_right);
@@ -31,14 +51,40 @@ Rectangle2D::Rectangle2D(const Vec2D& top_left, const Vec2D& bottom_right) {
 
 // Instance methods ========================================================= //
 
+/**
+ * @brief Get the width of the rectangle.
+ * 
+ * This function calculates the width of the rectangle by taking the absolute 
+ * difference between the x-coordinates of the bottom-right and top-left points 
+ * of the rectangle and adding 1 to the result.
+ * 
+ * @return float The width of the rectangle.
+ */
 float Rectangle2D::get_width() const {
     return std::abs(get_bottom_right_point().get_x() - get_top_left_point().get_x()) + 1;
 }
 
+/**
+ * @brief Get the height of the rectangle.
+ * 
+ * This function calculates the height of the rectangle by taking the absolute 
+ * difference between the y-coordinates of the bottom-right and top-left points 
+ * of the rectangle, and then adding 1 to the result.
+ * 
+ * @return float The height of the rectangle.
+ */
 float Rectangle2D::get_height() const {
     return std::abs(get_bottom_right_point().get_y() - get_top_left_point().get_y()) + 1;
 }
 
+/**
+ * @brief Moves the rectangle to a new position.
+ *
+ * This function moves the rectangle such that its top-left corner is at the specified position.
+ * The relative positions of the other points of the rectangle are maintained.
+ *
+ * @param position The new position for the top-left corner of the rectangle.
+ */
 void Rectangle2D::move_to(const Vec2D& position) {
     Vec2D top_left = get_top_left_point();
     Vec2D diff = position - top_left;
@@ -53,6 +99,14 @@ void Rectangle2D::move_to(const Vec2D& position) {
     // set_bottom_right_point(Vec2D(position.get_x() + width - 1, position.get_y() + height - 1));
 }
 
+/**
+ * @brief Calculates and returns the center point of the rectangle.
+ *
+ * This function computes the center point of the rectangle by taking the top-left point
+ * and adding half of the width to the x-coordinate and half of the height to the y-coordinate.
+ *
+ * @return Vec2D The center point of the rectangle as a Vec2D object.
+ */
 Vec2D Rectangle2D::get_center_point() const {
     float x_component = get_top_left_point().get_x() + get_width() / 2.0f;
     float y_component = get_top_left_point().get_y() + get_height() / 2.0f;
@@ -60,6 +114,16 @@ Vec2D Rectangle2D::get_center_point() const {
     return Vec2D(x_component, y_component);
 }
 
+/**
+ * @brief Checks if this rectangle intersects with another rectangle.
+ *
+ * This function determines whether the current rectangle intersects with the specified
+ * `other_rectangle`. Two rectangles are considered to intersect if they overlap in both
+ * the x and y dimensions.
+ *
+ * @param other_rectangle The rectangle to check for intersection with.
+ * @return true if the rectangles intersect, false otherwise.
+ */
 bool Rectangle2D::intersects(const Rectangle2D& other_rectangle) const {
     bool within_x = get_top_left_point().get_x() <= other_rectangle.get_bottom_right_point().get_x() and
                     get_bottom_right_point().get_x() >= other_rectangle.get_top_left_point().get_x();
@@ -70,6 +134,18 @@ bool Rectangle2D::intersects(const Rectangle2D& other_rectangle) const {
     return within_x and within_y;
 }
 
+/**
+ * @brief Checks if a given point is contained within the rectangle.
+ * 
+ * This function determines whether the specified point lies within the bounds
+ * of the rectangle. It checks if the point's x-coordinate is between the 
+ * x-coordinates of the top-left and bottom-right points of the rectangle, and 
+ * if the point's y-coordinate is between the y-coordinates of the top-left and 
+ * bottom-right points of the rectangle.
+ * 
+ * @param point The point to check, represented as a Vec2D object.
+ * @return true if the point is within the rectangle, false otherwise.
+ */
 bool Rectangle2D::constains_point(const Vec2D& point) const {
     bool within_x = point.get_x() >= get_top_left_point().get_x() and
                     point.get_x() <= get_bottom_right_point().get_x();
@@ -79,6 +155,16 @@ bool Rectangle2D::constains_point(const Vec2D& point) const {
     return within_x and within_y;
 }
 
+/**
+ * @brief Creates a new Rectangle2D that is inset by the specified insets.
+ *
+ * This function takes a reference to a Rectangle2D object and a Vec2D object representing the insets.
+ * It returns a new Rectangle2D object that is inset by the specified insets.
+ *
+ * @param rect The original Rectangle2D object to be inset.
+ * @param insets The Vec2D object representing the insets to be applied.
+ * @return A new Rectangle2D object that is inset by the specified insets.
+ */
 Rectangle2D Rectangle2D::inset(const Rectangle2D& rect, Vec2D& insets) {
     Vec2D top_left = rect.get_top_left_point() + insets;
     float width = rect.get_width() - 2 * insets.get_x();
