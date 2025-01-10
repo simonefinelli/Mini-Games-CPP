@@ -40,8 +40,8 @@ set_target_properties(Vec2DShared PROPERTIES
 )
 
 # Position Independent Code (PIC) is required for shared libraries
-target_compile_options(Vec2DShared PRIVATE -fPIC)
 target_compile_options(Vec2DStatic PRIVATE -fPIC)
+target_compile_options(Vec2DShared PRIVATE -fPIC)
 
 # Testing ==================================================================== #
 

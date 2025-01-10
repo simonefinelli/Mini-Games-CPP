@@ -76,5 +76,6 @@ target_include_directories(ShapesShared PRIVATE ${VEC2D_INCLUDE_DIR})
 target_link_libraries(ShapesShared PRIVATE ${VEC2D_LIB_DIR}/libVec2D.a)
 
 # Position Independent Code (PIC) is required for shared libraries
+target_compile_options(ShapesStatic PRIVATE -fPIC)
 target_compile_options(ShapesShared PRIVATE -fPIC)
 
