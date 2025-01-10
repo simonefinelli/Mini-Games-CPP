@@ -20,7 +20,7 @@ int main(int args, const char* argv[]) {
 
     // Create a line
     // Line2D line = {Vec2D(0,0), Vec2D(SCREEN_WIDTH-1, SCREEN_HEIGHT-1)};
-    // screen.draw(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, Color::Cyan());
+    // // screen.draw(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, Color::Cyan());
     // screen.draw(line, Color::Orange());
     // screen.swap_screens();
     // std::this_thread::sleep_for(std::chrono::milliseconds(2000));
@@ -34,9 +34,14 @@ int main(int args, const char* argv[]) {
     // screen.draw(t, Color::Orange());
     // screen.swap_screens();
 
-    // Create a Rectangle
-    Rectangle2D r{Vec2D(100, 100), 50, 25};
-    screen.draw(r, Color::Cyan());
+    // // Create a Rectangle
+    // Rectangle2D r{Vec2D(100, 100), 50, 25};
+    // screen.draw(r, Color::Cyan());
+    // screen.swap_screens();
+
+    // Create a Circle
+    Circle2D c{Vec2D(50, 50), 50};
+    screen.draw(c, Color::Gray());
     screen.swap_screens();
 
     // Start the main program
