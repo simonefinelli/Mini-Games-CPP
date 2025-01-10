@@ -1,12 +1,17 @@
 /**
- * @file Triangle.cpp
- * @brief 
+ * @file Triangle2D.cpp
+ * @brief Implementation of the Triangle2D class for representing and manipulating 2D triangles.
+ * 
+ * This file contains the implementation of the Triangle2D class, which provides methods
+ * for constructing triangles, calculating their centroids, areas, and checking if a point
+ * lies within the triangle.
+ * 
+ * The Triangle2D class uses the Vec2D class to represent 2D points.
+ * 
  * @author SimoX
  * @date 2024-12-16
  */
-
 #include <cmath>
-
 #include "Triangle2D.h"
 
 // ========================================================================== //

@@ -1,10 +1,24 @@
 /**
- * @file Circle2D.cpp
- * @brief 
+ * @file Circle2D.h
+ * 
+ * @class Circle2D
+ * @brief Represents a 2D circle shape.
+ * 
+ * This class provides functionalities to create and manipulate a 2D circle.
+ * It inherits from the Shape2D class.
+ * 
+ * @note The circle is defined by its center point and radius.
+ * 
+ * @section Example
+ * @code
+ * Vec2D center(0.0f, 0.0f);
+ * float radius = 5.0f;
+ * Circle2D circle(center, radius);
+ * @endcode
+ * 
  * @author SimoX
  * @date 2024-12-27
  */
-
 #include "Circle2D.h"
 
 // ========================================================================== //

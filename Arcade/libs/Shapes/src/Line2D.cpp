@@ -1,5 +1,7 @@
 /**
  * @file Line2D.cpp
+ * 
+ * @class Line2D
  * @brief Implementation of the Line2D class for representing and manipulating 2D lines.
  * 
  * This file contains the implementation of the Line2D class, which provides methods for
@@ -14,12 +16,16 @@
  * @note This implementation assumes the existence of a Vec2D class with appropriate
  *       methods for vector arithmetic, distance calculation, and other vector operations.
  * 
- * @see Line2D.h for the class definition and detailed documentation of each method.
+ * @section Example
+ * @code
+ * Vec2D point1(0, 0);
+ * Vec2D point2(3, 4);
+ * Line2D line(point1, point2);
+ * @endcode
  * 
- * @author SimoX
  * @date 2024-12-08
+ * @author SimoX
  */
-
 #include "Line2D.h"
 
 // ========================================================================== //

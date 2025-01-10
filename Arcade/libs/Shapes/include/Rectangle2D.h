@@ -1,8 +1,27 @@
 /**
  * @file Rectangle2D.h
- * @brief 
- * @author SimoX
+ * @brief Implementation of the Rectangle2D class for representing 2D rectangles.
+ * 
+ * This file contains the implementation of the Rectangle2D class, which provides
+ * methods for creating, manipulating, and querying 2D rectangles. The class supports
+ * operations such as calculating width and height, moving the rectangle, checking for
+ * intersections with other rectangles, and determining if a point is contained within
+ * the rectangle.
+ * 
+ * The Rectangle2D class uses the Vec2D class to represent points in 2D space.
+ * 
+ * @see Rectangle2D.cpp for the class definition and detailed documentation of each method.
+ * 
+ * @section Example
+ * @code
+ * Vec2D top_left(0, 0);
+ * float w = 50.0f;
+ * float h = 100.0f;
+ * Rectangle2D r(top_left, w, h);
+ * @endcode
+ * 
  * @date 2024-12-22
+ * @author SimoX
  */
 
 #ifndef SHAPES_RECTANGLE_2D_H

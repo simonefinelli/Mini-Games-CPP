@@ -1,8 +1,25 @@
 /**
- * @file Trinagle.h
- * @brief 
- * @author SimoX
+ * @file Triangle2D.cpp
+ * @brief Implementation of the Triangle2D class for representing and manipulating 2D triangles.
+ * 
+ * This file contains the implementation of the Triangle2D class, which provides methods
+ * for constructing triangles, calculating their centroids, areas, and checking if a point
+ * lies within the triangle.
+ * 
+ * The Triangle2D class uses the Vec2D class to represent 2D points.
+ * 
+ * @see Rectangle2D.cpp for the class definition and detailed documentation of each method.
+ * 
+ * @section Example
+ * @code
+ * Vec2D p0(0, 10);
+ * Vec2D p1(10, 20);
+ * Vec2D p2(0, 50);
+ * Triangle2D t(p0, p1, p2);
+ * @endcode
+ * 
  * @date 2024-12-16
+ * @author SimoX
  */
 
 #ifndef SHAPES_TRIANGLE_2D_H
