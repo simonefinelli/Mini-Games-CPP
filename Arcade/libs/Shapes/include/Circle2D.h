@@ -9,7 +9,6 @@
 #define SHAPES_CIRCLE_2D_H
 
 #include "Shape2D.h"
-#include "Vec2D.h"
 
 class Circle2D : public Shape2D {
 public:
