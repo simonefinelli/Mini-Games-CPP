@@ -42,39 +42,39 @@ target_link_libraries(Shapes PRIVATE ${VEC2D_LIB_DIR}/libVec2D.a)
 
 # Lib Creation =============================================================== #
 
-# Set the base output directory for different build configurations
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib/static")
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib/shared")
-# Set runtime output for executables (if you add any)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+# # Set the base output directory for different build configurations
+# set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib/static")
+# set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib/shared")
+# # Set runtime output for executables (if you add any)
+# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-# List source files
-set(SOURCES
-    src/Line2D.cpp
-    src/Shape2D.cpp
-    src/Triangle2D.cpp
-    src/Rectangle2D.cpp
-    src/Circle2D.cpp
-)
+# # List source files
+# set(SOURCES
+#     src/Line2D.cpp
+#     src/Shape2D.cpp
+#     src/Triangle2D.cpp
+#     src/Rectangle2D.cpp
+#     src/Circle2D.cpp
+# )
 
-# Create the static library
-add_library(ShapesStatic STATIC ${SOURCES})
-set_target_properties(ShapesStatic PROPERTIES
-    OUTPUT_NAME "Shapes"
-    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}"
-)
-target_include_directories(ShapesStatic PRIVATE ${VEC2D_INCLUDE_DIR})
-target_link_libraries(ShapesStatic PRIVATE ${VEC2D_LIB_DIR}/libVec2D.a)
+# # Create the static library
+# add_library(ShapesStatic STATIC ${SOURCES})
+# set_target_properties(ShapesStatic PROPERTIES
+#     OUTPUT_NAME "Shapes"
+#     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}"
+# )
+# target_include_directories(ShapesStatic PRIVATE ${VEC2D_INCLUDE_DIR})
+# target_link_libraries(ShapesStatic PRIVATE ${VEC2D_LIB_DIR}/libVec2D.a)
 
-# Create the shared library
-add_library(ShapesShared SHARED ${SOURCES})
-set_target_properties(ShapesShared PROPERTIES
-    OUTPUT_NAME "Shapes"
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
-)
-target_include_directories(ShapesShared PRIVATE ${VEC2D_INCLUDE_DIR})
-target_link_libraries(ShapesShared PRIVATE ${VEC2D_LIB_DIR}/libVec2D.a)
+# # Create the shared library
+# add_library(ShapesShared SHARED ${SOURCES})
+# set_target_properties(ShapesShared PROPERTIES
+#     OUTPUT_NAME "Shapes"
+#     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
+# )
+# target_include_directories(ShapesShared PRIVATE ${VEC2D_INCLUDE_DIR})
+# target_link_libraries(ShapesShared PRIVATE ${VEC2D_LIB_DIR}/libVec2D.a)
 
-# Position Independent Code (PIC) is required for shared libraries
-target_compile_options(ShapesShared PRIVATE -fPIC)
+# # Position Independent Code (PIC) is required for shared libraries
+# target_compile_options(ShapesShared PRIVATE -fPIC)
 
