@@ -9,7 +9,7 @@
 
 #include <SDL2/SDL.h>
 #include <stdint.h>
-
+#include <vector>
 #include "Circle2D.h"
 #include "Color.h"
 #include "Line2D.h"
@@ -39,9 +39,9 @@ public:
     void draw(int x, int y, const Color& color);
     void draw(const Vec2D& point, const Color& color);
     void draw(const Line2D& line, const Color& color);
-    void draw(const Triangle2D& triangle, const Color& color);
-    void draw(const Rectangle2D& rectangle, const Color& color);
-    void draw(const Circle2D& circle, const Color& color);
+    void draw(const Triangle2D& triangle, const Color& color, bool fill=false, const Color& fill_color=Color::White());
+    void draw(const Rectangle2D& rectangle, const Color& color, bool fill=false, const Color& fill_color=Color::White());
+    void draw(const Circle2D& circle, const Color& color, bool fill=false, const Color& fill_color=Color::White());
 
     // Destructor =========================================================== //
     ~Screen();
@@ -63,6 +63,7 @@ private:
     Screen(const Screen& other_screen); // copy constructor NOT allowed to be used from anyone
     
     // Instance methods ===================================================== //
+    void fill_poly(const std::vector<Vec2D>& points, const Color& color);
     void clear_screen();
 
     // Operator overloading ================================================= //

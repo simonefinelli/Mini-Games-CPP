@@ -159,7 +159,7 @@ void Screen::draw(const Line2D& line, const Color& color) {
 
 }
 
-void Screen::draw(const Triangle2D& triangle, const Color& color) {
+void Screen::draw(const Triangle2D& triangle, const Color& color, bool fill, const Color& fill_color) {
     // Check for window initialization
     if (!m_window_ptr) throw std::runtime_error("Window not initialized!");
 
@@ -170,9 +170,11 @@ void Screen::draw(const Triangle2D& triangle, const Color& color) {
     draw(p0p1, color);
     draw(p1p2, color);
     draw(p2p0, color);
+
+    if (fill) fill_poly(triangle.get_points(), fill_color);
 }
 
-void Screen::draw(const Rectangle2D& rectangle, const Color& color) {
+void Screen::draw(const Rectangle2D& rectangle, const Color& color, bool fill, const Color& fill_color) {
     // Check for window initialization
     if (!m_window_ptr) throw std::runtime_error("Window not initialized!");
 
@@ -187,9 +189,17 @@ void Screen::draw(const Rectangle2D& rectangle, const Color& color) {
     draw(p0p2, color);
     draw(p1p3, color);
     draw(p2p3, color);
+
+    if (fill) fill_poly(rectangle.get_points(), fill_color);
 }
 
-void Screen::draw(const Circle2D& circle, const Color& color) {
+void Screen::draw(const Circle2D& circle, const Color& color, bool fill, const Color& fill_color) {
+    // Check for window initialization
+    if (!m_window_ptr) throw std::runtime_error("Window not initialized!");
+
+    std::vector<Vec2D> circle_points;  // for poly fill
+    std::vector<Line2D> lines;         // for poly fill
+
     unsigned number_of_segments = calculate_number_of_segments(circle.get_radius());
     
     float angle = (static_cast<float>(M_PI) * 2.0f) / static_cast<float>(number_of_segments);
@@ -199,15 +209,22 @@ void Screen::draw(const Circle2D& circle, const Color& color) {
     Vec2D p1 = p0;
     Line2D next_line;
 
-    for(unsigned i=0; i < number_of_segments; i++) {
+    for (unsigned i=0; i < number_of_segments; i++) {
         p1.rotate(angle, circle.get_center_point());
         next_line.set_p0(p0);
         next_line.set_p1(p1);
 
-        draw(next_line, color);
+        lines.push_back(next_line);
+        //draw(next_line, color);
 
         p0 = p1;
+        circle_points.push_back(p0);
     }
+
+    if (fill) fill_poly(circle_points, fill_color);
+
+    // Draw the perimeter
+    for (const Line2D& line : lines) draw(line, color);
 }
 
 // Operator overloading ===================================================== //
@@ -225,6 +242,74 @@ Screen::~Screen() {
 // ========================================================================== //
 
 // Instance methods ========================================================= //
+
+void Screen::fill_poly(const std::vector<Vec2D>& points, const Color& color) {
+    if (points.size() == 0) return;
+
+    // Find the most extreme point of the polygon
+    float top = points[0].get_y();
+    float bottom = points[0].get_y();
+    float right = points[0].get_x();
+    float left = points[0].get_x();
+
+    for (size_t i = 1; i < points.size(); i++) {
+        if (points[i].get_x() < top) 
+            top = points[i].get_y();
+        
+        if (points[i].get_y() > bottom)
+            bottom = points[i].get_y();
+
+        if (points[i].get_x() < left)
+            left = points[i].get_x();
+
+        if (points[i].get_x() > right)
+            right = points[i].get_x();
+    }
+
+    // Go through the polygon
+    for (int pixel_y = top; pixel_y < bottom; pixel_y++) {
+        // Check intercept
+        std::vector<float> node_x_vec;
+
+        size_t j = points.size() - 1;
+        for (size_t i = 0; i < points.size(); i++) {
+            float point_iy = points[i].get_y();
+            float point_jy = points[j].get_y();
+
+            if ((point_iy <= static_cast<float>(pixel_y) and point_jy < static_cast<float>(pixel_y)) or 
+                (point_jy <= static_cast<float>(pixel_y) and point_iy > static_cast<float>(pixel_y))) {
+                    float denom = point_jy - point_iy;
+                    if (is_equal(denom, 0)) continue;
+
+                    float x = points[i].get_x() + (pixel_y - point_iy) / (denom) * (points[j].get_x() - points[i].get_x());
+
+                    node_x_vec.push_back(x);
+            }
+            j = i;
+        }
+        // Sort points in ascending order (to draw a line form left to right)
+        std::sort(node_x_vec.begin(), node_x_vec.end(), std::less<>());
+
+        // Draw the line
+        for (size_t k=0; k < node_x_vec.size(); k+=2) {
+            if (node_x_vec[k] > right) break;
+            if (node_x_vec[k+1] > left) {
+                if (node_x_vec[k] < left)
+                    node_x_vec[k] = left;
+                if (node_x_vec[k+1] > right)
+                    node_x_vec[k+1] = right;
+                
+                // Line2D line{Vec2D(node_x_vec[k], pixel_y), Vec2D(node_x_vec[k+1], pixel_y)}
+                // draw(line, color);
+                for (int pixel_x = node_x_vec[k]; pixel_x < node_x_vec[k+1]; pixel_x++) {
+                    std::cout << "sto disengnado";
+                    draw(pixel_x, pixel_y, color);
+                }
+            }
+        }
+    }
+}
+
 void Screen::clear_screen() {
     // Check for window initialization
     if (!m_window_ptr) throw std::runtime_error("Window not initialized!");  

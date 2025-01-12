@@ -34,15 +34,15 @@ int main(int args, const char* argv[]) {
     // screen.draw(t, Color::Orange());
     // screen.swap_screens();
 
-    // // Create a Rectangle
-    // Rectangle2D r{Vec2D(100, 100), 50, 25};
-    // screen.draw(r, Color::Cyan());
-    // screen.swap_screens();
-
-    // Create a Circle
-    Circle2D c{Vec2D(50, 50), 50};
-    screen.draw(c, Color::Gray());
+    // Create a Rectangle
+    Rectangle2D r{Vec2D(100, 100), 50, 25};
+    screen.draw(r, Color::Cyan(), true, Color::Orange());
     screen.swap_screens();
+
+    // // Create a Circle
+    // Circle2D c{Vec2D(50, 50), 50};
+    // screen.draw(c, Color::Gray(), true, Color::Cyan());
+    // screen.swap_screens();
 
     // Start the main program
     SDL_Event sdl_event;

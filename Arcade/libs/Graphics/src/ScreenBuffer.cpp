@@ -150,7 +150,7 @@ ScreenBuffer::~ScreenBuffer() {
  * Transform 2D index in 1D index
  */
 size_t ScreenBuffer::get_index(int row, int col) {
-    if(!m_surface_ptr) std::runtime_error("Surface not found!");
+    if (!m_surface_ptr) std::runtime_error("Surface not found!");
 
     return m_surface_ptr->w * row + col;
 }
