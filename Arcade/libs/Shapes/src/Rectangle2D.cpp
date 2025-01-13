@@ -195,9 +195,9 @@ Rectangle2D Rectangle2D::inset(const Rectangle2D& rect, Vec2D& insets) {
  * This function returns a vector containing the four corner points of the rectangle.
  * The points are returned in the following order:
  * - Top-left corner
- * - Bottom-right corner
- * - Bottom-left corner
  * - Top-right corner
+ * - Bottom-left corner
+ * - Bottom-right corner
  *
  * @return std::vector<Vec2D> A vector containing the four corner points of the rectangle.
  */
