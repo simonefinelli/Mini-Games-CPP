@@ -31,7 +31,7 @@ int main(int args, const char* argv[]) {
 
     // // Create a Triangle
     // Triangle2D t = {Vec2D(SCREEN_WIDTH/2, 50), Vec2D(50, SCREEN_HEIGHT - 50), Vec2D(SCREEN_WIDTH - 50, SCREEN_HEIGHT - 50)};
-    // screen.draw(t, Color::Orange());
+    // screen.draw(t, Color::Orange(), true, Color::White());
     // screen.swap_screens();
 
     // Create a Rectangle

@@ -190,7 +190,7 @@ void Screen::draw(const Rectangle2D& rectangle, const Color& color, bool fill, c
     draw(p1p3, color);
     draw(p2p3, color);
 
-    if (fill) fill_poly(rectangle.get_points(), fill_color);
+    if (fill) fill_poly(points, fill_color);
 }
 
 void Screen::draw(const Circle2D& circle, const Color& color, bool fill, const Color& fill_color) {
@@ -243,51 +243,61 @@ Screen::~Screen() {
 
 // Instance methods ========================================================= //
 
+/**
+ * This function implements a polygon filling algorithm using the scan-line method.
+ */
 void Screen::fill_poly(const std::vector<Vec2D>& points, const Color& color) {
     if (points.size() == 0) return;
 
-    // Find the most extreme point of the polygon
+    // Find the Bounding Box of the polygon (find the max/min for x and y component)
     float top = points[0].get_y();
     float bottom = points[0].get_y();
     float right = points[0].get_x();
     float left = points[0].get_x();
 
     for (size_t i = 1; i < points.size(); i++) {
-        if (points[i].get_x() < top) 
+        if (points[i].get_y() < top)  // min
             top = points[i].get_y();
         
-        if (points[i].get_y() > bottom)
+        if (points[i].get_y() > bottom)  // max
             bottom = points[i].get_y();
 
-        if (points[i].get_x() < left)
+        if (points[i].get_x() < left)  // min
             left = points[i].get_x();
 
-        if (points[i].get_x() > right)
+        if (points[i].get_x() > right)  // max
             right = points[i].get_x();
     }
 
-    // Go through the polygon
+    // Go through the polygon (vertically)
     for (int pixel_y = top; pixel_y < bottom; pixel_y++) {
-        // Check intercept
-        std::vector<float> node_x_vec;
+        std::vector<float> node_x_vec;  // intersection points
 
+        // For each pair of consecutive points (points[i] and points[j]), 
+        // the function checks if the horizontal scan line (pixel_y) intersects 
+        // the edge defined by these two points.
         size_t j = points.size() - 1;
         for (size_t i = 0; i < points.size(); i++) {
             float point_iy = points[i].get_y();
             float point_jy = points[j].get_y();
 
-            if ((point_iy <= static_cast<float>(pixel_y) and point_jy < static_cast<float>(pixel_y)) or 
+            // if there is an intersection, the x-coordinate of the intersection is calculated using linear interpolation
+            if ((point_iy <= static_cast<float>(pixel_y) and point_jy > static_cast<float>(pixel_y)) or 
                 (point_jy <= static_cast<float>(pixel_y) and point_iy > static_cast<float>(pixel_y))) {
                     float denom = point_jy - point_iy;
                     if (is_equal(denom, 0)) continue;
 
+                    // Linear interpolation
                     float x = points[i].get_x() + (pixel_y - point_iy) / (denom) * (points[j].get_x() - points[i].get_x());
 
-                    node_x_vec.push_back(x);
+                    node_x_vec.push_back(x); // all intersection points (node_x_vec) along the scan line are stored.
             }
             j = i;
         }
+
         // Sort points in ascending order (to draw a line form left to right)
+        // The intersection points are sorted in ascending order of x to facilitate 
+        // drawing horizontal lines between pairs of points.
         std::sort(node_x_vec.begin(), node_x_vec.end(), std::less<>());
 
         // Draw the line
@@ -302,7 +312,6 @@ void Screen::fill_poly(const std::vector<Vec2D>& points, const Color& color) {
                 // Line2D line{Vec2D(node_x_vec[k], pixel_y), Vec2D(node_x_vec[k+1], pixel_y)}
                 // draw(line, color);
                 for (int pixel_x = node_x_vec[k]; pixel_x < node_x_vec[k+1]; pixel_x++) {
-                    std::cout << "sto disengnado";
                     draw(pixel_x, pixel_y, color);
                 }
             }
