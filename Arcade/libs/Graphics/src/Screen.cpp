@@ -282,10 +282,13 @@ void Screen::fill_poly(const std::vector<Vec2D>& points, const Color& color) {
             float point_jy = points[j].get_y();
 
             // if there is an intersection, the x-coordinate of the intersection is calculated using linear interpolation
-            if ((point_iy <= static_cast<float>(pixel_y) and point_jy > static_cast<float>(pixel_y)) or 
-                (point_jy <= static_cast<float>(pixel_y) and point_iy > static_cast<float>(pixel_y))) {
+            // if ((point_iy <= static_cast<float>(pixel_y) and point_jy > static_cast<float>(pixel_y)) or 
+            //     (point_jy <= static_cast<float>(pixel_y) and point_iy > static_cast<float>(pixel_y))) {
+            if ((point_iy < static_cast<float>(pixel_y) && point_jy >= static_cast<float>(pixel_y)) || 
+                (point_jy < static_cast<float>(pixel_y) && point_iy >= static_cast<float>(pixel_y))) {
+
                     float denom = point_jy - point_iy;
-                    if (is_equal(denom, 0)) continue;
+                    if (is_equal(denom, 0)) continue; // ignore perfectly horizontal edges
 
                     // Linear interpolation
                     float x = points[i].get_x() + (pixel_y - point_iy) / (denom) * (points[j].get_x() - points[i].get_x());
@@ -301,6 +304,7 @@ void Screen::fill_poly(const std::vector<Vec2D>& points, const Color& color) {
         std::sort(node_x_vec.begin(), node_x_vec.end(), std::less<>());
 
         // Draw the line
+        if (node_x_vec.size() % 2 != 0) continue; // ensure valid pairs
         for (size_t k=0; k < node_x_vec.size(); k+=2) {
             if (node_x_vec[k] > right) break;
             if (node_x_vec[k+1] > left) {
