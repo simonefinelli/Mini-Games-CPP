@@ -308,16 +308,16 @@ void Screen::fill_poly(const std::vector<Vec2D>& points, const Color& color) {
             if (node_x_vec[k] > right) break;
 
             // Adjust the fill range to avoid filling the left and right borders
-            int startX = static_cast<int>(std::ceil(node_x_vec[k])); // round up to avoid covering the left border
-            int endX = static_cast<int>(std::floor(node_x_vec[k + 1])); // round down to avoid covering the right border
+            int start_x = static_cast<int>(std::ceil(node_x_vec[k])); // round up to avoid covering the left border
+            int end_x = static_cast<int>(std::floor(node_x_vec[k + 1])); // round down to avoid covering the right border
 
             // Clamp to the bounding box
-            startX = std::max(startX, static_cast<int>(left) + 1); // start just after the left border
-            endX = std::min(endX, static_cast<int>(right) - 1); // stop just before the right border
+            start_x = std::max(start_x, static_cast<int>(left) + 1); // start just after the left border
+            end_x = std::min(end_x, static_cast<int>(right) - 1); // stop just before the right border
 
             // Ensure valid range
-            if (startX <= endX) {
-                for (int pixel_x = startX; pixel_x <= endX; pixel_x++) {
+            if (start_x <= end_x) {
+                for (int pixel_x = start_x; pixel_x <= end_x; pixel_x++) {
                     draw(pixel_x, pixel_y, color);
                 }
             }
