@@ -181,9 +181,9 @@ void Screen::draw(const Rectangle2D& rectangle, const Color& color, bool fill, c
     std::vector<Vec2D> points = rectangle.get_points();
 
     Line2D p0p1 = Line2D(points[0], points[1]);
-    Line2D p0p2 = Line2D(points[1], points[3]);
-    Line2D p1p3 = Line2D(points[3], points[2]);
-    Line2D p2p3 = Line2D(points[2], points[0]);
+    Line2D p0p2 = Line2D(points[1], points[2]);
+    Line2D p1p3 = Line2D(points[2], points[3]);
+    Line2D p2p3 = Line2D(points[3], points[0]);
 
     draw(p0p1, color);
     draw(p0p2, color);
@@ -281,9 +281,7 @@ void Screen::fill_poly(const std::vector<Vec2D>& points, const Color& color) {
             float point_iy = points[i].get_y();
             float point_jy = points[j].get_y();
 
-            // if there is an intersection, the x-coordinate of the intersection is calculated using linear interpolation
-            // if ((point_iy <= static_cast<float>(pixel_y) and point_jy > static_cast<float>(pixel_y)) or 
-            //     (point_jy <= static_cast<float>(pixel_y) and point_iy > static_cast<float>(pixel_y))) {
+            // Check if the scanline intersects the edge
             if ((point_iy < static_cast<float>(pixel_y) && point_jy >= static_cast<float>(pixel_y)) || 
                 (point_jy < static_cast<float>(pixel_y) && point_iy >= static_cast<float>(pixel_y))) {
 
@@ -298,24 +296,21 @@ void Screen::fill_poly(const std::vector<Vec2D>& points, const Color& color) {
             j = i;
         }
 
-        // Sort points in ascending order (to draw a line form left to right)
-        // The intersection points are sorted in ascending order of x to facilitate 
-        // drawing horizontal lines between pairs of points.
+        // Sort points in ascending order (to draw a line from left to right)
         std::sort(node_x_vec.begin(), node_x_vec.end(), std::less<>());
 
         // Draw the line
         if (node_x_vec.size() % 2 != 0) continue; // ensure valid pairs
-        for (size_t k=0; k < node_x_vec.size(); k+=2) {
+        for (size_t k = 0; k < node_x_vec.size(); k += 2) {
             if (node_x_vec[k] > right) break;
-            if (node_x_vec[k+1] > left) {
-                if (node_x_vec[k] < left)
-                    node_x_vec[k] = left;
-                if (node_x_vec[k+1] > right)
-                    node_x_vec[k+1] = right;
-                
-                // Line2D line{Vec2D(node_x_vec[k], pixel_y), Vec2D(node_x_vec[k+1], pixel_y)}
-                // draw(line, color);
-                for (int pixel_x = node_x_vec[k]; pixel_x < node_x_vec[k+1]; pixel_x++) {
+
+            // Adjust the fill range to avoid filling the left and right borders
+            float startX = std::max(node_x_vec[k], left + 1);  // Start just after the left border
+            float endX = std::min(node_x_vec[k + 1], right - 1);  // Stop just before the right border
+
+            // Ensure valid range
+            if (startX < endX) {
+                for (int pixel_x = startX; pixel_x <= endX; pixel_x++) {
                     draw(pixel_x, pixel_y, color);
                 }
             }
