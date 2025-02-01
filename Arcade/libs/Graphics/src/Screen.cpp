@@ -160,6 +160,9 @@ void Screen::draw(const Line2D& line, const Color& color) {
 }
 
 void Screen::draw(const Triangle2D& triangle, const Color& color, bool fill, const Color& fill_color) {
+
+    if (fill) fill_poly(triangle.get_points(), fill_color);
+    
     // Check for window initialization
     if (!m_window_ptr) throw std::runtime_error("Window not initialized!");
 
@@ -171,7 +174,7 @@ void Screen::draw(const Triangle2D& triangle, const Color& color, bool fill, con
     draw(p1p2, color);
     draw(p2p0, color);
 
-    if (fill) fill_poly(triangle.get_points(), fill_color);
+    
 }
 
 void Screen::draw(const Rectangle2D& rectangle, const Color& color, bool fill, const Color& fill_color) {
@@ -179,6 +182,8 @@ void Screen::draw(const Rectangle2D& rectangle, const Color& color, bool fill, c
     if (!m_window_ptr) throw std::runtime_error("Window not initialized!");
 
     std::vector<Vec2D> points = rectangle.get_points();
+
+    if (fill) fill_poly(points, fill_color);
 
     Line2D p0p1 = Line2D(points[0], points[1]);
     Line2D p0p2 = Line2D(points[1], points[2]);
@@ -189,8 +194,6 @@ void Screen::draw(const Rectangle2D& rectangle, const Color& color, bool fill, c
     draw(p0p2, color);
     draw(p1p3, color);
     draw(p2p3, color);
-
-    if (fill) fill_poly(points, fill_color);
 }
 
 void Screen::draw(const Circle2D& circle, const Color& color, bool fill, const Color& fill_color) {
@@ -282,14 +285,14 @@ void Screen::fill_poly(const std::vector<Vec2D>& points, const Color& color) {
             float point_jy = points[j].get_y();
 
             // Check if the scanline intersects the edge
-            if ((point_iy < static_cast<float>(pixel_y) && point_jy >= static_cast<float>(pixel_y)) || 
-                (point_jy < static_cast<float>(pixel_y) && point_iy >= static_cast<float>(pixel_y))) {
+            if ((point_iy <= static_cast<float>(pixel_y) && point_jy > static_cast<float>(pixel_y)) || 
+                (point_jy <= static_cast<float>(pixel_y) && point_iy > static_cast<float>(pixel_y))) {
 
                     float denom = point_jy - point_iy;
                     if (is_equal(denom, 0)) continue; // ignore perfectly horizontal edges
 
                     // Linear interpolation
-                    float x = points[i].get_x() + (pixel_y - point_iy) / (denom) * (points[j].get_x() - points[i].get_x());
+                    float x = points[i].get_x() + (static_cast<float>(pixel_y) - point_iy) / denom * (points[j].get_x() - points[i].get_x());
 
                     node_x_vec.push_back(x); // all intersection points (node_x_vec) along the scan line are stored.
             }
@@ -305,11 +308,15 @@ void Screen::fill_poly(const std::vector<Vec2D>& points, const Color& color) {
             if (node_x_vec[k] > right) break;
 
             // Adjust the fill range to avoid filling the left and right borders
-            float startX = std::max(node_x_vec[k], left + 1);  // Start just after the left border
-            float endX = std::min(node_x_vec[k + 1], right - 1);  // Stop just before the right border
+            int startX = static_cast<int>(std::ceil(node_x_vec[k])); // round up to avoid covering the left border
+            int endX = static_cast<int>(std::floor(node_x_vec[k + 1])); // round down to avoid covering the right border
+
+            // Clamp to the bounding box
+            startX = std::max(startX, static_cast<int>(left) + 1); // start just after the left border
+            endX = std::min(endX, static_cast<int>(right) - 1); // stop just before the right border
 
             // Ensure valid range
-            if (startX < endX) {
+            if (startX <= endX) {
                 for (int pixel_x = startX; pixel_x <= endX; pixel_x++) {
                     draw(pixel_x, pixel_y, color);
                 }
