@@ -196,18 +196,19 @@ Rectangle2D Rectangle2D::inset(const Rectangle2D& rect, Vec2D& insets) {
  * The points are returned in the following order:
  * - Top-left corner
  * - Top-right corner
- * - Bottom-left corner
  * - Bottom-right corner
+ * - Bottom-left corner
  *
  * @return std::vector<Vec2D> A vector containing the four corner points of the rectangle.
  */
 std::vector<Vec2D> Rectangle2D::get_points() const {
+
     std::vector<Vec2D> points;
 
-    points.push_back(m_points[0]);
-    points.push_back(Vec2D(m_points[1].get_x(), m_points[0].get_y()));
-    points.push_back(Vec2D(m_points[0].get_x(), m_points[1].get_y()));
-    points.push_back(m_points[1]);
+    points.push_back(m_points[0]);  // Top-left
+    points.push_back(Vec2D(m_points[1].get_x(), m_points[0].get_y()));  // Top-right
+    points.push_back(m_points[1]);  // Bottom-right
+    points.push_back(Vec2D(m_points[0].get_x(), m_points[1].get_y()));  // Bottom-left
 
     return points;
 }
