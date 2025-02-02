@@ -218,10 +218,9 @@ void Screen::draw(const Circle2D& circle, const Color& color, bool fill, const C
         next_line.set_p1(p1);
 
         lines.push_back(next_line);
-        //draw(next_line, color);
+        circle_points.push_back(p0);
 
         p0 = p1;
-        circle_points.push_back(p0);
     }
 
     if (fill) fill_poly(circle_points, fill_color);
