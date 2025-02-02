@@ -97,8 +97,11 @@ void ScreenBuffer::set_pixel(const Color& color, int x, int y) {
     uint32_t* pixels = (uint32_t*)m_surface_ptr->pixels;  // 1D array (buffer)
     
     auto index_position = get_index(y, x);
-    if(index_position < m_surface_area)
-        pixels[index_position] = color.get_pixel_color();
+    if(index_position < m_surface_area) {
+        // pixels[index_position] = color.get_pixel_color();
+        Color surface_color = Color(pixels[index_position]);  // dest color
+        pixels[index_position] = Color::alpha_blending(color, surface_color).get_pixel_color();
+    }
     // else
     //     std::cout << "index: " << index_position << " out of area: " << m_surface_area << std::endl;
 

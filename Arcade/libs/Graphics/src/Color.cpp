@@ -29,6 +29,26 @@ const uint32_t Color::PURPLE = 0xFF800080;   // ARGB format
 void Color::init_color_format(const SDL_PixelFormat* format) {
     Color::m_format = format;
 }
+
+/**
+ * Blending equation: sourceRGB * sourceAlpha + destinationRGB * (1 - sourceAlpha)
+ */
+Color Color::alpha_blending(const Color& source, const Color& destination) {
+    uint8_t alpha = source.get_alpha();
+
+    float source_alpha = static_cast<float>(alpha) / 255.0f;
+    float dest_alpha = 1.0f - source_alpha;
+
+    Color out_color;
+    out_color.set_alpha(255);
+    out_color.set_red(float(source.get_red()) * source_alpha + destination.get_red() * dest_alpha);
+    out_color.set_green(float(source.get_green()) * source_alpha + destination.get_green() * dest_alpha);
+    out_color.set_blue(float(source.get_blue()) * source_alpha + destination.get_blue() * dest_alpha);
+
+    return out_color;
+
+}
+
 // Colors factory
 Color Color::Black() { return Color(Color::BLACK); }      // RGBA (  0,   0,   0, 255)
 Color Color::Gray() { return Color(Color::GRAY); }        // RGBA (128, 128, 128, 255)

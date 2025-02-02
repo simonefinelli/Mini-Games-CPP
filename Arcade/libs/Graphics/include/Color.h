@@ -21,6 +21,8 @@ public:
 
     // Class methods ======================================================== //
     static void init_color_format(const SDL_PixelFormat* format);
+    static Color alpha_blending(const Color& source, const Color& destination); // alpha blending
+    
     // Colors factory
     static Color Black();
     static Color Gray();
