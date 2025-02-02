@@ -11,7 +11,7 @@
 
 const int SCREEN_WIDTH = 224;
 const int SCREEN_HEIGHT = 288;
-const int MAGNIFICATION = 2;
+const int MAGNIFICATION = 3;
 
 int main(int args, const char* argv[]) {
 
@@ -35,14 +35,14 @@ int main(int args, const char* argv[]) {
     // screen.swap_screens();
 
     // Create a Rectangle
-    Rectangle2D r{Vec2D(100, 100), 50, 25};
+    Rectangle2D r{Vec2D(100, 100), 51, 24};
     screen.draw(r, Color::Cyan(), true, Color::Orange());
-    screen.swap_screens();
 
-    // // Create a Circle
-    // Circle2D c{Vec2D(50, 50), 50};
-    // screen.draw(c, Color::Gray(), true, Color::Cyan());
-    // screen.swap_screens();
+
+    // Create a Circle
+    Circle2D c{Vec2D(100, 70), 49};
+    screen.draw(c, Color::Gray(), true, Color(0x5500FFFF));  // Cyan with 50% alpha (format ARGB)
+    screen.swap_screens();
 
     // Start the main program
     SDL_Event sdl_event;
