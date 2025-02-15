@@ -29,20 +29,22 @@ int main(int args, const char* argv[]) {
     // screen.swap_screens();
     // std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 
-    // // Create a Triangle
-    // Triangle2D t = {Vec2D(SCREEN_WIDTH/2, 50), Vec2D(50, SCREEN_HEIGHT - 50), Vec2D(SCREEN_WIDTH - 50, SCREEN_HEIGHT - 50)};
-    // screen.draw(t, Color::Orange(), true, Color::White());
-    // screen.swap_screens();
-
-    // Create a Rectangle
-    Rectangle2D r{Vec2D(100, 100), 51, 24};
-    screen.draw(r, Color::Cyan(), true, Color::Orange());
-
-
-    // Create a Circle
-    Circle2D c{Vec2D(100, 70), 49};
-    screen.draw(c, Color::Gray(), true, Color(0x5500FFFF));  // Cyan with 50% alpha (format ARGB)
+    // Create a Triangle
+    Triangle2D t = {Vec2D(10, 10), Vec2D(5, 30), Vec2D(30, 30)};
+    screen.draw(t, Color::Orange(), true, Color::White());
+    t.move_to(Vec2D(50, 50));
+    screen.draw(t, Color::Orange(), true, Color::White());
     screen.swap_screens();
+
+    // // Create a Rectangle
+    // Rectangle2D r{Vec2D(100, 100), 51, 24};
+    // screen.draw(r, Color::Cyan(), true, Color::Orange());
+
+
+    // // Create a Circle
+    // Circle2D c{Vec2D(100, 70), 49};
+    // screen.draw(c, Color::Gray(), true, Color(0x5500FFFF));  // Cyan with 50% alpha (format ARGB)
+    // screen.swap_screens();
 
     // Start the main program
     SDL_Event sdl_event;
