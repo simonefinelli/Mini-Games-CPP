@@ -45,6 +45,7 @@ public:
     virtual Vec2D get_center_point() const override;
     float area() const;
     bool contains_point(const Vec2D& p) const;
+    void move_to(const Vec2D& p) override;
 
 private:
     // Instance methods ===================================================== //

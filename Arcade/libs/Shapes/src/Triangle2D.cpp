@@ -79,6 +79,22 @@ bool Triangle2D::contains_point(const Vec2D& p) const {
     return is_equal(this_area, a1 + a2 + a3);;
 }
 
+/**
+ * @brief Moves the triangle to a new position.
+ * 
+ * This function moves the triangle to the specified position by calculating 
+ * the distance from the current center point to the new position and then 
+ * moving the shape by that distance.
+ * 
+ * @param p The new position to move the triangle to, represented as a Vec2D object.
+ */
+void Triangle2D::move_to(const Vec2D& p) {
+    // calculates the distance
+    Vec2D distance = p - get_center_point();
+    // move shape
+    move_by(distance);
+}
+
 
 // ========================================================================== //
 // Private interface                                                          //

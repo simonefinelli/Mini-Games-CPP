@@ -20,6 +20,7 @@ public:
     virtual Vec2D get_center_point() const = 0;
     inline virtual std::vector<Vec2D> get_points() const {return m_points;}
     void move_by(const Vec2D& delta_offset);
+    virtual void move_to(const Vec2D& p) = 0;
 
     inline virtual ~Shape2D() = default;
 
